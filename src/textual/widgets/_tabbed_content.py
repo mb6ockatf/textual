@@ -71,7 +71,9 @@ class ContentTab(Tab):
             content_id: The id of the content associated with the tab.
             disabled: Is the tab disabled?
         """
-        super().__init__(label, id=self.add_prefix(content_id), disabled=disabled)
+        super().__init__(
+            label, id=self.add_prefix(content_id), disabled=disabled
+        )
 
 
 class ContentTabs(Tabs):
@@ -91,7 +93,8 @@ class ContentTabs(Tabs):
             tabbed_content: The associated TabbedContent instance.
         """
         super().__init__(
-            *tabs, active=active if active is None else ContentTab.add_prefix(active)
+            *tabs,
+            active=active if active is None else ContentTab.add_prefix(active),
         )
         self.tabbed_content = tabbed_content
 
@@ -229,7 +232,9 @@ class TabPane(Widget):
 
     def _watch_disabled(self, disabled: bool) -> None:
         """Notify the parent `TabbedContent` that a tab pane was enabled/disabled."""
-        self.post_message(self.Disabled(self) if disabled else self.Enabled(self))
+        self.post_message(
+            self.Disabled(self) if disabled else self.Enabled(self)
+        )
 
     def _on_descendant_focus(self, event: events.DescendantFocus):
         """Tell TabbedContent parent something is focused in this pane."""
@@ -258,7 +263,9 @@ class TabbedContent(Widget):
         ALLOW_SELECTOR_MATCH = {"pane"}
         """Additional message attributes that can be used with the [`on` decorator][textual.on]."""
 
-        def __init__(self, tabbed_content: TabbedContent, tab: ContentTab) -> None:
+        def __init__(
+            self, tabbed_content: TabbedContent, tab: ContentTab
+        ) -> None:
             """Initialize message.
 
             Args:
@@ -379,7 +386,9 @@ class TabbedContent(Widget):
                 (
                     content
                     if isinstance(content, TabPane)
-                    else TabPane(title or self.render_str(f"Tab {index}"), content)
+                    else TabPane(
+                        title or self.render_str(f"Tab {index}"), content
+                    )
                 ),
                 self._generate_tab_id(),
             )
@@ -402,7 +411,9 @@ class TabbedContent(Widget):
         # TabbedContent can determine whether a message received from a Tabs instance
         # has been sent from this Tabs, or from a Tabs that may exist as a descendant
         # deeper in the DOM.
-        yield ContentTabs(*tabs, active=self._initial or None, tabbed_content=self)
+        yield ContentTabs(
+            *tabs, active=self._initial or None, tabbed_content=self
+        )
 
         # Yield the content switcher and panes
         with ContentSwitcher(initial=self._initial or None):
@@ -443,7 +454,9 @@ class TabbedContent(Widget):
         return AwaitComplete(
             tabs.add_tab(
                 ContentTab(pane._title, pane.id),
-                before=before if before is None else ContentTab.add_prefix(before),
+                before=(
+                    before if before is None else ContentTab.add_prefix(before)
+                ),
                 after=after if after is None else ContentTab.add_prefix(after),
             ),
             self.get_child_by_type(ContentSwitcher).mount(pane),
@@ -558,13 +571,17 @@ class TabbedContent(Widget):
     def _watch_active(self, active: str) -> None:
         """Switch tabs when the active attributes changes."""
         with self.prevent(Tabs.TabActivated, Tabs.Cleared):
-            self.get_child_by_type(ContentTabs).active = ContentTab.add_prefix(active)
+            self.get_child_by_type(ContentTabs).active = ContentTab.add_prefix(
+                active
+            )
         self.get_child_by_type(ContentSwitcher).current = active
         if active:
             self.post_message(
                 TabbedContent.TabActivated(
                     tabbed_content=self,
-                    tab=self.get_child_by_type(ContentTabs).get_content_tab(active),
+                    tab=self.get_child_by_type(ContentTabs).get_content_tab(
+                        active
+                    ),
                 )
             )
         else:
@@ -590,7 +607,9 @@ class TabbedContent(Widget):
             ValueError: Raised if no ID was available.
         """
         if target_id := (pane_id if isinstance(pane_id, str) else pane_id.id):
-            return self.get_child_by_type(ContentTabs).get_content_tab(target_id)
+            return self.get_child_by_type(ContentTabs).get_content_tab(
+                target_id
+            )
         raise ValueError(
             "'pane_id' must be a non-empty string or a TabPane with an id."
         )
@@ -610,12 +629,16 @@ class TabbedContent(Widget):
         target_id: str | None = None
         if isinstance(pane_id, ContentTab):
             target_id = (
-                pane_id.id if pane_id.id is None else ContentTab.sans_prefix(pane_id.id)
+                pane_id.id
+                if pane_id.id is None
+                else ContentTab.sans_prefix(pane_id.id)
             )
         else:
             target_id = pane_id
         if target_id:
-            pane = self.get_child_by_type(ContentSwitcher).get_child_by_id(target_id)
+            pane = self.get_child_by_type(ContentSwitcher).get_child_by_id(
+                target_id
+            )
             assert isinstance(pane, TabPane)
             return pane
         raise ValueError(

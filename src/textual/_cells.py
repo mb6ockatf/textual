@@ -12,7 +12,9 @@ except ImportError:
     from rich.cells import cell_len
 
 
-def cell_width_to_column_index(line: str, cell_width: int, tab_width: int) -> int:
+def cell_width_to_column_index(
+    line: str, cell_width: int, tab_width: int
+) -> int:
     """Retrieve the column index corresponding to the given cell width.
 
     Args:

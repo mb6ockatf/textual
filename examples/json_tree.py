@@ -56,7 +56,8 @@ class TreeApp(App):
                 node.allow_expand = False
                 if name:
                     label = Text.assemble(
-                        Text.from_markup(f"[b]{name}[/b]="), highlighter(repr(data))
+                        Text.from_markup(f"[b]{name}[/b]="),
+                        highlighter(repr(data)),
                     )
                 else:
                     label = Text(repr(data))

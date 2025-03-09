@@ -56,7 +56,9 @@ Label {
         assert first_label.styles.height.value == 5
 
         # Clear the CSS from the file.
-        Path(CSS_PATH).write_text("/* This file has no rules intentionally. */\n")
+        Path(CSS_PATH).write_text(
+            "/* This file has no rules intentionally. */\n"
+        )
         await pilot.pause()
         await pilot.app._on_css_change()
         # Height should fall back to 1.

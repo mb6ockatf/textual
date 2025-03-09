@@ -36,7 +36,9 @@ class ValidationResult:
             Merged ValidationResult object.
         """
         is_valid = all(result.is_valid for result in results)
-        failures = [failure for result in results for failure in result.failures]
+        failures = [
+            failure for result in results for failure in result.failures
+        ]
         if is_valid:
             return ValidationResult.success()
         else:
@@ -214,7 +216,8 @@ class Validator(ABC):
             failures = [failures]
 
         result = ValidationResult(
-            failures or [Failure(validator=self, value=value, description=description)],
+            failures
+            or [Failure(validator=self, value=value, description=description)],
         )
         return result
 
@@ -363,7 +366,9 @@ class Integer(Number):
         try:
             int_value = int(value)
         except ValueError:
-            return ValidationResult.failure([Integer.NotAnInteger(self, value)])
+            return ValidationResult.failure(
+                [Integer.NotAnInteger(self, value)]
+            )
         return self.success()
 
     def describe_failure(self, failure: Failure) -> str | None:

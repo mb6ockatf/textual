@@ -26,7 +26,9 @@ class MarkdownThemeSwitcherApp(App[None]):
         md.code_light_theme = "solarized-light"
 
     def action_toggle_theme(self) -> None:
-        self.theme = "textual-light" if self.theme == "textual-dark" else "textual-dark"
+        self.theme = (
+            "textual-light" if self.theme == "textual-dark" else "textual-dark"
+        )
 
     def compose(self) -> ComposeResult:
         yield Markdown(TEST_CODE_MARKDOWN)

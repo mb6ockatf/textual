@@ -43,7 +43,9 @@ def parse(action: str) -> ActionParseResult:
                 # We wrap `action_args_str` to be able to disambiguate the cases where
                 # the list of arguments is a comma-separated list of values from the
                 # case where the argument is a single tuple.
-                action_args: tuple[Any, ...] = ast.literal_eval(f"({action_args_str},)")
+                action_args: tuple[Any, ...] = ast.literal_eval(
+                    f"({action_args_str},)"
+                )
             except Exception:
                 raise ActionError(
                     f"unable to parse {action_args_str!r} in action {action!r}"

@@ -56,7 +56,9 @@ async def test_insert_text_start():
     async with app.run_test():
         text_area = app.query_one(TextArea)
         text_area.move_cursor((0, 5))
-        text_area.insert("Hello", location=(0, 0), maintain_selection_offset=False)
+        text_area.insert(
+            "Hello", location=(0, 0), maintain_selection_offset=False
+        )
         assert text_area.text == "Hello" + TEXT
         assert text_area.selection == Selection.cursor((0, 5))
 
@@ -115,9 +117,7 @@ async def test_insert_character_near_cursor_maintain_selection_offset(
     ],
 )
 async def test_insert_newline_around_cursor_maintain_selection_offset(
-    cursor_location,
-    insert_location,
-    cursor_destination
+    cursor_location, insert_location, cursor_destination
 ):
     app = TextAreaApp()
     async with app.run_test():
@@ -208,7 +208,10 @@ Fear Hello,
 world!is the little-death that brings total obliteration.
 I will face my fear.
 """
-        assert text_area.cursor_location == (3, 6)  # Cursor moved to end of insert
+        assert text_area.cursor_location == (
+            3,
+            6,
+        )  # Cursor moved to end of insert
         assert text_area.text == expected_content
 
 
@@ -244,7 +247,9 @@ async def test_replace_multiline_text():
         text_area = app.query_one(TextArea)
         # replace "Fear is the mind-killer\nFear is the little death...\n"
         # with "Hello,\nworld!\n"
-        result = text_area.replace("Hello,\nworld!\n", start=(1, 0), end=(3, 0))
+        result = text_area.replace(
+            "Hello,\nworld!\n", start=(1, 0), end=(3, 0)
+        )
         expected_replaced_text = """\
 Fear is the mind-killer.
 Fear is the little-death that brings total obliteration.
@@ -260,7 +265,9 @@ Hello,
 world!
 I will face my fear.
 """
-        assert text_area.selection == Selection.cursor((0, 0))  # cursor didnt move
+        assert text_area.selection == Selection.cursor(
+            (0, 0)
+        )  # cursor didnt move
         assert text_area.text == expected_content
 
 

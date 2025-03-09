@@ -23,7 +23,9 @@ async def test_initialize():
 
     app = App()
     async with app.run_test():
-        worker = Worker(app, foo, name="foo", group="foo-group", description="Foo test")
+        worker = Worker(
+            app, foo, name="foo", group="foo-group", description="Foo test"
+        )
         repr(worker)
 
     assert worker.state == WorkerState.PENDING
@@ -58,7 +60,12 @@ async def test_run_success() -> None:
     async with app.run_test():
         # Call regular function
         foo_worker: Worker[str] = Worker(
-            app, foo, name="foo", group="foo-group", description="Foo test", thread=True
+            app,
+            foo,
+            name="foo",
+            group="foo-group",
+            description="Foo test",
+            thread=True,
         )
         # Call coroutine function
         bar_worker: Worker[str] = Worker(
@@ -70,7 +77,12 @@ async def test_run_success() -> None:
         )
         # Call coroutine function in a thread
         bar_thread_worker: Worker[str] = Worker(
-            app, bar, name="bar", group="bar-group", description="Bar test", thread=True
+            app,
+            bar,
+            name="bar",
+            group="bar-group",
+            description="Bar test",
+            thread=True,
         )
         # Call coroutine in a thread.
         baz_thread_worker: Worker[str] = Worker(

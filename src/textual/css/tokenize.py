@@ -14,7 +14,9 @@ COMMA = r"\s*,\s*"
 OPEN_BRACE = r"\(\s*"
 CLOSE_BRACE = r"\s*\)"
 
-HEX_COLOR = r"\#[0-9a-fA-F]{8}|\#[0-9a-fA-F]{6}|\#[0-9a-fA-F]{4}|\#[0-9a-fA-F]{3}"
+HEX_COLOR = (
+    r"\#[0-9a-fA-F]{8}|\#[0-9a-fA-F]{6}|\#[0-9a-fA-F]{4}|\#[0-9a-fA-F]{3}"
+)
 RGB_COLOR = rf"rgb{OPEN_BRACE}{DECIMAL}{COMMA}{DECIMAL}{COMMA}{DECIMAL}{CLOSE_BRACE}|rgba{OPEN_BRACE}{DECIMAL}{COMMA}{DECIMAL}{COMMA}{DECIMAL}{COMMA}{DECIMAL}{CLOSE_BRACE}"
 HSL_COLOR = rf"hsl{OPEN_BRACE}{DECIMAL}{COMMA}{PERCENT}{COMMA}{PERCENT}{CLOSE_BRACE}|hsla{OPEN_BRACE}{DECIMAL}{COMMA}{PERCENT}{COMMA}{PERCENT}{COMMA}{DECIMAL}{CLOSE_BRACE}"
 
@@ -267,7 +269,9 @@ class TCSSTokenizerState:
                 nest_level += 1
             elif name == "declaration_set_end":
                 nest_level -= 1
-                expect = expect_declaration if nest_level else expect_root_scope
+                expect = (
+                    expect_declaration if nest_level else expect_root_scope
+                )
                 yield token
                 continue
             expect = get_state(name, expect)

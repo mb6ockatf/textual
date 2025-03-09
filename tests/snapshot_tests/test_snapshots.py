@@ -55,7 +55,11 @@ from textual.widgets import (
     TabPane,
 )
 from textual.theme import Theme
-from textual.widgets.text_area import BUILTIN_LANGUAGES, Selection, TextAreaTheme
+from textual.widgets.text_area import (
+    BUILTIN_LANGUAGES,
+    Selection,
+    TextAreaTheme,
+)
 
 # These paths should be relative to THIS directory.
 WIDGET_EXAMPLES_DIR = Path("../../docs/examples/widgets")
@@ -156,7 +160,9 @@ def test_input_suggestions(snap_compare):
         pilot.app.query(Input).first().cursor_blink = False
 
     assert snap_compare(
-        SNAPSHOT_APPS_DIR / "input_suggestions.py", press=["b"], run_before=run_before
+        SNAPSHOT_APPS_DIR / "input_suggestions.py",
+        press=["b"],
+        run_before=run_before,
     )
 
 
@@ -248,7 +254,9 @@ def test_input_selection(snap_compare):
         def compose(self) -> ComposeResult:
             yield Input(id="input1")
 
-    assert snap_compare(InputSelectionApp(), press=[*"ABCDEF", *("shift+left",) * 3])
+    assert snap_compare(
+        InputSelectionApp(), press=[*"ABCDEF", *("shift+left",) * 3]
+    )
 
 
 def test_masked_input(snap_compare):
@@ -279,22 +287,32 @@ def test_datatable_render(snap_compare):
 
 def test_datatable_row_cursor_render(snap_compare):
     press = ["up", "left", "right", "down", "down"]
-    assert snap_compare(SNAPSHOT_APPS_DIR / "data_table_row_cursor.py", press=press)
+    assert snap_compare(
+        SNAPSHOT_APPS_DIR / "data_table_row_cursor.py", press=press
+    )
 
 
 def test_datatable_column_cursor_render(snap_compare):
     press = ["left", "up", "down", "right", "right"]
-    assert snap_compare(SNAPSHOT_APPS_DIR / "data_table_column_cursor.py", press=press)
+    assert snap_compare(
+        SNAPSHOT_APPS_DIR / "data_table_column_cursor.py", press=press
+    )
 
 
 def test_datatable_sort_multikey(snap_compare):
-    press = ["down", "right", "s"]  # Also checks that sort doesn't move cursor.
+    press = [
+        "down",
+        "right",
+        "s",
+    ]  # Also checks that sort doesn't move cursor.
     assert snap_compare(SNAPSHOT_APPS_DIR / "data_table_sort.py", press=press)
 
 
 def test_datatable_remove_row(snap_compare):
     press = ["r"]
-    assert snap_compare(SNAPSHOT_APPS_DIR / "data_table_remove_row.py", press=press)
+    assert snap_compare(
+        SNAPSHOT_APPS_DIR / "data_table_remove_row.py", press=press
+    )
 
 
 def test_datatable_labels_and_fixed_data(snap_compare):
@@ -314,7 +332,9 @@ def test_datatable_add_column(snap_compare):
 
 def test_datatable_add_row_auto_height(snap_compare):
     # Check that rows added with auto height computation look right.
-    assert snap_compare(SNAPSHOT_APPS_DIR / "data_table_add_row_auto_height.py")
+    assert snap_compare(
+        SNAPSHOT_APPS_DIR / "data_table_add_row_auto_height.py"
+    )
 
 
 def test_datatable_add_row_auto_height_sorted(snap_compare):
@@ -388,7 +408,8 @@ def test_header_render(snap_compare):
 
 def test_list_view(snap_compare):
     assert snap_compare(
-        WIDGET_EXAMPLES_DIR / "list_view.py", press=["tab", "down", "down", "up"]
+        WIDGET_EXAMPLES_DIR / "list_view.py",
+        press=["tab", "down", "down", "up"],
     )
 
 
@@ -421,18 +442,22 @@ def test_markdown_viewer_example(snap_compare):
 
 
 def test_markdown_theme_switching(snap_compare):
-    assert snap_compare(SNAPSHOT_APPS_DIR / "markdown_theme_switcher.py", press=["t"])
+    assert snap_compare(
+        SNAPSHOT_APPS_DIR / "markdown_theme_switcher.py", press=["t"]
+    )
 
 
 def test_markdown_dark_theme_override(snap_compare):
     assert snap_compare(
-        SNAPSHOT_APPS_DIR / "markdown_theme_switcher.py", press=["d", "wait:100"]
+        SNAPSHOT_APPS_DIR / "markdown_theme_switcher.py",
+        press=["d", "wait:100"],
     )
 
 
 def test_markdown_light_theme_override(snap_compare):
     assert snap_compare(
-        SNAPSHOT_APPS_DIR / "markdown_theme_switcher.py", press=["l", "t", "wait:100"]
+        SNAPSHOT_APPS_DIR / "markdown_theme_switcher.py",
+        press=["l", "t", "wait:100"],
     )
 
 
@@ -487,7 +512,9 @@ def test_tabbed_content_with_modified_tabs(snap_compare):
 
 
 def test_tabbed_content_styling_not_leaking(snap_compare):
-    assert snap_compare(SNAPSHOT_APPS_DIR / "tabbed_content_style_leak_test.py")
+    assert snap_compare(
+        SNAPSHOT_APPS_DIR / "tabbed_content_style_leak_test.py"
+    )
 
 
 def test_option_list_strings(snap_compare):
@@ -506,50 +533,70 @@ def test_option_list_build(snap_compare):
     assert snap_compare(SNAPSHOT_APPS_DIR / "option_list.py")
 
 
-def test_option_list_replace_prompt_from_single_line_to_single_line(snap_compare):
+def test_option_list_replace_prompt_from_single_line_to_single_line(
+    snap_compare,
+):
     assert snap_compare(
         SNAPSHOT_APPS_DIR / "option_list_multiline_options.py", press=["1"]
     )
 
 
-def test_option_list_replace_prompt_from_single_line_to_two_lines(snap_compare):
+def test_option_list_replace_prompt_from_single_line_to_two_lines(
+    snap_compare,
+):
     assert snap_compare(
         SNAPSHOT_APPS_DIR / "option_list_multiline_options.py", press=["2"]
     )
 
 
-def test_option_list_replace_prompt_from_two_lines_to_three_lines(snap_compare):
+def test_option_list_replace_prompt_from_two_lines_to_three_lines(
+    snap_compare,
+):
     assert snap_compare(
         SNAPSHOT_APPS_DIR / "option_list_multiline_options.py", press=["3"]
     )
 
 
 def test_option_list_scrolling_in_long_list(snap_compare):
-    assert snap_compare(SNAPSHOT_APPS_DIR / "option_list_long.py", press=["up"])
+    assert snap_compare(
+        SNAPSHOT_APPS_DIR / "option_list_long.py", press=["up"]
+    )
 
 
 def test_progress_bar_indeterminate(snap_compare):
-    assert snap_compare(WIDGET_EXAMPLES_DIR / "progress_bar_isolated_.py", press=["f"])
+    assert snap_compare(
+        WIDGET_EXAMPLES_DIR / "progress_bar_isolated_.py", press=["f"]
+    )
 
 
 def test_progress_bar_indeterminate_styled(snap_compare):
-    assert snap_compare(WIDGET_EXAMPLES_DIR / "progress_bar_styled_.py", press=["f"])
+    assert snap_compare(
+        WIDGET_EXAMPLES_DIR / "progress_bar_styled_.py", press=["f"]
+    )
 
 
 def test_progress_bar_halfway(snap_compare):
-    assert snap_compare(WIDGET_EXAMPLES_DIR / "progress_bar_isolated_.py", press=["t"])
+    assert snap_compare(
+        WIDGET_EXAMPLES_DIR / "progress_bar_isolated_.py", press=["t"]
+    )
 
 
 def test_progress_bar_halfway_styled(snap_compare):
-    assert snap_compare(WIDGET_EXAMPLES_DIR / "progress_bar_styled_.py", press=["t"])
+    assert snap_compare(
+        WIDGET_EXAMPLES_DIR / "progress_bar_styled_.py", press=["t"]
+    )
 
 
 def test_progress_bar_completed(snap_compare):
-    assert snap_compare(WIDGET_EXAMPLES_DIR / "progress_bar_isolated_.py", press=["u"])
+    assert snap_compare(
+        WIDGET_EXAMPLES_DIR / "progress_bar_isolated_.py", press=["u"]
+    )
 
 
 def test_progress_bar_completed_styled(snap_compare):
-    assert snap_compare(WIDGET_EXAMPLES_DIR / "progress_bar_styled_.py", press=["u"])
+    assert snap_compare(
+        WIDGET_EXAMPLES_DIR / "progress_bar_styled_.py", press=["u"]
+    )
 
 
 def test_rule_horizontal_rules(snap_compare):
@@ -584,7 +631,8 @@ def test_select_expanded(snap_compare):
 
 def test_select_from_values_expanded(snap_compare):
     assert snap_compare(
-        WIDGET_EXAMPLES_DIR / "select_from_values_widget.py", press=["tab", "enter"]
+        WIDGET_EXAMPLES_DIR / "select_from_values_widget.py",
+        press=["tab", "enter"],
     )
 
 
@@ -630,7 +678,9 @@ def test_select_type_to_search(snap_compare):
 
     async def run_before(pilot):
         await pilot.press("enter")  # Expand the select
-        await pilot.press(*"pi")  # Search for "pi", which should match "Pigeon"
+        await pilot.press(
+            *"pi"
+        )  # Search for "pi", which should match "Pigeon"
 
     assert snap_compare(SelectTypeToSearch(), run_before=run_before)
 
@@ -667,7 +717,17 @@ def test_directory_tree_reloading(snap_compare, tmp_path):
     async def run_before(pilot):
         await pilot.app.setup(tmp_path)
         await pilot.press(
-            "down", "e", "e", "down", "down", "down", "down", "e", "down", "d", "r"
+            "down",
+            "e",
+            "e",
+            "down",
+            "down",
+            "down",
+            "down",
+            "e",
+            "down",
+            "d",
+            "r",
         )
 
     assert snap_compare(
@@ -723,7 +783,9 @@ def test_offsets(snap_compare):
 
 def test_nested_auto_heights(snap_compare):
     """Test refreshing widget within a auto sized container"""
-    assert snap_compare("snapshot_apps/nested_auto_heights.py", press=["1", "2"])
+    assert snap_compare(
+        "snapshot_apps/nested_auto_heights.py", press=["1", "2"]
+    )
 
 
 def test_programmatic_scrollbar_gutter_change(snap_compare):
@@ -760,7 +822,9 @@ def test_auto_width_input(snap_compare):
 
 
 def test_screen_switch(snap_compare):
-    assert snap_compare(SNAPSHOT_APPS_DIR / "screen_switch.py", press=["a", "b"])
+    assert snap_compare(
+        SNAPSHOT_APPS_DIR / "screen_switch.py", press=["a", "b"]
+    )
 
 
 def test_disabled_widgets(snap_compare):
@@ -768,7 +832,9 @@ def test_disabled_widgets(snap_compare):
 
 
 def test_focus_component_class(snap_compare):
-    assert snap_compare(SNAPSHOT_APPS_DIR / "focus_component_class.py", press=["tab"])
+    assert snap_compare(
+        SNAPSHOT_APPS_DIR / "focus_component_class.py", press=["tab"]
+    )
 
 
 def test_line_api_scrollbars(snap_compare):
@@ -782,7 +848,9 @@ def test_remove_with_auto_height(snap_compare):
 
 
 def test_auto_table(snap_compare):
-    assert snap_compare(SNAPSHOT_APPS_DIR / "auto-table.py", terminal_size=(120, 40))
+    assert snap_compare(
+        SNAPSHOT_APPS_DIR / "auto-table.py", terminal_size=(120, 40)
+    )
 
 
 def test_table_markup(snap_compare):
@@ -871,7 +939,9 @@ def test_richlog_shrink(snap_compare):
 
         def compose(self) -> ComposeResult:
             rich_log = RichLog(min_width=4)
-            panel = Panel("lorem ipsum dolor sit amet lorem ipsum dolor sit amet")
+            panel = Panel(
+                "lorem ipsum dolor sit amet lorem ipsum dolor sit amet"
+            )
             rich_log.write(panel)
             yield rich_log
 
@@ -899,11 +969,14 @@ def test_richlog_write_at_specific_width(snap_compare):
             rich_log.write(Panel("width=60", style="black on red"), width=60)
             rich_log.write(Panel("width=120", style="black on red"), width=120)
             rich_log.write(
-                Panel("width=None (fallback to min_width)", style="black on red")
+                Panel(
+                    "width=None (fallback to min_width)", style="black on red"
+                )
             )
             yield rich_log
             width_marker = Label(
-                f"this label is width 50 (same as min_width)", id="width-marker"
+                f"this label is width 50 (same as min_width)",
+                id="width-marker",
             )
             yield width_marker
 
@@ -967,7 +1040,9 @@ def test_css_hot_reloading(snap_compare, monkeypatch):
     async def run_before(pilot):
         css_file = pilot.app.CSS_PATH
         with open(css_file, "w") as f:
-            f.write("/* This file is purposefully empty. */\n")  # Clear all the CSS.
+            f.write(
+                "/* This file is purposefully empty. */\n"
+            )  # Clear all the CSS.
         await pilot.app._on_css_change()
 
     assert snap_compare(
@@ -985,7 +1060,9 @@ def test_css_hot_reloading_on_screen(snap_compare, monkeypatch):
     async def run_before(pilot):
         css_file = pilot.app.screen.CSS_PATH
         with open(css_file, "w") as f:
-            f.write("/* This file is purposefully empty. */\n")  # Clear all the CSS.
+            f.write(
+                "/* This file is purposefully empty. */\n"
+            )  # Clear all the CSS.
         await pilot.app._on_css_change()
 
     assert snap_compare(
@@ -1004,7 +1081,9 @@ def test_datatable_hot_reloading(snap_compare, monkeypatch):
     async def run_before(pilot):
         css_file = pilot.app.CSS_PATH
         with open(css_file, "w") as f:
-            f.write("/* This file is purposefully empty. */\n")  # Clear all the CSS.
+            f.write(
+                "/* This file is purposefully empty. */\n"
+            )  # Clear all the CSS.
         await pilot.app._on_css_change()
 
     assert snap_compare(
@@ -1024,7 +1103,9 @@ def test_markdown_component_classes_reloading(snap_compare, monkeypatch):
     async def run_before(pilot):
         css_file = pilot.app.CSS_PATH
         with open(css_file, "w") as f:
-            f.write("/* This file is purposefully empty. */\n")  # Clear all the CSS.
+            f.write(
+                "/* This file is purposefully empty. */\n"
+            )  # Clear all the CSS.
         await pilot.app._on_css_change()
 
     assert snap_compare(
@@ -1060,12 +1141,16 @@ def test_modal_dialog_bindings(snap_compare):
 
 def test_dock_scroll(snap_compare):
     # https://github.com/Textualize/textual/issues/2188
-    assert snap_compare(SNAPSHOT_APPS_DIR / "dock_scroll.py", terminal_size=(80, 25))
+    assert snap_compare(
+        SNAPSHOT_APPS_DIR / "dock_scroll.py", terminal_size=(80, 25)
+    )
 
 
 def test_dock_scroll2(snap_compare):
     # https://github.com/Textualize/textual/issues/2525
-    assert snap_compare(SNAPSHOT_APPS_DIR / "dock_scroll2.py", terminal_size=(80, 25))
+    assert snap_compare(
+        SNAPSHOT_APPS_DIR / "dock_scroll2.py", terminal_size=(80, 25)
+    )
 
 
 def test_dock_scroll_off_by_one(snap_compare):
@@ -1097,17 +1182,23 @@ def test_dock_none(snap_compare):
 
 def test_scroll_to(snap_compare):
     # https://github.com/Textualize/textual/issues/2525
-    assert snap_compare(SNAPSHOT_APPS_DIR / "scroll_to.py", terminal_size=(80, 25))
+    assert snap_compare(
+        SNAPSHOT_APPS_DIR / "scroll_to.py", terminal_size=(80, 25)
+    )
 
 
 def test_auto_fr(snap_compare):
     # https://github.com/Textualize/textual/issues/2220
-    assert snap_compare(SNAPSHOT_APPS_DIR / "auto_fr.py", terminal_size=(80, 25))
+    assert snap_compare(
+        SNAPSHOT_APPS_DIR / "auto_fr.py", terminal_size=(80, 25)
+    )
 
 
 def test_fr_margins(snap_compare):
     # https://github.com/Textualize/textual/issues/2220
-    assert snap_compare(SNAPSHOT_APPS_DIR / "fr_margins.py", terminal_size=(80, 25))
+    assert snap_compare(
+        SNAPSHOT_APPS_DIR / "fr_margins.py", terminal_size=(80, 25)
+    )
 
 
 def test_scroll_visible(snap_compare):
@@ -1127,7 +1218,9 @@ def test_scroll_to_center(snap_compare):
 
 def test_quickly_change_tabs(snap_compare):
     # https://github.com/Textualize/textual/issues/2229
-    assert snap_compare(SNAPSHOT_APPS_DIR / "quickly_change_tabs.py", press=["p"])
+    assert snap_compare(
+        SNAPSHOT_APPS_DIR / "quickly_change_tabs.py", press=["p"]
+    )
 
 
 def test_fr_unit_with_min(snap_compare):
@@ -1159,7 +1252,9 @@ def test_tooltips_in_compound_widgets(snap_compare):
         await pilot.pause(0.4)
         await pilot.pause()
 
-    assert snap_compare(SNAPSHOT_APPS_DIR / "tooltips.py", run_before=run_before)
+    assert snap_compare(
+        SNAPSHOT_APPS_DIR / "tooltips.py", run_before=run_before
+    )
 
 
 def test_command_palette(snap_compare) -> None:
@@ -1169,7 +1264,9 @@ def test_command_palette(snap_compare) -> None:
         await pilot.press("A")
         await pilot.app.screen.workers.wait_for_complete()
 
-    assert snap_compare(SNAPSHOT_APPS_DIR / "command_palette.py", run_before=run_before)
+    assert snap_compare(
+        SNAPSHOT_APPS_DIR / "command_palette.py", run_before=run_before
+    )
 
 
 def test_command_palette_discovery(snap_compare) -> None:
@@ -1178,7 +1275,8 @@ def test_command_palette_discovery(snap_compare) -> None:
         await pilot.app.screen.workers.wait_for_complete()
 
     assert snap_compare(
-        SNAPSHOT_APPS_DIR / "command_palette_discovery.py", run_before=run_before
+        SNAPSHOT_APPS_DIR / "command_palette_discovery.py",
+        run_before=run_before,
     )
 
 
@@ -1207,7 +1305,9 @@ def test_textual_dev_easing_preview(snap_compare):
 
 
 def test_textual_dev_keys_preview(snap_compare):
-    assert snap_compare(SNAPSHOT_APPS_DIR / "dev_previews_keys.py", press=["a", "b"])
+    assert snap_compare(
+        SNAPSHOT_APPS_DIR / "dev_previews_keys.py", press=["a", "b"]
+    )
 
 
 def test_notifications_example(snap_compare) -> None:
@@ -1350,7 +1450,8 @@ def hello(name):
 
 def test_text_area_alternate_screen(snap_compare):
     assert snap_compare(
-        SNAPSHOT_APPS_DIR / "text_area_alternate_screen.py", terminal_size=(48, 10)
+        SNAPSHOT_APPS_DIR / "text_area_alternate_screen.py",
+        terminal_size=(48, 10),
     )
 
 
@@ -1363,7 +1464,8 @@ def test_text_area_wrapping_and_folding(snap_compare):
 
 def test_text_area_line_number_start(snap_compare):
     assert snap_compare(
-        SNAPSHOT_APPS_DIR / "text_area_line_number_start.py", terminal_size=(32, 8)
+        SNAPSHOT_APPS_DIR / "text_area_line_number_start.py",
+        terminal_size=(32, 8),
     )
 
 
@@ -1376,7 +1478,9 @@ def test_auto_grid(snap_compare) -> None:
 
 
 def test_auto_grid_default_height(snap_compare) -> None:
-    assert snap_compare(SNAPSHOT_APPS_DIR / "auto_grid_default_height.py", press=["g"])
+    assert snap_compare(
+        SNAPSHOT_APPS_DIR / "auto_grid_default_height.py", press=["g"]
+    )
 
 
 def test_scoped_css(snap_compare) -> None:
@@ -1410,7 +1514,8 @@ def test_notifications_loading_overlap_order(snap_compare):
     tests that loading a widget will remove its scrollbars.
     """
     assert snap_compare(
-        SNAPSHOT_APPS_DIR / "notifications_above_loading.py", terminal_size=(80, 20)
+        SNAPSHOT_APPS_DIR / "notifications_above_loading.py",
+        terminal_size=(80, 20),
     )
 
 
@@ -1444,7 +1549,8 @@ def test_loading_indicator_disables_widget(snap_compare):
     """Test loading indicator disabled widget."""
     # https://github.com/Textualize/textual/pull/3816
     assert snap_compare(
-        SNAPSHOT_APPS_DIR / "loading.py", press=["space", "down", "down", "space"]
+        SNAPSHOT_APPS_DIR / "loading.py",
+        press=["space", "down", "down", "space"],
     )
 
 
@@ -1496,19 +1602,24 @@ def test_ansi_color_mapping(snap_compare, theme):
     def setup(pilot):
         pilot.app.theme = theme
 
-    assert snap_compare(SNAPSHOT_APPS_DIR / "ansi_mapping.py", run_before=setup)
+    assert snap_compare(
+        SNAPSHOT_APPS_DIR / "ansi_mapping.py", run_before=setup
+    )
 
 
 def test_pretty_grid_gutter_interaction(snap_compare):
     """Regression test for https://github.com/Textualize/textual/pull/4219."""
     assert snap_compare(
-        SNAPSHOT_APPS_DIR / "pretty_grid_gutter_interaction.py", terminal_size=(81, 7)
+        SNAPSHOT_APPS_DIR / "pretty_grid_gutter_interaction.py",
+        terminal_size=(81, 7),
     )
 
 
 def test_sort_children(snap_compare):
     """Test sort_children method."""
-    assert snap_compare(SNAPSHOT_APPS_DIR / "sort_children.py", terminal_size=(80, 25))
+    assert snap_compare(
+        SNAPSHOT_APPS_DIR / "sort_children.py", terminal_size=(80, 25)
+    )
 
 
 def test_app_blur(snap_compare):
@@ -1517,7 +1628,9 @@ def test_app_blur(snap_compare):
     async def run_before(pilot) -> None:
         await pilot.pause()  # Allow the AppBlur message to get processed.
 
-    assert snap_compare(SNAPSHOT_APPS_DIR / "app_blur.py", run_before=run_before)
+    assert snap_compare(
+        SNAPSHOT_APPS_DIR / "app_blur.py", run_before=run_before
+    )
 
 
 def test_placeholder_disabled(snap_compare):
@@ -1591,7 +1704,9 @@ def test_example_merlin(snap_compare):
     on_switches = {2, 3, 5, 8}
 
     async def run_before(pilot):
-        pilot.app.query_one("Timer").running = False  # This will freeze the clock.
+        pilot.app.query_one("Timer").running = (
+            False  # This will freeze the clock.
+        )
         for switch in pilot.app.query("LabelSwitch"):
             switch.query_one("Switch").value = switch.switch_no in on_switches
         await pilot.pause()
@@ -1644,7 +1759,9 @@ def test_data_table_in_tabs(snap_compare):
 
 def test_auto_tab_active(snap_compare):
     # https://github.com/Textualize/textual/issues/4593
-    assert snap_compare(SNAPSHOT_APPS_DIR / "auto_tab_active.py", press=["space"])
+    assert snap_compare(
+        SNAPSHOT_APPS_DIR / "auto_tab_active.py", press=["space"]
+    )
 
 
 def test_hatch(snap_compare):
@@ -1705,17 +1822,23 @@ def test_footer_classic_styling(snap_compare):
 
 def test_option_list_scrolling_with_multiline_options(snap_compare):
     # https://github.com/Textualize/textual/issues/4705
-    assert snap_compare(WIDGET_EXAMPLES_DIR / "option_list_tables.py", press=["up"])
+    assert snap_compare(
+        WIDGET_EXAMPLES_DIR / "option_list_tables.py", press=["up"]
+    )
 
 
 def test_bindings_screen_overrides_show(snap_compare):
     """Regression test for https://github.com/Textualize/textual/issues/4382"""
-    assert snap_compare(SNAPSHOT_APPS_DIR / "bindings_screen_overrides_show.py")
+    assert snap_compare(
+        SNAPSHOT_APPS_DIR / "bindings_screen_overrides_show.py"
+    )
 
 
 def test_scroll_visible_with_margin(snap_compare):
     """Regression test for https://github.com/Textualize/textual/issues/2181"""
-    assert snap_compare(SNAPSHOT_APPS_DIR / "scroll_visible_margin.py", press=["x"])
+    assert snap_compare(
+        SNAPSHOT_APPS_DIR / "scroll_visible_margin.py", press=["x"]
+    )
 
 
 def test_programmatic_disable_button(snap_compare):
@@ -1726,7 +1849,8 @@ def test_programmatic_disable_button(snap_compare):
         await pilot.press("space")
 
     assert snap_compare(
-        SNAPSHOT_APPS_DIR / "programmatic_disable_button.py", run_before=run_before
+        SNAPSHOT_APPS_DIR / "programmatic_disable_button.py",
+        run_before=run_before,
     )
 
 
@@ -1754,7 +1878,9 @@ def test_enter_or_leave(snap_compare) -> None:
     async def run_before(pilot: Pilot):
         await pilot.hover("#foo")
 
-    assert snap_compare(SNAPSHOT_APPS_DIR / "enter_or_leave.py", run_before=run_before)
+    assert snap_compare(
+        SNAPSHOT_APPS_DIR / "enter_or_leave.py", run_before=run_before
+    )
 
 
 def test_remove_tab_no_animation(snap_compare):
@@ -1807,7 +1933,9 @@ def test_command_palette_key_change(snap_compare):
 
 def test_split(snap_compare):
     """Test split rule."""
-    assert snap_compare(SNAPSHOT_APPS_DIR / "split.py", terminal_size=(100, 30))
+    assert snap_compare(
+        SNAPSHOT_APPS_DIR / "split.py", terminal_size=(100, 30)
+    )
 
 
 def test_system_commands(snap_compare):
@@ -1843,14 +1971,18 @@ def test_help_panel(snap_compare):
         await pilot.press("enter")
         await pilot.app.workers.wait_for_complete()
 
-    assert snap_compare(HelpPanelApp(), terminal_size=(100, 30), run_before=run_before)
+    assert snap_compare(
+        HelpPanelApp(), terminal_size=(100, 30), run_before=run_before
+    )
 
 
 def test_scroll_page_down(snap_compare):
     """Regression test for https://github.com/Textualize/textual/issues/4914"""
     # Should show 25 at the top
     assert snap_compare(
-        SNAPSHOT_APPS_DIR / "scroll_page.py", press=["pagedown"], terminal_size=(80, 25)
+        SNAPSHOT_APPS_DIR / "scroll_page.py",
+        press=["pagedown"],
+        terminal_size=(80, 25),
     )
 
 
@@ -1904,8 +2036,12 @@ def test_check_consume_keys(snap_compare):
                 description="Show help screen",
                 key_display="?",
             ),
-            Binding(key="delete", action="delete", description="Delete the thing"),
-            Binding(key="j", action="down", description="Scroll down", show=False),
+            Binding(
+                key="delete", action="delete", description="Delete the thing"
+            ),
+            Binding(
+                key="j", action="down", description="Scroll down", show=False
+            ),
         ]
 
         def compose(self) -> ComposeResult:
@@ -2138,7 +2274,9 @@ def test_disabled(snap_compare):
             yield RichLog(disabled=True)
             yield DataTable(disabled=True)
             yield OptionList("you", "can't", "select", "me", disabled=True)
-            yield SelectionList(("Simple SelectionList", "", False), disabled=True)
+            yield SelectionList(
+                ("Simple SelectionList", "", False), disabled=True
+            )
 
         def on_mount(self) -> None:
             self.query_one(Log).write("I am disabled")
@@ -2247,7 +2385,9 @@ def test_missing_new_widgets(snap_compare):
             yield RichLog(classes="hidden")
 
         def on_ready(self) -> None:
-            self.query_one(RichLog).write("\n".join(f"line #{i}" for i in range(5)))
+            self.query_one(RichLog).write(
+                "\n".join(f"line #{i}" for i in range(5))
+            )
 
         def action_toggle_console(self) -> None:
             self.query_one(RichLog).toggle_class("hidden")
@@ -2319,7 +2459,9 @@ def test_updates_with_auto_refresh(snap_compare):
             yield RichLog(classes="hidden")
 
         def on_ready(self) -> None:
-            self.query_one(RichLog).write("\n".join(f"line #{i}" for i in range(5)))
+            self.query_one(RichLog).write(
+                "\n".join(f"line #{i}" for i in range(5))
+            )
 
         def action_toggle_widget(self, widget_type: str) -> None:
             self.query_one(widget_type).toggle_class("hidden")
@@ -2368,7 +2510,8 @@ def test_push_screen_on_mount(snap_compare):
 
         def compose(self) -> ComposeResult:
             yield Grid(
-                Label("Are you sure you want to quit?", id="question"), id="dialog"
+                Label("Are you sure you want to quit?", id="question"),
+                id="dialog",
             )
 
     class MyApp(App[None]):
@@ -2663,7 +2806,11 @@ def test_app_search_commands_opens_and_displays_search_list(snap_compare):
             def callback():
                 """Dummy no-op callback."""
 
-            commands = [("foo", callback), ("bar", callback), ("baz", callback)]
+            commands = [
+                ("foo", callback),
+                ("bar", callback),
+                ("baz", callback),
+            ]
             await self.search_commands(commands)
 
     async def run_before(pilot: Pilot) -> None:
@@ -2755,7 +2902,8 @@ def test_dock_offset(snap_compare):
 
 def test_select_overlay_constrain(snap_compare):
     """Check that the constrain logic on Select is working.
-    You should see the select overlay in full, anchored to the bottom of the screen."""
+    You should see the select overlay in full, anchored to the bottom of the screen.
+    """
 
     class OApp(App):
         CSS = """
@@ -2859,7 +3007,8 @@ def test_grid_offset(snap_compare):
 @pytest.mark.skip("This test is flakey (why)?")
 def test_select_width_auto(snap_compare):
     """Regression test for https://github.com/Textualize/textual/issues/5280"
-    The overlay has a width of auto, so the first (widest) option should not wrap."""
+    The overlay has a width of auto, so the first (widest) option should not wrap.
+    """
 
     class TallSelectApp(App[None]):
         CSS = """
@@ -3214,7 +3363,9 @@ def test_select_refocus(snap_compare):
             with Container():
                 yield MyListView()
 
-    assert snap_compare(TUI(), press=["down", "enter", "down", "down", "enter"])
+    assert snap_compare(
+        TUI(), press=["down", "enter", "down", "down", "enter"]
+    )
 
 
 def test_widgets_in_grid(snap_compare):
@@ -3328,7 +3479,9 @@ def test_scrollbar_background_with_opacity(snap_compare):
 
         def compose(self) -> ComposeResult:
             with VerticalScroll():
-                yield Static("\n".join(f"This is some text {n}" for n in range(100)))
+                yield Static(
+                    "\n".join(f"This is some text {n}" for n in range(100))
+                )
 
     assert snap_compare(ScrollbarOpacityApp())
 
@@ -3347,7 +3500,9 @@ def test_static_markup(snap_compare):
         def compose(self) -> ComposeResult:
             yield Label("There should be no [foo]tags or style[/foo]")
             yield Label("This allows [bold]markup[/bold]")
-            yield Label("This does not allow [bold]markup[/bold]", markup=False)
+            yield Label(
+                "This does not allow [bold]markup[/bold]", markup=False
+            )
 
     assert snap_compare(LabelApp())
 
@@ -3547,7 +3702,11 @@ def test_add_separator(snap_compare):
         def add_more_stuff(self) -> None:
             self.counter += 1
             self.query_one(OptionList).add_option(
-                (f"This is option {self.counter}" if self.counter % 2 else None)
+                (
+                    f"This is option {self.counter}"
+                    if self.counter % 2
+                    else None
+                )
             )
 
     async def run_before(pilot: Pilot) -> None:
@@ -3620,7 +3779,9 @@ def test_auto_rich_log_width(snap_compare):
             """Create child widgets for the app."""
             with TabbedContent():
                 with TabPane("Title Slide", id="title-slide-tab"):
-                    yield Container(RichLog(id="title-rich-log"), id="title-container")
+                    yield Container(
+                        RichLog(id="title-rich-log"), id="title-container"
+                    )
 
         def on_mount(self) -> None:
             """Add some text to the RichLogs."""

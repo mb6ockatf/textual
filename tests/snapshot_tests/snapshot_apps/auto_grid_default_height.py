@@ -30,10 +30,14 @@ class GridHeightAuto(App[None]):
 
     def compose(self) -> ComposeResult:
         yield Header()
-        yield Vertical(Label("Select a container to test (see footer)"), id="sandbox")
+        yield Vertical(
+            Label("Select a container to test (see footer)"), id="sandbox"
+        )
         yield Footer()
 
-    def build(self, out_of: Type[Container | Grid | Horizontal | Vertical]) -> None:
+    def build(
+        self, out_of: Type[Container | Grid | Horizontal | Vertical]
+    ) -> None:
         self.query("#sandbox > *").remove()
         self.query_one("#sandbox", Vertical).mount(
             Label("Here is some text before the grid"),

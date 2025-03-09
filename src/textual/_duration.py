@@ -39,6 +39,8 @@ def _duration_as_seconds(duration: str) -> float:
         try:
             duration_secs = float(duration)
         except ValueError:
-            raise DurationParseError(f"{duration!r} is not a valid duration.") from None
+            raise DurationParseError(
+                f"{duration!r} is not a valid duration."
+            ) from None
 
     return duration_secs

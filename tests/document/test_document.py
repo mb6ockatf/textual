@@ -21,7 +21,11 @@ def test_text(text):
 
 def test_lines_newline_eof():
     document = Document(TEXT_NEWLINE)
-    assert document.lines == ["I must not fear.", "Fear is the mind-killer.", ""]
+    assert document.lines == [
+        "I must not fear.",
+        "Fear is the mind-killer.",
+        "",
+    ]
 
 
 def test_lines_no_newline_eof():
@@ -39,7 +43,11 @@ def test_lines_windows():
 
 def test_lines_windows_newline():
     document = Document(TEXT_WINDOWS_NEWLINE)
-    assert document.lines == ["I must not fear.", "Fear is the mind-killer.", ""]
+    assert document.lines == [
+        "I must not fear.",
+        "Fear is the mind-killer.",
+        "",
+    ]
 
 
 def test_newline_unix():
@@ -107,13 +115,15 @@ def test_index_from_location(text):
     document = Document(text)
     lines = text.split(document.newline)
     assert document.get_index_from_location((0, 0)) == 0
-    assert document.get_index_from_location((0, len(lines[0]))) == len(lines[0])
+    assert document.get_index_from_location((0, len(lines[0]))) == len(
+        lines[0]
+    )
     assert document.get_index_from_location((1, 0)) == len(lines[0]) + len(
         document.newline
     )
-    assert document.get_index_from_location((len(lines) - 1, len(lines[-1]))) == len(
-        text
-    )
+    assert document.get_index_from_location(
+        (len(lines) - 1, len(lines[-1]))
+    ) == len(text)
 
 
 @pytest.mark.parametrize(
@@ -123,13 +133,18 @@ def test_location_from_index(text):
     document = Document(text)
     lines = text.split(document.newline)
     assert document.get_location_from_index(0) == (0, 0)
-    assert document.get_location_from_index(len(lines[0])) == (0, len(lines[0]))
+    assert document.get_location_from_index(len(lines[0])) == (
+        0,
+        len(lines[0]),
+    )
     if len(document.newline) > 1:
         assert document.get_location_from_index(len(lines[0]) + 1) == (
             0,
             len(lines[0]) + 1,
         )
-    assert document.get_location_from_index(len(lines[0]) + len(document.newline)) == (
+    assert document.get_location_from_index(
+        len(lines[0]) + len(document.newline)
+    ) == (
         1,
         0,
     )
@@ -146,7 +161,9 @@ def test_document_end(text):
     """The location is always what we expect."""
     document = Document(text)
     expected_line_number = (
-        len(text.splitlines()) if text.endswith("\n") else len(text.splitlines()) - 1
+        len(text.splitlines())
+        if text.endswith("\n")
+        else len(text.splitlines()) - 1
     )
     expected_pos = 0 if text.endswith("\n") else (len(text.splitlines()[-1]))
     assert document.end == (expected_line_number, expected_pos)

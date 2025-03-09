@@ -198,7 +198,9 @@ def test_widget_style_size_can_accept_various_data_types_and_normalize_them(
         dict(),
     ],
 )
-def test_widget_style_size_fails_if_data_type_is_not_supported(size_dimension_input):
+def test_widget_style_size_fails_if_data_type_is_not_supported(
+    size_dimension_input,
+):
     widget = Widget()
 
     with pytest.raises(StyleValueError):

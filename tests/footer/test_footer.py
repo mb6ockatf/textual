@@ -26,7 +26,9 @@ async def test_footer_bindings() -> None:
         """
 
         def action_widget_binding(self) -> None:
-            assert False, "should never be called since there is a priority binding"
+            assert (
+                False
+            ), "should never be called since there is a priority binding"
 
     class PriorityBindingApp(App):
         BINDINGS = [

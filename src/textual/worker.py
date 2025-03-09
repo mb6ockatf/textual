@@ -245,7 +245,9 @@ class Worker(Generic[ResultType]):
         """
         if not self._total_steps:
             return 0.0
-        return max(0, min(100, (self._completed_steps / self._total_steps) * 100.0))
+        return max(
+            0, min(100, (self._completed_steps / self._total_steps) * 100.0)
+        )
 
     @property
     def result(self) -> ResultType | None:
@@ -269,7 +271,9 @@ class Worker(Generic[ResultType]):
         if completed_steps is not None:
             self._completed_steps += completed_steps
         if total_steps != -1:
-            self._total_steps = None if total_steps is None else max(0, total_steps)
+            self._total_steps = (
+                None if total_steps is None else max(0, total_steps)
+            )
 
     def advance(self, steps: int = 1) -> None:
         """Advance the number of completed steps.
@@ -338,7 +342,9 @@ class Worker(Generic[ResultType]):
         elif inspect.isawaitable(self._work):
             return await self._work
         elif callable(self._work):
-            raise WorkerError("Request to run a non-async function as an async worker")
+            raise WorkerError(
+                "Request to run a non-async function as an async worker"
+            )
         raise WorkerError("Unsupported attempt to run an async worker")
 
     async def run(self) -> ResultType:
@@ -438,7 +444,9 @@ class Worker(Generic[ResultType]):
             pass
 
         if self.state == WorkerState.PENDING:
-            raise WorkerError("Worker must be started before calling this method.")
+            raise WorkerError(
+                "Worker must be started before calling this method."
+            )
         if self._task is not None:
             try:
                 await self._task
@@ -449,5 +457,7 @@ class Worker(Generic[ResultType]):
             assert self._error is not None
             raise WorkerFailed(self._error)
         elif self.state == WorkerState.CANCELLED:
-            raise WorkerCancelled("Worker was cancelled, and did not complete.")
+            raise WorkerCancelled(
+                "Worker was cancelled, and did not complete."
+            )
         return cast("ResultType", self._result)

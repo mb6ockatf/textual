@@ -82,12 +82,16 @@ class LinearGradient:
             point_y = float(line_y) * 2 - center_y
             point_x = 0 - center_x
 
-            x1 = (center_x + (point_x * cos_angle - point_y * sin_angle)) / width
+            x1 = (
+                center_x + (point_x * cos_angle - point_y * sin_angle)
+            ) / width
             x2 = (
                 center_x + (point_x * cos_angle - (point_y + 1.0) * sin_angle)
             ) / width
             point_x = width - center_x
-            end_x1 = (center_x + (point_x * cos_angle - point_y * sin_angle)) / width
+            end_x1 = (
+                center_x + (point_x * cos_angle - point_y * sin_angle)
+            ) / width
             delta_x = (end_x1 - x1) / width
 
             if abs(delta_x) < 0.0001:
@@ -133,7 +137,9 @@ if __name__ == "__main__":
         "#663399",
     ]
 
-    stops = [(i / (len(COLORS) - 1), Color.parse(c)) for i, c in enumerate(COLORS)]
+    stops = [
+        (i / (len(COLORS) - 1), Color.parse(c)) for i, c in enumerate(COLORS)
+    ]
 
     print(LinearGradient(25, stops))
 

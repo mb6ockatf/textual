@@ -82,7 +82,9 @@ class WebDriver(Driver):
         """
 
         data_bytes = data.encode("utf-8")
-        self._write(b"D%s%s" % (len(data_bytes).to_bytes(4, "big"), data_bytes))
+        self._write(
+            b"D%s%s" % (len(data_bytes).to_bytes(4, "big"), data_bytes)
+        )
 
     def write_meta(self, data: dict[str, object]) -> None:
         """Write a dictionary containing some metadata to stdout, which
@@ -92,7 +94,9 @@ class WebDriver(Driver):
             data: Meta dict.
         """
         meta_bytes = json.dumps(data).encode("utf-8", errors="ignore")
-        self._write(b"M%s%s" % (len(meta_bytes).to_bytes(4, "big"), meta_bytes))
+        self._write(
+            b"M%s%s" % (len(meta_bytes).to_bytes(4, "big"), meta_bytes)
+        )
 
     def write_binary_encoded(self, data: tuple[str | bytes, ...]) -> None:
         """Binary encode a data-structure and write to stdout.
@@ -101,7 +105,9 @@ class WebDriver(Driver):
             data: The data to binary encode and write.
         """
         packed_bytes = binary_dump(data)
-        self._write(b"P%s%s" % (len(packed_bytes).to_bytes(4, "big"), packed_bytes))
+        self._write(
+            b"P%s%s" % (len(packed_bytes).to_bytes(4, "big"), packed_bytes)
+        )
 
     def flush(self) -> None:
         pass
@@ -236,7 +242,9 @@ class WebDriver(Driver):
         if packet_type == "resize":
             self._size = (payload["width"], payload["height"])
             requested_size = Size(*self._size)
-            self._app.post_message(events.Resize(requested_size, requested_size))
+            self._app.post_message(
+                events.Resize(requested_size, requested_size)
+            )
         elif packet_type == "focus":
             self._app.post_message(events.AppFocus())
         elif packet_type == "blur":
@@ -252,7 +260,9 @@ class WebDriver(Driver):
                 delivery_key = cast(str, payload["key"])
                 requested_size = cast(int, payload["size"])
             except KeyError:
-                log.error("Protocol error: deliver_chunk_request missing key or size")
+                log.error(
+                    "Protocol error: deliver_chunk_request missing key or size"
+                )
                 return
 
             deliveries = self._deliveries
@@ -268,16 +278,24 @@ class WebDriver(Driver):
                 # Read the requested amount of data from the file
                 name: str | None = payload.get("name", None)
                 try:
-                    log.debug(f"Reading {requested_size} bytes from {delivery_key}")
+                    log.debug(
+                        f"Reading {requested_size} bytes from {delivery_key}"
+                    )
                     chunk = file_like.read(requested_size)
-                    log.debug(f"Delivering chunk {delivery_key!r} of len {len(chunk)}")
-                    self.write_binary_encoded(("deliver_chunk", delivery_key, chunk))
+                    log.debug(
+                        f"Delivering chunk {delivery_key!r} of len {len(chunk)}"
+                    )
+                    self.write_binary_encoded(
+                        ("deliver_chunk", delivery_key, chunk)
+                    )
                     # We've hit an empty chunk, so we're done
                     if not chunk:
                         log.info(f"Delivery complete for {delivery_key}")
                         file_like.close()
                         del deliveries[delivery_key]
-                        self._delivery_complete(delivery_key, save_path=None, name=name)
+                        self._delivery_complete(
+                            delivery_key, save_path=None, name=name
+                        )
                 except Exception as error:
                     file_like.close()
                     del deliveries[delivery_key]
@@ -290,7 +308,9 @@ class WebDriver(Driver):
 
                     log.error(str(traceback.format_exc()))
 
-                    self._delivery_failed(delivery_key, exception=error, name=name)
+                    self._delivery_failed(
+                        delivery_key, exception=error, name=name
+                    )
 
     def open_url(self, url: str, new_tab: bool = True) -> None:
         """Open a URL in the default web browser.

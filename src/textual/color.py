@@ -45,7 +45,13 @@ from typing_extensions import Final
 
 from textual._color_constants import ANSI_COLORS, COLOR_NAME_TO_RGB
 from textual.css.scalar import percentage_string_to_float
-from textual.css.tokenize import CLOSE_BRACE, COMMA, DECIMAL, OPEN_BRACE, PERCENT
+from textual.css.tokenize import (
+    CLOSE_BRACE,
+    COMMA,
+    DECIMAL,
+    OPEN_BRACE,
+    PERCENT,
+)
 from textual.geometry import clamp
 from textual.suggestions import get_suggestion
 
@@ -194,7 +200,10 @@ class Color(NamedTuple):
             return TRANSPARENT
         r, g, b = rich_color.get_truecolor(theme)
         return cls(
-            r, g, b, ansi=rich_color.number if rich_color.is_system_defined else None
+            r,
+            g,
+            b,
+            ansi=rich_color.number if rich_color.is_system_defined else None,
         )
 
     @classmethod
@@ -252,7 +261,11 @@ class Color(NamedTuple):
         """
         r, g, b, a, ansi, _ = self
         if ansi is not None:
-            return RichColor.parse("default") if ansi < 0 else RichColor.from_ansi(ansi)
+            return (
+                RichColor.parse("default")
+                if ansi < 0
+                else RichColor.from_ansi(ansi)
+            )
         return RichColor(
             f"#{r:02x}{g:02x}{b:02x}", _TRUECOLOR, None, ColorTriplet(r, g, b)
         )
@@ -305,7 +318,9 @@ class Color(NamedTuple):
         """
         r, g, b, a, ansi, _ = self.clamped
         if ansi is not None:
-            return "ansi_default" if ansi == -1 else f"ansi_{ANSI_COLORS[ansi]}"
+            return (
+                "ansi_default" if ansi == -1 else f"ansi_{ANSI_COLORS[ansi]}"
+            )
         return (
             f"#{r:02X}{g:02X}{b:02X}"
             if a == 1
@@ -336,7 +351,9 @@ class Color(NamedTuple):
                 return f"auto {int(alpha_percentage)}%"
             return f"auto {alpha_percentage:.1f}%"
         if ansi is not None:
-            return "ansi_default" if ansi == -1 else f"ansi_{ANSI_COLORS[ansi]}"
+            return (
+                "ansi_default" if ansi == -1 else f"ansi_{ANSI_COLORS[ansi]}"
+            )
         return f"rgb({r},{g},{b})" if a == 1 else f"rgba({r},{g},{b},{a})"
 
     @property
@@ -546,7 +563,9 @@ class Color(NamedTuple):
 
         if rgb_hex_triple is not None:
             r, g, b = rgb_hex_triple  # type: ignore[misc]
-            color = cls(int(f"{r}{r}", 16), int(f"{g}{g}", 16), int(f"{b}{b}", 16))
+            color = cls(
+                int(f"{r}{r}", 16), int(f"{g}{g}", 16), int(f"{b}{b}", 16)
+            )
         elif rgb_hex_quad is not None:
             r, g, b, a = rgb_hex_quad  # type: ignore[misc]
             color = cls(
@@ -562,7 +581,9 @@ class Color(NamedTuple):
             r, g, b, a = [int(pair, 16) for pair in _split_pairs4(rgba_hex)]
             color = cls(r, g, b, a / 255.0)
         elif rgb is not None:
-            r, g, b = [clamp(int(float(value)), 0, 255) for value in rgb.split(",")]
+            r, g, b = [
+                clamp(int(float(value)), 0, 255) for value in rgb.split(",")
+            ]
             color = cls(r, g, b, 1.0)
         elif rgba is not None:
             float_r, float_g, float_b, float_a = [
@@ -606,7 +627,9 @@ class Color(NamedTuple):
         """
         l, a, b = rgb_to_lab(self)
         l -= amount * 100
-        return lab_to_rgb(Lab(l, a, b), self.a if alpha is None else alpha).clamped
+        return lab_to_rgb(
+            Lab(l, a, b), self.a if alpha is None else alpha
+        ).clamped
 
     def lighten(self, amount: float, alpha: float | None = None) -> Color:
         """Lighten the color by a given amount.
@@ -636,7 +659,9 @@ class Color(NamedTuple):
 class Gradient:
     """Defines a color gradient."""
 
-    def __init__(self, *stops: tuple[float, Color | str], quality: int = 50) -> None:
+    def __init__(
+        self, *stops: tuple[float, Color | str], quality: int = 50
+    ) -> None:
         """Create a color gradient that blends colors to form a spectrum.
 
         A gradient is defined by a sequence of "stops" consisting of a tuple containing a float and a color.
@@ -689,7 +714,10 @@ class Gradient:
         """
         if len(colors) < 2:
             raise ValueError("Two or more colors required.")
-        stops = [(i / (len(colors) - 1), Color.parse(c)) for i, c in enumerate(colors)]
+        stops = [
+            (i / (len(colors) - 1), Color.parse(c))
+            for i, c in enumerate(colors)
+        ]
         return cls(*stops, quality=quality)
 
     @property
@@ -709,7 +737,9 @@ class Gradient:
                     (stop1, color1), (stop2, color2) = self._stops[
                         position : position + 2
                     ]
-                add_color(color1.blend(color2, (step - stop1) / (stop2 - stop1)))
+                add_color(
+                    color1.blend(color2, (step - stop1) / (stop2 - stop1))
+                )
             self._colors = colors
         assert len(self._colors) == self._quality
         return self._colors

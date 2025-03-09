@@ -60,7 +60,9 @@ async def test_get_option_with_bad_id() -> None:
     """Asking for an option with a bad ID should give an error."""
     async with OptionListApp().run_test() as pilot:
         with pytest.raises(OptionDoesNotExist):
-            _ = pilot.app.query_one(OptionList).get_option("this does not exist")
+            _ = pilot.app.query_one(OptionList).get_option(
+                "this does not exist"
+            )
 
 
 async def test_get_option_by_index() -> None:

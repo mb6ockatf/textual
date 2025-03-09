@@ -28,7 +28,9 @@ def test_delete_single_character(document):
 def test_delete_single_newline(document):
     """Testing deleting newline from right to left"""
     replace_result = document.replace_range((1, 0), (0, 16), "")
-    assert replace_result == EditResult(end_location=(0, 16), replaced_text="\n")
+    assert replace_result == EditResult(
+        end_location=(0, 16), replaced_text="\n"
+    )
     assert document.lines == [
         "I must not fear.Fear is the mind-killer.",
         "I forgot the rest of the quote.",
@@ -139,7 +141,9 @@ Fear is the mind-killer.
 def test_delete_end_of_file_newline():
     document = Document(TEXT_NEWLINE_EOF)
     replace_result = document.replace_range((2, 0), (1, 24), "")
-    assert replace_result == EditResult(end_location=(1, 24), replaced_text="\n")
+    assert replace_result == EditResult(
+        end_location=(1, 24), replaced_text="\n"
+    )
     assert document.lines == [
         "I must not fear.",
         "Fear is the mind-killer.",

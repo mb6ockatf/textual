@@ -126,12 +126,16 @@ class Selector:
     advance: int = 1
 
     def __post_init__(self) -> None:
-        self._check: Callable[[DOMNode], bool] = partial(_CHECKS[self.type], self.name)
+        self._check: Callable[[DOMNode], bool] = partial(
+            _CHECKS[self.type], self.name
+        )
 
     @property
     def css(self) -> str:
         """Rebuilds the selector as it would appear in CSS."""
-        pseudo_suffix = "".join(f":{name}" for name in sorted(self.pseudo_classes))
+        pseudo_suffix = "".join(
+            f":{name}" for name in sorted(self.pseudo_classes)
+        )
         if self.type == SelectorType.UNIVERSAL:
             return "*"
         elif self.type == SelectorType.TYPE:
@@ -223,7 +227,9 @@ class SelectorSet:
         return self
 
     @classmethod
-    def from_selectors(cls, selectors: list[list[Selector]]) -> Iterable[SelectorSet]:
+    def from_selectors(
+        cls, selectors: list[list[Selector]]
+    ) -> Iterable[SelectorSet]:
         for selector_list in selectors:
             id_total = class_total = type_total = 0
             for selector in selector_list:
@@ -231,7 +237,9 @@ class SelectorSet:
                 id_total += _id
                 class_total += _class
                 type_total += _type
-            yield SelectorSet(selector_list, (id_total, class_total, type_total))
+            yield SelectorSet(
+                selector_list, (id_total, class_total, type_total)
+            )
 
 
 @dataclass
@@ -274,7 +282,9 @@ class RuleSet:
         Returns:
             A string containing CSS code.
         """
-        declarations = "\n".join(f"    {line}" for line in self.styles.css_lines)
+        declarations = "\n".join(
+            f"    {line}" for line in self.styles.css_lines
+        )
         css = f"{self.selectors} {{\n{declarations}\n}}"
         return css
 

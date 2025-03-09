@@ -53,7 +53,12 @@ class Link(Static, can_focus=True):
             disabled: Whether the static is disabled or not.
         """
         super().__init__(
-            text, name=name, id=id, classes=classes, disabled=disabled, markup=False
+            text,
+            name=name,
+            id=id,
+            classes=classes,
+            disabled=disabled,
+            markup=False,
         )
         self.set_reactive(Link.text, text)
         self.set_reactive(Link.url, text if url is None else url)

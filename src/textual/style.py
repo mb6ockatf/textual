@@ -212,7 +212,9 @@ class Style:
         return NULL_STYLE
 
     @classmethod
-    def parse(cls, text_style: str, variables: dict[str, str] | None = None) -> Style:
+    def parse(
+        cls, text_style: str, variables: dict[str, str] | None = None
+    ) -> Style:
         """Parse a style from text.
 
         Args:
@@ -325,10 +327,16 @@ class Style:
         Returns:
             A Rich style object.
         """
-        color = None if self.foreground is None else self.background + self.foreground
+        color = (
+            None
+            if self.foreground is None
+            else self.background + self.foreground
+        )
         return RichStyle(
             color=None if color is None else color.rich_color,
-            bgcolor=None if self.background is None else self.background.rich_color,
+            bgcolor=(
+                None if self.background is None else self.background.rich_color
+            ),
             bold=self.bold,
             dim=self.dim,
             italic=self.italic,
@@ -351,10 +359,16 @@ class Style:
         Returns:
             A Rich Style object.
         """
-        color = None if self.foreground is None else self.background + self.foreground
+        color = (
+            None
+            if self.foreground is None
+            else self.background + self.foreground
+        )
         return RichStyle(
             color=None if color is None else color.rich_color,
-            bgcolor=None if self.background is None else self.background.rich_color,
+            bgcolor=(
+                None if self.background is None else self.background.rich_color
+            ),
             bold=self.bold,
             dim=self.dim,
             italic=self.italic,

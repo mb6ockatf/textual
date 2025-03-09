@@ -14,8 +14,12 @@ async def test_links() -> None:
 
     class HomeScreen(Screen[None]):
         def compose(self) -> ComposeResult:
-            yield LinkLabel("[@click=app.bell_message('foo')]Ring the bell![/]")
-            yield LinkLabel("[@click=screen.bell_message('bar')]Ring the bell![/]")
+            yield LinkLabel(
+                "[@click=app.bell_message('foo')]Ring the bell![/]"
+            )
+            yield LinkLabel(
+                "[@click=screen.bell_message('bar')]Ring the bell![/]"
+            )
             yield LinkLabel("[@click=bell_message('baz')]Ring the bell![/]")
 
         def action_bell_message(self, message: str) -> None:

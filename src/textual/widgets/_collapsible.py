@@ -38,7 +38,9 @@ class CollapsibleTitle(Static, can_focus=True):
     """
 
     BINDINGS = [
-        Binding("enter", "toggle_collapsible", "Toggle collapsible", show=False)
+        Binding(
+            "enter", "toggle_collapsible", "Toggle collapsible", show=False
+        )
     ]
     """
     | Key(s) | Description |
@@ -199,7 +201,9 @@ class Collapsible(Widget):
         self._contents_list: list[Widget] = list(children)
         self.collapsed = collapsed
 
-    def _on_collapsible_title_toggle(self, event: CollapsibleTitle.Toggle) -> None:
+    def _on_collapsible_title_toggle(
+        self, event: CollapsibleTitle.Toggle
+    ) -> None:
         event.stop()
         self.collapsed = not self.collapsed
 

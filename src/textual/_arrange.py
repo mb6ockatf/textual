@@ -55,7 +55,9 @@ def arrange(
     styles = widget.styles
 
     # Widgets which will be displayed
-    display_widgets = [child for child in children if get_display(child) != "none"]
+    display_widgets = [
+        child for child in children if get_display(child) != "none"
+    ]
 
     # Widgets organized into layers
     layers = _build_layers(display_widgets)
@@ -97,7 +99,10 @@ def arrange(
             scroll_spacing = scroll_spacing.grow_maximum(dock_spacing)
             placement_offset = dock_region.offset
             # Perform any alignment of the widgets.
-            if styles.align_horizontal != "left" or styles.align_vertical != "top":
+            if (
+                styles.align_horizontal != "left"
+                or styles.align_vertical != "top"
+            ):
                 bounding_region = WidgetPlacement.get_bounds(layout_placements)
                 container_width, container_height = dock_region.size
                 placement_offset += styles._align_size(
@@ -157,7 +162,9 @@ def _arrange_dock_widgets(
         widget_height = int(widget_height_fraction) + margin.height
 
         if edge == "bottom":
-            dock_region = Region(0, height - widget_height, widget_width, widget_height)
+            dock_region = Region(
+                0, height - widget_height, widget_width, widget_height
+            )
             bottom = max(bottom, widget_height)
         elif edge == "top":
             dock_region = Region(0, 0, widget_width, widget_height)
@@ -166,11 +173,15 @@ def _arrange_dock_widgets(
             dock_region = Region(0, 0, widget_width, widget_height)
             left = max(left, widget_width)
         elif edge == "right":
-            dock_region = Region(width - widget_width, 0, widget_width, widget_height)
+            dock_region = Region(
+                width - widget_width, 0, widget_width, widget_height
+            )
             right = max(right, widget_width)
         else:
             # Should not occur, mainly to keep Mypy happy
-            raise AssertionError("invalid value for dock edge")  # pragma: no-cover
+            raise AssertionError(
+                "invalid value for dock edge"
+            )  # pragma: no-cover
 
         dock_region = dock_region.shrink(margin)
         styles = dock_widget.styles
@@ -228,22 +239,38 @@ def _arrange_split_widgets(
         widget_width_fraction, widget_height_fraction, margin = box_model
         if split == "bottom":
             widget_height = int(widget_height_fraction) + margin.height
-            view_region, split_region = view_region.split_horizontal(-widget_height)
+            view_region, split_region = view_region.split_horizontal(
+                -widget_height
+            )
         elif split == "top":
             widget_height = int(widget_height_fraction) + margin.height
-            split_region, view_region = view_region.split_horizontal(widget_height)
+            split_region, view_region = view_region.split_horizontal(
+                widget_height
+            )
         elif split == "left":
             widget_width = int(widget_width_fraction) + margin.width
-            split_region, view_region = view_region.split_vertical(widget_width)
+            split_region, view_region = view_region.split_vertical(
+                widget_width
+            )
         elif split == "right":
             widget_width = int(widget_width_fraction) + margin.width
-            view_region, split_region = view_region.split_vertical(-widget_width)
+            view_region, split_region = view_region.split_vertical(
+                -widget_width
+            )
         else:
-            raise AssertionError("invalid value for split edge")  # pragma: no-cover
+            raise AssertionError(
+                "invalid value for split edge"
+            )  # pragma: no-cover
 
         append_placement(
             _WidgetPlacement(
-                split_region, null_offset, null_spacing, split_widget, 1, True, False
+                split_region,
+                null_offset,
+                null_spacing,
+                split_widget,
+                1,
+                True,
+                False,
             )
         )
 

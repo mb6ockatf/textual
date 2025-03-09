@@ -88,7 +88,9 @@ class FooterKey(Widget):
 
     def render(self) -> Text:
         key_style = self.get_component_rich_style("footer-key--key")
-        description_style = self.get_component_rich_style("footer-key--description")
+        description_style = self.get_component_rich_style(
+            "footer-key--description"
+        )
         key_display = self.key_display
         key_padding = self.get_component_styles("footer-key--key").padding
         description_padding = self.get_component_styles(
@@ -214,7 +216,9 @@ class Footer(ScrollableContainer, can_focus=False, can_focus_children=False):
         action_to_bindings: defaultdict[str, list[tuple[Binding, bool, str]]]
         action_to_bindings = defaultdict(list)
         for binding, enabled, tooltip in bindings:
-            action_to_bindings[binding.action].append((binding, enabled, tooltip))
+            action_to_bindings[binding.action].append(
+                (binding, enabled, tooltip)
+            )
 
         self.styles.grid_size_columns = len(action_to_bindings)
         for multi_bindings in action_to_bindings.values():
@@ -268,7 +272,9 @@ class Footer(ScrollableContainer, can_focus=False, can_focus_children=False):
 
     def on_mount(self) -> None:
         self.call_next(self.bindings_changed, self.screen)
-        self.screen.bindings_updated_signal.subscribe(self, self.bindings_changed)
+        self.screen.bindings_updated_signal.subscribe(
+            self, self.bindings_changed
+        )
 
     def on_unmount(self) -> None:
         self.screen.bindings_updated_signal.unsubscribe(self)

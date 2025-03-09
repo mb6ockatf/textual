@@ -46,7 +46,9 @@ class Sparkline(Generic[T]):
         self.summary_function: SummaryFunction[T] = summary_function
 
     @classmethod
-    def _buckets(cls, data: list[T], num_buckets: int) -> Iterable[Sequence[T]]:
+    def _buckets(
+        cls, data: list[T], num_buckets: int
+    ) -> Iterable[Sequence[T]]:
         """Partition ``data`` into ``num_buckets`` buckets. For example, the data
         [1, 2, 3, 4] partitioned into 2 buckets is [[1, 2], [3, 4]].
 

@@ -172,7 +172,15 @@ async def test_empty_table_interactions():
     app = DataTableApp()
     async with app.run_test() as pilot:
         await pilot.press(
-            "enter", "up", "down", "left", "right", "home", "end", "pagedown", "pageup"
+            "enter",
+            "up",
+            "down",
+            "left",
+            "right",
+            "home",
+            "end",
+            "pagedown",
+            "pageup",
         )
         assert app.message_names == []
 
@@ -728,7 +736,9 @@ async def test_update_cell_at_coordinate_doesnt_exist():
         ("12345", "123456789", 9),
     ],
 )
-async def test_update_cell_at_column_width(label, new_value, new_content_width):
+async def test_update_cell_at_column_width(
+    label, new_value, new_content_width
+):
     # Initial cell values are length 3. Let's update cell content and ensure
     # that the width of the column is correct given the new cell content widths
     # and the label of the column the cell is in.
@@ -807,7 +817,11 @@ async def test_click_row_cursor():
         table.add_row("123")
         row_key = table.add_row("456")
         await pilot.click(offset=Offset(1, 2))
-        assert app.message_names == ["RowHighlighted", "RowHighlighted", "RowSelected"]
+        assert app.message_names == [
+            "RowHighlighted",
+            "RowHighlighted",
+            "RowSelected",
+        ]
 
         row_highlighted: DataTable.RowHighlighted = app.messages[1]
 
@@ -1037,7 +1051,9 @@ async def test_row_cursor_highlight_events():
             table.action_cursor_right()
 
         await pilot.pause()
-        assert table.app.message_names == ["RowHighlighted"]  # Initial highlight
+        assert table.app.message_names == [
+            "RowHighlighted"
+        ]  # Initial highlight
 
         # Move the row cursor from row 0 to row 1, check the highlighted event posted
         table.action_cursor_down()
@@ -1073,7 +1089,9 @@ async def test_column_cursor_highlight_events():
             table.action_cursor_down()
 
         await pilot.pause()
-        assert table.app.message_names == ["ColumnHighlighted"]  # Initial highlight
+        assert table.app.message_names == [
+            "ColumnHighlighted"
+        ]  # Initial highlight
 
         # Move the column cursor from column 0 to column 1,
         # check the highlighted event posted
@@ -1188,7 +1206,9 @@ async def test_move_cursor():
     async with app.run_test():
         table = app.query_one(DataTable)
         table.add_columns(*"These are some columns in your nice table".split())
-        table.add_rows(["These are some columns in your nice table".split()] * 10)
+        table.add_rows(
+            ["These are some columns in your nice table".split()] * 10
+        )
 
         table.move_cursor(row=4, column=6)
         assert table.cursor_coordinate == Coordinate(4, 6)

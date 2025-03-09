@@ -147,7 +147,9 @@ class LinuxInlineDriver(Driver):
             """
             for last, (_selector_key, mask) in loop_last(selector_events):
                 if mask & EVENT_READ:
-                    unicode_data = decode(read(fileno, 1024 * 4), final=final and last)
+                    unicode_data = decode(
+                        read(fileno, 1024 * 4), final=final and last
+                    )
                     if not unicode_data:
                         # This can occur if the stdin is piped
                         break
@@ -208,7 +210,9 @@ class LinuxInlineDriver(Driver):
 
         self.write("\x1b[?25l")  # Hide cursor
         self.write("\033[?1004h")  # Enable FocusIn/FocusOut.
-        self.write("\x1b[>1u")  # https://sw.kovidgoyal.net/kitty/keyboard-protocol/
+        self.write(
+            "\x1b[>1u"
+        )  # https://sw.kovidgoyal.net/kitty/keyboard-protocol/
         self.flush()
 
         self._enable_mouse_support()
@@ -315,7 +319,9 @@ class LinuxInlineDriver(Driver):
 
         if self.attrs_before is not None:
             try:
-                termios.tcsetattr(self.fileno, termios.TCSANOW, self.attrs_before)
+                termios.tcsetattr(
+                    self.fileno, termios.TCSANOW, self.attrs_before
+                )
             except termios.error:
                 pass
 

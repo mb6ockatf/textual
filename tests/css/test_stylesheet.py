@@ -141,7 +141,11 @@ def test_stylesheet_apply_user_css_over_widget_css():
         ["rgb(200,90,30)", does_not_raise(), Color(200, 90, 30)],
         ["rgba(200,90,30,0.3)", does_not_raise(), Color(200, 90, 30, 0.3)],
         # Some invalid ones:
-        ["coffee", pytest.raises(StylesheetParseError), None],  # invalid color name
+        [
+            "coffee",
+            pytest.raises(StylesheetParseError),
+            None,
+        ],  # invalid color name
         ["ansi_dark_cyan", pytest.raises(StylesheetParseError), None],
         ["red 4", pytest.raises(StylesheetParseError), None],  # space in it
         ["1", pytest.raises(StylesheetParseError), None],  # invalid value
@@ -203,7 +207,9 @@ def test_did_you_mean_for_css_property_names(
     displayed_css_property_name = css_property_name.replace("_", "-")
     expected_summary = f"Invalid CSS property {displayed_css_property_name!r}"
     if expected_property_name_suggestion:
-        expected_summary += f". Did you mean '{expected_property_name_suggestion}'?"
+        expected_summary += (
+            f". Did you mean '{expected_property_name_suggestion}'?"
+        )
     assert help_text.summary == expected_summary
 
 
@@ -252,7 +258,9 @@ def test_did_you_mean_for_property_names_in_nested_css(
     displayed_css_property_name = css_property_name.replace("_", "-")
     expected_summary = f"Invalid CSS property {displayed_css_property_name!r}"
     if expected_property_name_suggestion:
-        expected_summary += f". Did you mean '{expected_property_name_suggestion}'?"
+        expected_summary += (
+            f". Did you mean '{expected_property_name_suggestion}'?"
+        )
     assert help_text.summary == expected_summary
 
 
@@ -290,6 +298,8 @@ def test_did_you_mean_for_color_names(
     expected_error_summary = f"Invalid value ({css_property_value!r}) for the [i]{displayed_css_property_name}[/] property"
 
     if expected_color_suggestion is not None:
-        expected_error_summary += f". Did you mean '{expected_color_suggestion}'?"
+        expected_error_summary += (
+            f". Did you mean '{expected_color_suggestion}'?"
+        )
 
     assert help_text.summary == expected_error_summary

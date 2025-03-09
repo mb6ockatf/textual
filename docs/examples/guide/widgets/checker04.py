@@ -41,7 +41,9 @@ class CheckerBoard(ScrollView):
     def on_mouse_move(self, event: events.MouseMove) -> None:
         """Called when the user moves the mouse over the widget."""
         mouse_position = event.offset + self.scroll_offset
-        self.cursor_square = Offset(mouse_position.x // 8, mouse_position.y // 4)
+        self.cursor_square = Offset(
+            mouse_position.x // 8, mouse_position.y // 4
+        )
 
     def watch_cursor_square(
         self, previous_square: Offset, cursor_square: Offset

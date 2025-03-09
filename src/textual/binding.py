@@ -106,7 +106,9 @@ class Binding:
         return dataclasses.replace(self, key=key, key_display=key_display)
 
     @classmethod
-    def make_bindings(cls, bindings: Iterable[BindingType]) -> Iterable[Binding]:
+    def make_bindings(
+        cls, bindings: Iterable[BindingType]
+    ) -> Iterable[Binding]:
         """Convert a list of BindingType (the types that can be specified in BINDINGS)
         into an Iterable[Binding].
 
@@ -282,7 +284,10 @@ class BindingsMap:
                     # Remove the old binding
                     for key, key_bindings in key_to_bindings:
                         key = key.strip()
-                        if any(binding.id == binding_id for binding in key_bindings):
+                        if any(
+                            binding.id == binding_id
+                            for binding in key_bindings
+                        ):
                             if key in self.key_to_bindings:
                                 del self.key_to_bindings[key]
 

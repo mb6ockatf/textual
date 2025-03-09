@@ -1,5 +1,10 @@
 from textual.app import App
-from textual.containers import Container, Horizontal, ScrollableContainer, Vertical
+from textual.containers import (
+    Container,
+    Horizontal,
+    ScrollableContainer,
+    Vertical,
+)
 from textual.screen import Screen
 from textual.widgets import DataTable, Header, Label
 
@@ -108,7 +113,9 @@ class Rendering(LabeledBox):
             "",
             ScrollableContainer(
                 Horizontal(self.__info, id="issue-info"),
-                Horizontal(*[Status(str(i)) for i in range(4)], id="statuses-box"),
+                Horizontal(
+                    *[Status(str(i)) for i in range(4)], id="statuses-box"
+                ),
                 id="issues-box",
             ),
         )

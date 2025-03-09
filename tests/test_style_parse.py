@@ -41,7 +41,8 @@ from textual.style import Style
         ),
         (
             "@click=app.notify('hello') bold",
-            Style(bold=True) + Style.from_meta({"@click": "app.notify('hello')"}),
+            Style(bold=True)
+            + Style.from_meta({"@click": "app.notify('hello')"}),
         ),
     ],
 )

@@ -21,7 +21,9 @@ class OnDecoratorApp(App):
     def toggle_dark(self):
         """Called when the 'toggle dark' button is pressed."""
         self.theme = (
-            "textual-dark" if self.theme == "textual-light" else "textual-light"
+            "textual-dark"
+            if self.theme == "textual-light"
+            else "textual-light"
         )
 
     @on(Button.Pressed, "#quit")  # (3)!

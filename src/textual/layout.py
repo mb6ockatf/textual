@@ -153,7 +153,10 @@ class WidgetPlacement(NamedTuple):
             An optimal binding box around all placements.
         """
         bounding_region = Region.from_union(
-            [placement.region.grow(placement.margin) for placement in placements]
+            [
+                placement.region.grow(placement.margin)
+                for placement in placements
+            ]
         )
         return bounding_region
 
@@ -192,7 +195,16 @@ class WidgetPlacement(NamedTuple):
 
         offset = region.offset - self.region.offset
         if offset != self.offset:
-            region, _offset, margin, widget, order, fixed, overlay, absolute = self
+            (
+                region,
+                _offset,
+                margin,
+                widget,
+                order,
+                fixed,
+                overlay,
+                absolute,
+            ) = self
             placement = WidgetPlacement(
                 region, offset, margin, widget, order, fixed, overlay, absolute
             )
@@ -222,7 +234,9 @@ class Layout(ABC):
             An iterable of widget location
         """
 
-    def get_content_width(self, widget: Widget, container: Size, viewport: Size) -> int:
+    def get_content_width(
+        self, widget: Widget, container: Size, viewport: Size
+    ) -> int:
         """Get the optimal content width by arranging children.
 
         Args:
@@ -258,7 +272,8 @@ class Layout(ABC):
         """
         if widget._nodes:
             if not widget.styles.is_docked and all(
-                child.styles.is_dynamic_height for child in widget.displayed_children
+                child.styles.is_dynamic_height
+                for child in widget.displayed_children
             ):
                 # An exception for containers with all dynamic height widgets
                 arrangement = widget._arrange(
@@ -301,7 +316,9 @@ class Layout(ABC):
             """
             offset = region.offset - container_offset - (1, 1)
             width, height = region.size
-            return Rectangle(offset, width + 2, height + 2, keyline_color, line_style)
+            return Rectangle(
+                offset, width + 2, height + 2, keyline_color, line_style
+            )
 
         primitives = [
             get_rectangle(widget.region)

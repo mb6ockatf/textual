@@ -56,7 +56,11 @@ class HorizontalPad:
 
         align: AlignMethod = cast(
             AlignMethod,
-            self.justify if self.justify in {"left", "right", "center"} else "left",
+            (
+                self.justify
+                if self.justify in {"left", "right", "center"}
+                else "left"
+            ),
         )
 
         for line in lines:

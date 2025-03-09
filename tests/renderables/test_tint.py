@@ -11,7 +11,9 @@ from textual.renderables.tint import Tint
 
 
 def test_tint():
-    console = Console(file=io.StringIO(), force_terminal=True, color_system="truecolor")
+    console = Console(
+        file=io.StringIO(), force_terminal=True, color_system="truecolor"
+    )
     renderable = Text.from_markup("[#aabbcc on #112233]foo")
     segments = list(console.render(renderable))
     console.print(
@@ -30,7 +32,9 @@ def test_tint():
 
 
 def test_tint_ansi_mapping():
-    console = Console(file=io.StringIO(), force_terminal=True, color_system="truecolor")
+    console = Console(
+        file=io.StringIO(), force_terminal=True, color_system="truecolor"
+    )
     renderable = Text.from_markup("[red on yellow]foo")
     segments = list(console.render(renderable))
     console.print(

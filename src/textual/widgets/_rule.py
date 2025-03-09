@@ -128,7 +128,9 @@ class Rule(Widget, can_focus=False):
     }
     """
 
-    orientation: Reactive[RuleOrientation] = reactive[RuleOrientation]("horizontal")
+    orientation: Reactive[RuleOrientation] = reactive[RuleOrientation](
+        "horizontal"
+    )
     """The orientation of the rule."""
 
     line_style: Reactive[LineStyle] = reactive[LineStyle]("solid")
@@ -183,7 +185,9 @@ class Rule(Widget, can_focus=False):
         self.remove_class(f"-{old_orientation}")
         self.add_class(f"-{orientation}")
 
-    def validate_orientation(self, orientation: RuleOrientation) -> RuleOrientation:
+    def validate_orientation(
+        self, orientation: RuleOrientation
+    ) -> RuleOrientation:
         if orientation not in _VALID_RULE_ORIENTATIONS:
             raise InvalidRuleOrientation(
                 f"Valid rule orientations are {friendly_list(_VALID_RULE_ORIENTATIONS)}"
@@ -202,7 +206,9 @@ class Rule(Widget, can_focus=False):
             return container.width
         return 1
 
-    def get_content_height(self, container: Size, viewport: Size, width: int) -> int:
+    def get_content_height(
+        self, container: Size, viewport: Size, width: int
+    ) -> int:
         if self.orientation == "horizontal":
             return 1
         return container.height

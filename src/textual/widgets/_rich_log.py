@@ -144,7 +144,9 @@ class RichLog(ScrollView, can_focus=True):
         else:
             return container.width
 
-    def _make_renderable(self, content: RenderableType | object) -> RenderableType:
+    def _make_renderable(
+        self, content: RenderableType | object
+    ) -> RenderableType:
         """Make content renderable.
 
         Args:
@@ -220,7 +222,9 @@ class RichLog(ScrollView, can_focus=True):
         render_options = console.options
 
         if isinstance(renderable, Text) and not self.wrap:
-            render_options = render_options.update(overflow="ignore", no_wrap=True)
+            render_options = render_options.update(
+                overflow="ignore", no_wrap=True
+            )
 
         if width is not None:
             # Use the width specified by the caller.
@@ -254,7 +258,9 @@ class RichLog(ScrollView, can_focus=True):
         lines = list(Segment.split_lines(segments))
 
         if not lines:
-            self._widest_line_width = max(render_width, self._widest_line_width)
+            self._widest_line_width = max(
+                render_width, self._widest_line_width
+            )
             self.lines.append(Strip.blank(render_width))
         else:
             strips = Strip.from_lines(lines)
@@ -272,7 +278,10 @@ class RichLog(ScrollView, can_focus=True):
             #  could decrease, but we don't look at which lines were trimmed here.
             self._widest_line_width = max(
                 self._widest_line_width,
-                max(sum([segment.cell_length for segment in _line]) for _line in lines),
+                max(
+                    sum([segment.cell_length for segment in _line])
+                    for _line in lines
+                ),
             )
 
         # Update the virtual size - the width may have changed after adding
@@ -315,7 +324,9 @@ class RichLog(ScrollView, can_focus=True):
         if key in self._line_cache:
             return self._line_cache[key]
 
-        line = self.lines[y].crop_extend(scroll_x, scroll_x + width, self.rich_style)
+        line = self.lines[y].crop_extend(
+            scroll_x, scroll_x + width, self.rich_style
+        )
 
         self._line_cache[key] = line
         return line

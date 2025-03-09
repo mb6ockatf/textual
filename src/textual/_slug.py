@@ -27,7 +27,9 @@ from typing_extensions import Final
 WHITESPACE_REPLACEMENT: Final[str] = "-"
 """The character to replace undesirable characters with."""
 
-REMOVABLE: Final[str] = punctuation.replace(WHITESPACE_REPLACEMENT, "").replace("_", "")
+REMOVABLE: Final[str] = punctuation.replace(
+    WHITESPACE_REPLACEMENT, ""
+).replace("_", "")
 """The collection of characters that should be removed altogether."""
 
 NONLINGUAL: Final[str] = (

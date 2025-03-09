@@ -124,7 +124,8 @@ async def test_delete_left_end():
 )
 async def test_deletion_with_non_empty_selection(key, selection):
     """When there's a selection, pressing backspace or delete should delete everything
-    that is selected and reset the selection to a cursor at the appropriate location."""
+    that is selected and reset the selection to a cursor at the appropriate location.
+    """
     app = TextAreaApp()
     async with app.run_test() as pilot:
         text_area = app.query_one(TextArea)
@@ -177,7 +178,9 @@ async def test_delete_right_end_of_line():
         (Selection((0, 4), (0, 2)), "01456789", "23", (0, 2)),
     ],
 )
-async def test_cut(selection, expected_result, expected_clipboard, cursor_end_location):
+async def test_cut(
+    selection, expected_result, expected_clipboard, cursor_end_location
+):
     app = TextAreaApp()
     async with app.run_test() as pilot:
         text_area = app.query_one(TextArea)
@@ -214,7 +217,9 @@ async def test_cut_multiline_document(selection, expected_result):
         await pilot.press("ctrl+x")
 
         cursor_row, cursor_column = text_area.cursor_location
-        assert text_area.selection == Selection.cursor((cursor_row, cursor_column))
+        assert text_area.selection == Selection.cursor(
+            (cursor_row, cursor_column)
+        )
         assert text_area.text == expected_result
 
 
@@ -250,8 +255,14 @@ async def test_delete_line(selection, expected_result):
         (Selection.cursor((3, 1)), "012\n345\n678\n"),
         (Selection.cursor((4, 0)), "012\n345\n678\n9\n"),
         # Selections
-        (Selection((1, 1), (1, 2)), "012\n678\n9\n"),  # non-empty single line selection
-        (Selection((1, 2), (2, 1)), "012\n9\n"),  # delete lines selection touches
+        (
+            Selection((1, 1), (1, 2)),
+            "012\n678\n9\n",
+        ),  # non-empty single line selection
+        (
+            Selection((1, 2), (2, 1)),
+            "012\n9\n",
+        ),  # delete lines selection touches
         (
             Selection((1, 2), (3, 0)),
             "012\n9\n",
@@ -273,7 +284,9 @@ async def test_delete_line_multiline_document(selection, expected_result):
         await pilot.press("ctrl+shift+k")
 
         cursor_row, cursor_column = text_area.cursor_location
-        assert text_area.selection == Selection.cursor((cursor_row, cursor_column))
+        assert text_area.selection == Selection.cursor(
+            (cursor_row, cursor_column)
+        )
         assert text_area.text == expected_result
 
 
@@ -365,20 +378,34 @@ async def test_delete_word_left(selection, expected_result, final_selection):
 @pytest.mark.parametrize(
     "selection,expected_result,final_selection",
     [
-        (Selection.cursor((0, 0)), "\t012 \t 345\t6789", Selection.cursor((0, 0))),
-        (Selection.cursor((0, 4)), "\t \t 345\t6789", Selection.cursor((0, 1))),
+        (
+            Selection.cursor((0, 0)),
+            "\t012 \t 345\t6789",
+            Selection.cursor((0, 0)),
+        ),
+        (
+            Selection.cursor((0, 4)),
+            "\t \t 345\t6789",
+            Selection.cursor((0, 1)),
+        ),
         (Selection.cursor((0, 5)), "\t\t 345\t6789", Selection.cursor((0, 1))),
         (
             Selection.cursor((0, 6)),
             "\t 345\t6789",
             Selection.cursor((0, 1)),
         ),
-        (Selection.cursor((0, 15)), "\t012 \t 345\t", Selection.cursor((0, 11))),
+        (
+            Selection.cursor((0, 15)),
+            "\t012 \t 345\t",
+            Selection.cursor((0, 11)),
+        ),
         # When there's a selection and you "delete word left", it just deletes the selection
         (Selection((0, 4), (0, 11)), "\t0126789", Selection.cursor((0, 4))),
     ],
 )
-async def test_delete_word_left_with_tabs(selection, expected_result, final_selection):
+async def test_delete_word_left_with_tabs(
+    selection, expected_result, final_selection
+):
     app = TextAreaApp()
     async with app.run_test() as pilot:
         text_area = app.query_one(TextArea)
@@ -427,7 +454,11 @@ async def test_delete_word_left_at_line_start():
         (Selection.cursor((0, 0)), "012 345 6789", Selection.cursor((0, 0))),
         (Selection.cursor((0, 4)), "  01 345 6789", Selection.cursor((0, 4))),
         (Selection.cursor((0, 5)), "  012345 6789", Selection.cursor((0, 5))),
-        (Selection.cursor((0, 14)), "  012 345 6789", Selection.cursor((0, 14))),
+        (
+            Selection.cursor((0, 14)),
+            "  012 345 6789",
+            Selection.cursor((0, 14)),
+        ),
         # When non-empty selection, "delete word right" just deletes the selection
         (Selection((0, 4), (0, 11)), "  01789", Selection.cursor((0, 4))),
     ],

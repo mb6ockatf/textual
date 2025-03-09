@@ -59,7 +59,11 @@ class BackgroundScreen:
                 else:
                     yield _Segment(
                         text,
-                        NULL_STYLE if style is None else style.clear_meta_and_links(),
+                        (
+                            NULL_STYLE
+                            if style is None
+                            else style.clear_meta_and_links()
+                        ),
                         control,
                     )
             return
@@ -69,19 +73,27 @@ class BackgroundScreen:
             if control:
                 yield segment
             else:
-                style = NULL_STYLE if style is None else style.clear_meta_and_links()
+                style = (
+                    NULL_STYLE
+                    if style is None
+                    else style.clear_meta_and_links()
+                )
                 yield _Segment(
                     text,
                     (
                         style
                         + style_from_color(
                             (
-                                (from_rich_color(style.color) + color).rich_color
+                                (
+                                    from_rich_color(style.color) + color
+                                ).rich_color
                                 if style.color is not None
                                 else None
                             ),
                             (
-                                (from_rich_color(style.bgcolor) + color).rich_color
+                                (
+                                    from_rich_color(style.bgcolor) + color
+                                ).rich_color
                                 if style.bgcolor is not None
                                 else None
                             ),

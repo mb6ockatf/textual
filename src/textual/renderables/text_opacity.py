@@ -40,7 +40,9 @@ def _get_blended_style_cached(
 class TextOpacity:
     """Blend foreground into background."""
 
-    def __init__(self, renderable: RenderableType, opacity: float = 1.0) -> None:
+    def __init__(
+        self, renderable: RenderableType, opacity: float = 1.0
+    ) -> None:
         """Wrap a renderable to blend foreground color into the background color.
 
         Args:
@@ -52,7 +54,10 @@ class TextOpacity:
 
     @classmethod
     def process_segments(
-        cls, segments: Iterable[Segment], opacity: float, ansi_theme: TerminalTheme
+        cls,
+        segments: Iterable[Segment],
+        opacity: float,
+        ansi_theme: TerminalTheme,
     ) -> Iterable[Segment]:
         """Apply opacity to segments.
 
@@ -87,7 +92,9 @@ class TextOpacity:
                 color = style.color
                 bgcolor = style.bgcolor
                 if color and color.triplet and bgcolor and bgcolor.triplet:
-                    color_style = _get_blended_style_cached(bgcolor, color, opacity)
+                    color_style = _get_blended_style_cached(
+                        bgcolor, color, opacity
+                    )
                     yield _Segment(text, style + color_style)
                 else:
                     yield segment

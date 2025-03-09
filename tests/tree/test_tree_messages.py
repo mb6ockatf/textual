@@ -48,7 +48,9 @@ class TreeApp(App[None]):
     def on_tree_node_collapsed(self, event: Tree.NodeCollapsed[None]) -> None:
         self.record(event)
 
-    def on_tree_node_highlighted(self, event: Tree.NodeHighlighted[None]) -> None:
+    def on_tree_node_highlighted(
+        self, event: Tree.NodeHighlighted[None]
+    ) -> None:
         self.record(event)
 
 
@@ -230,7 +232,9 @@ class TreeViaCodeApp(App[None]):
     def on_tree_node_collapsed(self, event: Tree.NodeCollapsed[None]) -> None:
         self.record(event)
 
-    def on_tree_node_highlighted(self, event: Tree.NodeHighlighted[None]) -> None:
+    def on_tree_node_highlighted(
+        self, event: Tree.NodeHighlighted[None]
+    ) -> None:
         self.record(event)
 
 

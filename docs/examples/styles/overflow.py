@@ -16,8 +16,12 @@ class OverflowApp(App):
 
     def compose(self):
         yield Horizontal(
-            VerticalScroll(Static(TEXT), Static(TEXT), Static(TEXT), id="left"),
-            VerticalScroll(Static(TEXT), Static(TEXT), Static(TEXT), id="right"),
+            VerticalScroll(
+                Static(TEXT), Static(TEXT), Static(TEXT), id="left"
+            ),
+            VerticalScroll(
+                Static(TEXT), Static(TEXT), Static(TEXT), id="right"
+            ),
         )
 
 

@@ -19,7 +19,9 @@ def friendly_list(
         List as prose.
     """
     words = [
-        repr(word) for word in sorted(words, key=str.lower) if word or not omit_empty
+        repr(word)
+        for word in sorted(words, key=str.lower)
+        if word or not omit_empty
     ]
     if len(words) == 1:
         return words[0]

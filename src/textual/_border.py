@@ -18,7 +18,8 @@ INNER = 1
 OUTER = 2
 
 BORDER_CHARS: dict[
-    EdgeType, tuple[tuple[str, str, str], tuple[str, str, str], tuple[str, str, str]]
+    EdgeType,
+    tuple[tuple[str, str, str], tuple[str, str, str], tuple[str, str, str]],
 ] = {
     # Three tuples for the top, middle, and bottom rows.
     # The sub-tuples are the characters for the left, center, and right borders.
@@ -123,7 +124,8 @@ BORDER_CHARS: dict[
 # This table selects which for each character, 0 indicates the widget, 1 selects the parent.
 # 2 and 3 reverse a cross-combination of the background and foreground colors of 0 and 1.
 BORDER_LOCATIONS: dict[
-    EdgeType, tuple[tuple[int, int, int], tuple[int, int, int], tuple[int, int, int]]
+    EdgeType,
+    tuple[tuple[int, int, int], tuple[int, int, int], tuple[int, int, int]],
 ] = {
     "": (
         (0, 0, 0),
@@ -238,7 +240,9 @@ BORDER_LABEL_LOCATIONS: dict[EdgeType, tuple[int, int]] = {
     for edge_type, locations in BORDER_LOCATIONS.items()
 }
 
-INVISIBLE_EDGE_TYPES = cast("frozenset[EdgeType]", frozenset(("", "none", "hidden")))
+INVISIBLE_EDGE_TYPES = cast(
+    "frozenset[EdgeType]", frozenset(("", "none", "hidden"))
+)
 
 BorderValue: TypeAlias = Tuple[EdgeType, Color]
 
@@ -424,7 +428,9 @@ def render_row(
     corners_needed = left + right
     label_segments_list = list(label_segments)
 
-    label_length = sum((segment.cell_length for segment in label_segments_list), 0)
+    label_length = sum(
+        (segment.cell_length for segment in label_segments_list), 0
+    )
     space_available = max(0, width - corners_needed - label_length)
 
     if left:

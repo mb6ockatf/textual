@@ -7,7 +7,9 @@ from rich.table import Table
 class TableStaticApp(App):
     def compose(self) -> ComposeResult:
         table = Table("[i green]Foo", "Bar", "baz")
-        table.add_row("Hello [bold magenta]World!", "[i]Italic", "[u]Underline")
+        table.add_row(
+            "Hello [bold magenta]World!", "[i]Italic", "[u]Underline"
+        )
         yield Static(table)
 
 

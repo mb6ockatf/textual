@@ -139,7 +139,8 @@ class SimpleAnimation(Animation):
             else:
                 eased_factor = 1 - self.easing(factor)
                 value = (
-                    self.end_value + (self.start_value - self.end_value) * eased_factor
+                    self.end_value
+                    + (self.start_value - self.end_value) * eased_factor
                 )
         setattr(self.obj, self.attribute, value)
         return factor >= 1
@@ -428,7 +429,9 @@ class Animator:
                         speed or 50
                     )
                 else:
-                    animation_duration = abs(value - start_value) / (speed or 50)
+                    animation_duration = abs(value - start_value) / (
+                        speed or 50
+                    )
 
             animation = SimpleAnimation(
                 obj,
@@ -487,7 +490,9 @@ class Animator:
             # right away.
             await self._stop_running_animation(key, complete)
 
-    async def _stop_running_animation(self, key: AnimationKey, complete: bool) -> None:
+    async def _stop_running_animation(
+        self, key: AnimationKey, complete: bool
+    ) -> None:
         """Stop a running animation.
 
         Args:
@@ -558,7 +563,9 @@ class Animator:
             animation_keys = list(self._animations.keys())
             for animation_key in animation_keys:
                 animation = self._animations[animation_key]
-                animation_complete = animation(animation_time, app_animation_level)
+                animation_complete = animation(
+                    animation_time, app_animation_level
+                )
                 if animation_complete:
                     del self._animations[animation_key]
                     if animation.on_complete is not None:

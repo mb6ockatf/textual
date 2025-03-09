@@ -128,7 +128,9 @@ class Bar(Widget, can_focus=False):
             start = (speed * self._clock.time) % (2 * total_imaginary_width)
             if start > total_imaginary_width:
                 # If the bar is to the right of its width, wrap it back from right to left.
-                start = 2 * total_imaginary_width - start  # = (tiw - (start - tiw))
+                start = (
+                    2 * total_imaginary_width - start
+                )  # = (tiw - (start - tiw))
             start -= highlighted_bar_width
             end = start + highlighted_bar_width
 
@@ -288,7 +290,9 @@ class ProgressBar(Widget, can_focus=False):
                 .data_bind(ProgressBar.gradient)
             )
         if self.show_percentage:
-            yield PercentageStatus(id="percentage").data_bind(ProgressBar.percentage)
+            yield PercentageStatus(id="percentage").data_bind(
+                ProgressBar.percentage
+            )
         if self.show_eta:
             yield ETAStatus(id="eta").data_bind(eta=ProgressBar._display_eta)
 

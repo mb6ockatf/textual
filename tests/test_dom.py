@@ -226,21 +226,24 @@ def search():
 
 def test_walk_children_depth(search):
     children = [
-        node.id for node in search.walk_children(method="depth", with_self=False)
+        node.id
+        for node in search.walk_children(method="depth", with_self=False)
     ]
     assert children == ["b", "d", "c", "e", "f"]
 
 
 def test_walk_children_with_self_depth(search):
     children = [
-        node.id for node in search.walk_children(method="depth", with_self=True)
+        node.id
+        for node in search.walk_children(method="depth", with_self=True)
     ]
     assert children == ["a", "b", "d", "c", "e", "f"]
 
 
 def test_walk_children_breadth(search):
     children = [
-        node.id for node in search.walk_children(with_self=False, method="breadth")
+        node.id
+        for node in search.walk_children(with_self=False, method="breadth")
     ]
     print(children)
     assert children == ["b", "c", "d", "e", "f"]
@@ -248,14 +251,17 @@ def test_walk_children_breadth(search):
 
 def test_walk_children_with_self_breadth(search):
     children = [
-        node.id for node in search.walk_children(with_self=True, method="breadth")
+        node.id
+        for node in search.walk_children(with_self=True, method="breadth")
     ]
     print(children)
     assert children == ["a", "b", "c", "d", "e", "f"]
 
     children = [
         node.id
-        for node in search.walk_children(with_self=True, method="breadth", reverse=True)
+        for node in search.walk_children(
+            with_self=True, method="breadth", reverse=True
+        )
     ]
 
     assert children == ["f", "e", "d", "c", "b", "a"]

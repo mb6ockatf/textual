@@ -28,7 +28,9 @@ async def dispatch_key(node: DOMNode, event: events.Key) -> bool:
 
     def get_key_handler(pump: MessagePump, key: str) -> Callable | None:
         """Look for the public and private handler methods by name on self."""
-        return getattr(pump, f"key_{key}", None) or getattr(pump, f"_key_{key}", None)
+        return getattr(pump, f"key_{key}", None) or getattr(
+            pump, f"_key_{key}", None
+        )
 
     handled = False
     invoked_method = None

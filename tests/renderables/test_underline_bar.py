@@ -42,7 +42,10 @@ def test_highlight_middle():
 def test_highlight_half_start():
     bar = Bar(highlight_range=(2.5, 4), width=6)
     assert render(bar) == (
-        f"{GREY}━━{STOP}" f"{MAGENTA}╺━{STOP}" f"{GREY}╺{STOP}" f"{GREY}━{STOP}"
+        f"{GREY}━━{STOP}"
+        f"{MAGENTA}╺━{STOP}"
+        f"{GREY}╺{STOP}"
+        f"{GREY}━{STOP}"
     )
 
 
@@ -60,14 +63,20 @@ def test_highlight_half_end():
 def test_highlight_half_start_and_half_end():
     bar = Bar(highlight_range=(2.5, 4.5), width=6)
     assert render(bar) == (
-        f"{GREY}━━{STOP}" f"{MAGENTA}╺━{STOP}" f"{MAGENTA}╸{STOP}" f"{GREY}━{STOP}"
+        f"{GREY}━━{STOP}"
+        f"{MAGENTA}╺━{STOP}"
+        f"{MAGENTA}╸{STOP}"
+        f"{GREY}━{STOP}"
     )
 
 
 def test_highlight_to_near_end():
     bar = Bar(highlight_range=(3, 5.5), width=6)
     assert render(bar) == (
-        f"{GREY}━━{STOP}" f"{GREY}╸{STOP}" f"{MAGENTA}━━{STOP}" f"{MAGENTA}╸{STOP}"
+        f"{GREY}━━{STOP}"
+        f"{GREY}╸{STOP}"
+        f"{MAGENTA}━━{STOP}"
+        f"{MAGENTA}╸{STOP}"
     )
 
 
@@ -98,7 +107,10 @@ def test_highlight_full_range_out_of_bounds_start():
 
 def test_custom_styles():
     bar = Bar(
-        highlight_range=(2, 4), highlight_style="red", background_style="green", width=6
+        highlight_range=(2, 4),
+        highlight_style="red",
+        background_style="green",
+        width=6,
     )
     assert render(bar) == (
         f"{GREEN}━{STOP}"
@@ -111,7 +123,9 @@ def test_custom_styles():
 
 def test_clickable_ranges():
     bar = Bar(
-        highlight_range=(0, 1), width=6, clickable_ranges={"foo": (0, 2), "bar": (4, 5)}
+        highlight_range=(0, 1),
+        width=6,
+        clickable_ranges={"foo": (0, 2), "bar": (4, 5)},
     )
 
     console = create_autospec(Console)

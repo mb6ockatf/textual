@@ -2,6 +2,7 @@ from textual.app import App, ComposeResult
 from textual.screen import Screen
 from textual.widgets import Label
 
+
 class Mode(Screen):
 
     def compose(self) -> ComposeResult:
@@ -10,9 +11,7 @@ class Mode(Screen):
 
 class NotifyThroughModesApp(App[None]):
 
-    MODES = {
-        "test": Mode
-    }
+    MODES = {"test": Mode}
 
     def compose(self) -> ComposeResult:
         yield Label("Base screen")
@@ -21,6 +20,7 @@ class NotifyThroughModesApp(App[None]):
         for n in range(10):
             self.notify(str(n))
         self.switch_mode("test")
+
 
 if __name__ == "__main__":
     NotifyThroughModesApp().run()

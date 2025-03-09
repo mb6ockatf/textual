@@ -407,7 +407,10 @@ class TabsMessageCatchApp(App[None]):
     @on(Underline.Clicked)
     @on(Tab.Clicked)
     def log_message(
-        self, event: Tabs.Cleared | Tabs.TabActivated | Underline.Clicked | Tab.Clicked
+        self,
+        event: (
+            Tabs.Cleared | Tabs.TabActivated | Underline.Clicked | Tab.Clicked
+        ),
     ) -> None:
         self.intended_handlers.append(event.handler_name)
 

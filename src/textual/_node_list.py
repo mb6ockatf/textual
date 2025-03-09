@@ -93,7 +93,9 @@ class NodeList(Sequence["Widget"]):
 
         self.updated()
 
-    def index(self, widget: Any, start: int = 0, stop: int = sys.maxsize) -> int:
+    def index(
+        self, widget: Any, start: int = 0, stop: int = sys.maxsize
+    ) -> int:
         """Return the index of the given widget.
 
         Args:

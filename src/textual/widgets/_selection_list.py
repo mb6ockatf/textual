@@ -130,7 +130,9 @@ class SelectionList(Generic[SelectionType], OptionList):
         """Base class for all selection messages."""
 
         def __init__(
-            self, selection_list: SelectionList[MessageSelectionType], index: int
+            self,
+            selection_list: SelectionList[MessageSelectionType],
+            index: int,
         ) -> None:
             """Initialise the selection message.
 
@@ -139,7 +141,9 @@ class SelectionList(Generic[SelectionType], OptionList):
                 index: The index of the selection that the message relates to.
             """
             super().__init__()
-            self.selection_list: SelectionList[MessageSelectionType] = selection_list
+            self.selection_list: SelectionList[MessageSelectionType] = (
+                selection_list
+            )
             """The selection list that sent the message."""
             self.selection: Selection[MessageSelectionType] = (
                 selection_list.get_option_at_index(index)
@@ -238,7 +242,9 @@ class SelectionList(Generic[SelectionType], OptionList):
             option.value: index for index, option in enumerate(options)
         }
         """Keeps track of which value relates to which option."""
-        super().__init__(*options, name=name, id=id, classes=classes, disabled=disabled)
+        super().__init__(
+            *options, name=name, id=id, classes=classes, disabled=disabled
+        )
 
     @property
     def selected(self) -> list[SelectionType]:
@@ -279,7 +285,9 @@ class SelectionList(Generic[SelectionType], OptionList):
                 self.SelectionToggled(self, option_index).set_sender(self)
             )
 
-    def _apply_to_all(self, state_change: Callable[[SelectionType], bool]) -> Self:
+    def _apply_to_all(
+        self, state_change: Callable[[SelectionType], bool]
+    ) -> Self:
         """Apply a selection state change to all selection options in the list.
 
         Args:
@@ -303,7 +311,9 @@ class SelectionList(Generic[SelectionType], OptionList):
         with self.prevent(self.SelectedChanged):
             for selection in self._options:
                 changed = (
-                    state_change(cast(Selection[SelectionType], selection).value)
+                    state_change(
+                        cast(Selection[SelectionType], selection).value
+                    )
                     or changed
                 )
 
@@ -329,7 +339,9 @@ class SelectionList(Generic[SelectionType], OptionList):
             return True
         return False
 
-    def select(self, selection: Selection[SelectionType] | SelectionType) -> Self:
+    def select(
+        self, selection: Selection[SelectionType] | SelectionType
+    ) -> Self:
         """Mark the given selection as selected.
 
         Args:
@@ -370,7 +382,9 @@ class SelectionList(Generic[SelectionType], OptionList):
         self._message_changed()
         return True
 
-    def deselect(self, selection: Selection[SelectionType] | SelectionType) -> Self:
+    def deselect(
+        self, selection: Selection[SelectionType] | SelectionType
+    ) -> Self:
         """Mark the given selection as not selected.
 
         Args:
@@ -411,7 +425,9 @@ class SelectionList(Generic[SelectionType], OptionList):
         self._message_toggled(self._values[value])
         return True
 
-    def toggle(self, selection: Selection[SelectionType] | SelectionType) -> Self:
+    def toggle(
+        self, selection: Selection[SelectionType] | SelectionType
+    ) -> Self:
         """Toggle the selected state of the given selection.
 
         Args:
@@ -464,7 +480,9 @@ class SelectionList(Generic[SelectionType], OptionList):
                     "tuple[TextType, SelectionType, bool]", (*selection, False)
                 )
             elif len(selection) != 3:
-                raise SelectionError(f"Expected 2 or 3 values, got {len(selection)}")
+                raise SelectionError(
+                    f"Expected 2 or 3 values, got {len(selection)}"
+                )
             selection = Selection[SelectionType](*selection)
 
         # At this point we should have a proper selection.
@@ -542,7 +560,9 @@ class SelectionList(Generic[SelectionType], OptionList):
         # Build the style for the side characters. Note that this is
         # sensitive to the type of character used, so pay attention to
         # BUTTON_LEFT and BUTTON_RIGHT.
-        side_style = Style.from_color(button_style.bgcolor, underlying_style.bgcolor)
+        side_style = Style.from_color(
+            button_style.bgcolor, underlying_style.bgcolor
+        )
 
         # Add the option index to the style. This is used to determine which
         # option to select when the button is clicked or hovered.
@@ -572,7 +592,9 @@ class SelectionList(Generic[SelectionType], OptionList):
         event.stop()
         self.post_message(self.SelectionHighlighted(self, event.option_index))
 
-    def _on_option_list_option_selected(self, event: OptionList.OptionSelected) -> None:
+    def _on_option_list_option_selected(
+        self, event: OptionList.OptionSelected
+    ) -> None:
         """Capture the `OptionList` selected event and turn it into a [`SelectionList`][textual.widgets.SelectionList] event.
 
         Args:
@@ -593,7 +615,9 @@ class SelectionList(Generic[SelectionType], OptionList):
         Raises:
             OptionDoesNotExist: If there is no selection option with the index.
         """
-        return cast("Selection[SelectionType]", super().get_option_at_index(index))
+        return cast(
+            "Selection[SelectionType]", super().get_option_at_index(index)
+        )
 
     def get_option(self, option_id: str) -> Selection[SelectionType]:
         """Get the selection option with the given ID.
@@ -617,7 +641,9 @@ class SelectionList(Generic[SelectionType], OptionList):
 
         # Decrement index of options after the one we just removed.
         self._values = {
-            option_value: option_index - 1 if option_index > index else option_index
+            option_value: (
+                option_index - 1 if option_index > index else option_index
+            )
             for option_value, option_index in self._values.items()
         }
 
@@ -670,7 +696,9 @@ class SelectionList(Generic[SelectionType], OptionList):
         self._values.update(
             {
                 option.value: index
-                for index, option in enumerate(cleaned_options, start=self.option_count)
+                for index, option in enumerate(
+                    cleaned_options, start=self.option_count
+                )
             }
         )
 

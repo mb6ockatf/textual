@@ -46,7 +46,9 @@ def test_refresh_range():
     start_location = (1, 0)
     old_end_location = (3, 0)
 
-    edit_result = document.replace_range(start_location, old_end_location, "123")
+    edit_result = document.replace_range(
+        start_location, old_end_location, "123"
+    )
 
     # Inform the wrapped document about the range impacted by the edit
     wrapped_document.wrap_range(
@@ -88,7 +90,9 @@ def test_refresh_range_wrapping_at_previously_unavailable_range():
     document = Document(SIMPLE_TEXT)
     wrapped_document = WrappedDocument(document, width=4)
 
-    edit_result = document.replace_range((3, 0), (3, 0), "012 3456\n78 90123\n45")
+    edit_result = document.replace_range(
+        (3, 0), (3, 0), "012 3456\n78 90123\n45"
+    )
     wrapped_document.wrap_range((3, 0), (3, 0), edit_result.end_location)
 
     assert wrapped_document.lines == [
@@ -105,7 +109,9 @@ def test_refresh_range_wrapping_disabled_previously_unavailable_range():
     document = Document(SIMPLE_TEXT)
     wrapped_document = WrappedDocument(document, width=0)  # wrapping disabled
 
-    edit_result = document.replace_range((3, 0), (3, 0), "012 3456\n78 90123\n45")
+    edit_result = document.replace_range(
+        (3, 0), (3, 0), "012 3456\n78 90123\n45"
+    )
     wrapped_document.wrap_range((3, 0), (3, 0), edit_result.end_location)
 
     assert wrapped_document.lines == [
@@ -165,7 +171,9 @@ def test_offset_to_location_wrapping_disabled(offset, location):
         [Offset(0, -10), (0, 0)],
     ],
 )
-def test_offset_to_location_invalid_offset_clamps_to_valid_offset(offset, location):
+def test_offset_to_location_invalid_offset_clamps_to_valid_offset(
+    offset, location
+):
     document = Document(SIMPLE_TEXT)
     wrapped_document = WrappedDocument(document, width=4)
 

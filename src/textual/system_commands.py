@@ -29,7 +29,8 @@ class SystemCommandsProvider(Provider):
             Commands that can be discovered.
         """
         commands = sorted(
-            self.app.get_system_commands(self.screen), key=lambda command: command[0]
+            self.app.get_system_commands(self.screen),
+            key=lambda command: command[0],
         )
         for name, help_text, callback, discover in commands:
             if discover:
@@ -54,7 +55,9 @@ class SystemCommandsProvider(Provider):
 
         # Loop over all applicable commands, find those that match and offer
         # them up to the command palette.
-        for name, help_text, callback, *_ in self.app.get_system_commands(self.screen):
+        for name, help_text, callback, *_ in self.app.get_system_commands(
+            self.screen
+        ):
             if (match := matcher.match(name)) > 0:
                 yield Hit(
                     match,

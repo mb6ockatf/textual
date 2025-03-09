@@ -33,8 +33,12 @@ def screen() -> Screen:
         screen._add_children(
             Focusable(id="foo", classes="a"),
             NonFocusable(id="bar"),
-            Focusable(Focusable(id="Paul", classes="c"), id="container1", classes="b"),
-            NonFocusable(Focusable(id="Jessica", classes="a"), id="container2"),
+            Focusable(
+                Focusable(id="Paul", classes="c"), id="container1", classes="b"
+            ),
+            NonFocusable(
+                Focusable(id="Jessica", classes="a"), id="container2"
+            ),
             Focusable(id="baz", classes="b"),
             ChildrenFocusableOnly(Focusable(id="child", classes="c")),
         )
@@ -101,7 +105,10 @@ def test_allow_focus():
             FocusableContainer(Button("egg", id="egg")),
             NonFocusableContainer(Button("EGG", id="qux")),
         )
-        assert [widget.id for widget in app.screen.focus_chain] == ["foo", "egg"]
+        assert [widget.id for widget in app.screen.focus_chain] == [
+            "foo",
+            "egg",
+        ]
         assert focusable_allow_focus_called
         assert non_focusable_allow_focus_called
 
@@ -233,7 +240,9 @@ def test_focus_next_and_previous_with_type_selector_without_self():
         assert screen.focus_previous(Input).id == "w5"
 
 
-def test_focus_next_and_previous_with_str_selector_without_self(screen: Screen):
+def test_focus_next_and_previous_with_str_selector_without_self(
+    screen: Screen,
+):
     """Test moving the focus with a selector that does not match the currently focused node."""
     screen.set_focus(screen.query_one("#foo"))
     assert screen.focused.id == "foo"

@@ -6,7 +6,9 @@ from textual.app import App
 from textual.command import CommandPalette, Hit, Hits, Provider
 
 CommandPaletteEvent = Union[
-    CommandPalette.Opened, CommandPalette.Closed, CommandPalette.OptionHighlighted
+    CommandPalette.Opened,
+    CommandPalette.Closed,
+    CommandPalette.OptionHighlighted,
 ]
 
 
@@ -48,7 +50,10 @@ async def test_command_palette_closed_event():
     app = AppWithActiveCommandPalette()
     async with app.run_test() as pilot:
         await pilot.press("escape")
-        assert app.events == [CommandPalette.Opened(), CommandPalette.Closed(False)]
+        assert app.events == [
+            CommandPalette.Opened(),
+            CommandPalette.Closed(False),
+        ]
 
 
 async def test_command_palette_closed_event_value():

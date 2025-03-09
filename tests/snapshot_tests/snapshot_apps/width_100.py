@@ -28,7 +28,8 @@ class Width100PCentApp(App[None]):
         with Vertical():
             yield Label("I want to be 100% of my parent", id="first")
             yield Label(
-                "I want my parent to be wide enough to wrap me and no more", id="second"
+                "I want my parent to be wide enough to wrap me and no more",
+                id="second",
             )
 
 

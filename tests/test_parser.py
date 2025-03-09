@@ -48,6 +48,8 @@ def test_read():
             test_parser = TestParser(read_size)
             data = []
             for offset in range(0, len(test_data), size):
-                for chunk in test_parser.feed(test_data[offset : offset + size]):
+                for chunk in test_parser.feed(
+                    test_data[offset : offset + size]
+                ):
                     data.append(chunk)
             assert "".join(data) == test_data

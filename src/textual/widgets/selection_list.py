@@ -5,4 +5,9 @@ from textual.widgets._selection_list import (
     SelectionType,
 )
 
-__all__ = ["MessageSelectionType", "Selection", "SelectionError", "SelectionType"]
+__all__ = [
+    "MessageSelectionType",
+    "Selection",
+    "SelectionError",
+    "SelectionType",
+]

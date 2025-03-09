@@ -24,7 +24,9 @@ def match(selector_sets: Iterable[SelectorSet], node: DOMNode) -> bool:
     )
 
 
-def _check_selectors(selectors: list[Selector], css_path_nodes: list[DOMNode]) -> bool:
+def _check_selectors(
+    selectors: list[Selector], css_path_nodes: list[DOMNode]
+) -> bool:
     """Match a list of selectors against DOM nodes.
 
     Args:
@@ -57,18 +59,30 @@ def _check_selectors(selectors: list[Selector], css_path_nodes: list[DOMNode]) -
             if selector.combinator == DESCENDENT:
                 # Find a matching descendent
                 if selector.check(path_node):
-                    if path_node is node and selector_index == selector_count - 1:
+                    if (
+                        path_node is node
+                        and selector_index == selector_count - 1
+                    ):
                         return True
-                    stack[-1] = (selector_index + 1, node_index + selector.advance)
+                    stack[-1] = (
+                        selector_index + 1,
+                        node_index + selector.advance,
+                    )
                     push((selector_index, node_index + 1))
                 else:
                     stack[-1] = (selector_index, node_index + 1)
             else:
                 # Match the next node
                 if selector.check(path_node):
-                    if path_node is node and selector_index == selector_count - 1:
+                    if (
+                        path_node is node
+                        and selector_index == selector_count - 1
+                    ):
                         return True
-                    stack[-1] = (selector_index + 1, node_index + selector.advance)
+                    stack[-1] = (
+                        selector_index + 1,
+                        node_index + selector.advance,
+                    )
                 else:
                     pop()
     return False

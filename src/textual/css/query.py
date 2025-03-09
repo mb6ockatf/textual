@@ -13,7 +13,15 @@ Additional methods apply actions to all nodes in the query.
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Generic, Iterable, Iterator, TypeVar, cast, overload
+from typing import (
+    TYPE_CHECKING,
+    Generic,
+    Iterable,
+    Iterator,
+    TypeVar,
+    cast,
+    overload,
+)
 
 import rich.repr
 
@@ -99,13 +107,17 @@ class DOMQuery(Generic[QueryType]):
                 self._filters.append(parse_selectors(filter))
             except TokenError:
                 # TODO: More helpful errors
-                raise InvalidQueryFormat(f"Unable to parse filter {filter!r} as query")
+                raise InvalidQueryFormat(
+                    f"Unable to parse filter {filter!r} as query"
+                )
 
         if exclude is not None:
             try:
                 self._excludes.append(parse_selectors(exclude))
             except TokenError:
-                raise InvalidQueryFormat(f"Unable to parse filter {filter!r} as query")
+                raise InvalidQueryFormat(
+                    f"Unable to parse filter {filter!r} as query"
+                )
 
     @property
     def node(self) -> DOMNode:
@@ -119,17 +131,24 @@ class DOMQuery(Generic[QueryType]):
 
         if self._nodes is None:
             initial_nodes = list(
-                self._node.walk_children(Widget) if self._deep else self._node._nodes
+                self._node.walk_children(Widget)
+                if self._deep
+                else self._node._nodes
             )
             nodes = [
                 node
                 for node in initial_nodes
-                if all(match(selector_set, node) for selector_set in self._filters)
+                if all(
+                    match(selector_set, node) for selector_set in self._filters
+                )
             ]
             nodes = [
                 node
                 for node in nodes
-                if not any(match(selector_set, node) for selector_set in self._excludes)
+                if not any(
+                    match(selector_set, node)
+                    for selector_set in self._excludes
+                )
             ]
             self._nodes = cast("list[QueryType]", nodes)
         return self._nodes
@@ -277,7 +296,9 @@ class DOMQuery(Generic[QueryType]):
         # Call on first to get the first item. Here we'll use all of the
         # testing and checking it provides.
         the_one: ExpectType | QueryType = (
-            self.first(expect_type) if expect_type is not None else self.first()
+            self.first(expect_type)
+            if expect_type is not None
+            else self.first()
         )
         try:
             # Now see if we can access a subsequent item in the nodes. There
@@ -334,7 +355,9 @@ class DOMQuery(Generic[QueryType]):
         def results(self) -> Iterator[QueryType]: ...
 
         @overload
-        def results(self, filter_type: type[ExpectType]) -> Iterator[ExpectType]: ...
+        def results(
+            self, filter_type: type[ExpectType]
+        ) -> Iterator[ExpectType]: ...
 
     def results(
         self, filter_type: type[ExpectType] | None = None
@@ -428,16 +451,24 @@ class DOMQuery(Generic[QueryType]):
             node.set_styles(**update_styles)
         if css is not None:
             try:
-                new_styles = parse_declarations(css, read_from=("set_styles", ""))
+                new_styles = parse_declarations(
+                    css, read_from=("set_styles", "")
+                )
             except DeclarationError as error:
-                raise DeclarationError(error.name, error.token, error.message) from None
+                raise DeclarationError(
+                    error.name, error.token, error.message
+                ) from None
             for node in self:
                 node._inline_styles.merge(new_styles)
                 node.refresh(layout=True)
         return self
 
     def refresh(
-        self, *, repaint: bool = True, layout: bool = False, recompose: bool = False
+        self,
+        *,
+        repaint: bool = True,
+        layout: bool = False,
+        recompose: bool = False,
     ) -> DOMQuery[QueryType]:
         """Refresh matched nodes.
 

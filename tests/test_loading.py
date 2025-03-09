@@ -14,7 +14,9 @@ class LoadingApp(App[None]):
 
     def compose(self) -> ComposeResult:
         with VerticalScroll():
-            yield Label("another big label\n" * 30)  # Ensure there's a scrollbar.
+            yield Label(
+                "another big label\n" * 30
+            )  # Ensure there's a scrollbar.
 
     def action_loading(self):
         self.query_one(VerticalScroll).loading = True

@@ -89,7 +89,12 @@ async def test_listview_pop_updates_index_and_highlighting(
         (2, [2], 2, ["2", "3"]),  # Remove highlighted item
         (0, [0], 0, ["0", "1"]),  # Remove first item when highlighted
         (8, [-1], 7, ["8", "7"]),  # Remove last item when highlighted
-        (4, [2, 1], 2, ["4", "4"]),  # Remove items before the highlighted index
+        (
+            4,
+            [2, 1],
+            2,
+            ["4", "4"],
+        ),  # Remove items before the highlighted index
         (4, [-2, 5], 4, ["4"]),  # Remove items after the highlighted index
         (4, range(0, 9), None, ["4", None]),  # Remove all items
     ],

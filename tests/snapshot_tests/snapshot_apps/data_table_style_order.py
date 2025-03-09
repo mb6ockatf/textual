@@ -51,7 +51,9 @@ class DataTableCursorStyles(App):
             ("renderable", "css"),
         ]
         for foreground, background in priorities:
-            yield Label(f"Foreground is {foreground!r}, background is {background!r}:")
+            yield Label(
+                f"Foreground is {foreground!r}, background is {background!r}:"
+            )
             table = make_datatable(foreground, background)
             yield table
 

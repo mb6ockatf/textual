@@ -149,7 +149,9 @@ class MerlinApp(App):
     def check_win(self) -> bool:
         """Check for a win."""
         on_switches = {
-            int(switch.name or "0") for switch in self.query(Switch) if switch.value
+            int(switch.name or "0")
+            for switch in self.query(Switch)
+            if switch.value
         }
         return on_switches == {1, 2, 3, 4, 6, 7, 8, 9}
 
@@ -165,7 +167,9 @@ class MerlinApp(App):
         if self.check_win():
             self.query_one("Screen").add_class("-win")
             self.query_one(Timer).running = False
-            self.notify("You win!", title="congratulations", severity="information")
+            self.notify(
+                "You win!", title="congratulations", severity="information"
+            )
 
     def on_key(self, event: events.Key) -> None:
         """Maps switches to keys, so we can use the keyboard as well."""

@@ -13,6 +13,7 @@ This element tests that separate rules applied to the same widget are mixed
 correctly. The color is set to cadetblue in 'first.tcss', and the background is
 darkolivegreen in 'second.tcss'. Both of these should apply.
 """
+
 from textual.app import App, ComposeResult
 from textual.widgets import Static
 

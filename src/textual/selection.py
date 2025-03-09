@@ -24,7 +24,9 @@ class Selection(NamedTuple):
         Returns:
             New Selection.
         """
-        offsets = sorted([offset1, offset2], key=(lambda offset: (offset.y, offset.x)))
+        offsets = sorted(
+            [offset1, offset2], key=(lambda offset: (offset.y, offset.x))
+        )
         return cls(*offsets)
 
     def extract(self, text: str) -> str:

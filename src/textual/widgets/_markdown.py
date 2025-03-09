@@ -188,7 +188,9 @@ class MarkdownBlock(Static):
                 elif child.type == "em_open":
                     style_stack.append(
                         style_stack[-1]
-                        + self._markdown.get_component_rich_style("em", partial=True)
+                        + self._markdown.get_component_rich_style(
+                            "em", partial=True
+                        )
                     )
                 elif child.type == "strong_open":
                     style_stack.append(
@@ -200,7 +202,9 @@ class MarkdownBlock(Static):
                 elif child.type == "s_open":
                     style_stack.append(
                         style_stack[-1]
-                        + self._markdown.get_component_rich_style("s", partial=True)
+                        + self._markdown.get_component_rich_style(
+                            "s", partial=True
+                        )
                     )
                 elif child.type == "link_open":
                     href = child.attrs.get("href", "")
@@ -432,7 +436,9 @@ class MarkdownOrderedList(MarkdownList):
     def compose(self) -> ComposeResult:
         suffix = ". "
         start = 1
-        if self._blocks and isinstance(self._blocks[0], MarkdownOrderedListItem):
+        if self._blocks and isinstance(
+            self._blocks[0], MarkdownOrderedListItem
+        ):
             try:
                 start = int(self._blocks[0].bullet)
             except ValueError:
@@ -480,8 +486,12 @@ class MarkdownTableContent(Widget):
             expand=True,
             box=box.SIMPLE_HEAVY,
             style=self.rich_style,
-            header_style=self.get_component_rich_style("markdown-table--header"),
-            border_style=self.get_component_rich_style("markdown-table--lines"),
+            header_style=self.get_component_rich_style(
+                "markdown-table--header"
+            ),
+            border_style=self.get_component_rich_style(
+                "markdown-table--lines"
+            ),
             collapse_padding=True,
             padding=0,
         )
@@ -934,7 +944,9 @@ class Markdown(Widget):
                 token_type = token.type
                 if token_type == "heading_open":
                     block_id += 1
-                    stack_append(HEADINGS[token.tag](self, id=f"block{block_id}"))
+                    stack_append(
+                        HEADINGS[token.tag](self, id=f"block{block_id}")
+                    )
                 elif token_type == "hr":
                     yield MarkdownHorizontalRule(self)
                 elif token_type == "paragraph_open":
@@ -985,7 +997,9 @@ class Markdown(Widget):
                 elif token_type == "inline":
                     stack[-1].build_from_token(token)
                 elif token_type in ("fence", "code_block"):
-                    fence = MarkdownFence(self, token.content.rstrip(), token.info)
+                    fence = MarkdownFence(
+                        self, token.content.rstrip(), token.info
+                    )
                     if stack:
                         stack[-1]._blocks.append(fence)
                     else:
@@ -1069,7 +1083,9 @@ class MarkdownTableOfContents(Widget, can_focus_children=True):
     }
     """
 
-    table_of_contents = reactive[Optional[TableOfContentsType]](None, init=False)
+    table_of_contents = reactive[Optional[TableOfContentsType]](
+        None, init=False
+    )
     """Underlying data to populate the table of contents widget."""
 
     def __init__(
@@ -1101,11 +1117,15 @@ class MarkdownTableOfContents(Widget, can_focus_children=True):
         tree.auto_expand = False
         yield tree
 
-    def watch_table_of_contents(self, table_of_contents: TableOfContentsType) -> None:
+    def watch_table_of_contents(
+        self, table_of_contents: TableOfContentsType
+    ) -> None:
         """Triggered when the table of contents changes."""
         self.rebuild_table_of_contents(table_of_contents)
 
-    def rebuild_table_of_contents(self, table_of_contents: TableOfContentsType) -> None:
+    def rebuild_table_of_contents(
+        self, table_of_contents: TableOfContentsType
+    ) -> None:
         """Rebuilds the tree representation of the table of contents data.
 
         Args:
@@ -1130,7 +1150,9 @@ class MarkdownTableOfContents(Widget, can_focus_children=True):
         node_data = message.node.data
         if node_data is not None:
             await self._post_message(
-                Markdown.TableOfContentsSelected(self.markdown, node_data["block_id"])
+                Markdown.TableOfContentsSelected(
+                    self.markdown, node_data["block_id"]
+                )
             )
         message.stop()
 
@@ -1229,11 +1251,15 @@ class MarkdownViewer(VerticalScroll, can_focus=False, can_focus_children=True):
             await self.document.load(self.navigator.location)
             self.post_message(self.NavigatorUpdated())
 
-    async def _on_markdown_link_clicked(self, message: Markdown.LinkClicked) -> None:
+    async def _on_markdown_link_clicked(
+        self, message: Markdown.LinkClicked
+    ) -> None:
         message.stop()
         await self.go(message.href)
 
-    def watch_show_table_of_contents(self, show_table_of_contents: bool) -> None:
+    def watch_show_table_of_contents(
+        self, show_table_of_contents: bool
+    ) -> None:
         self.set_class(show_table_of_contents, "-show-table-of-contents")
 
     def compose(self) -> ComposeResult:

@@ -15,7 +15,9 @@ class FileMonitor:
 
     _paths: set[Path]
 
-    def __init__(self, paths: Sequence[Path], callback: Callable[[], None]) -> None:
+    def __init__(
+        self, paths: Sequence[Path], callback: Callable[[], None]
+    ) -> None:
         """Monitor the given file paths for changes.
 
         Args:

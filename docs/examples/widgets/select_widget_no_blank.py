@@ -30,7 +30,9 @@ class SelectApp(App):
         self.title = str(event.value)
 
     def action_swap(self) -> None:
-        self.query_one(Select).set_options(zip(ALTERNATE_LINES, ALTERNATE_LINES))
+        self.query_one(Select).set_options(
+            zip(ALTERNATE_LINES, ALTERNATE_LINES)
+        )
 
 
 if __name__ == "__main__":

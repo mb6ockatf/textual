@@ -12,7 +12,9 @@ class MutedBackgrounds(App[None]):
 
     def compose(self) -> ComposeResult:
         for color in COLORS:
-            yield Label(f"$text-{color} on ${color}-muted", classes=f"text-{color}")
+            yield Label(
+                f"$text-{color} on ${color}-muted", classes=f"text-{color}"
+            )
 
 
 app = MutedBackgrounds()

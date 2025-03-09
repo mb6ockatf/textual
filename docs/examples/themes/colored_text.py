@@ -5,7 +5,9 @@ COLORS = ("primary", "secondary", "accent", "warning", "error", "success")
 
 
 class ColoredText(App[None]):
-    CSS = "\n".join(f".text-{color} {{color: $text-{color};}}" for color in COLORS)
+    CSS = "\n".join(
+        f".text-{color} {{color: $text-{color};}}" for color in COLORS
+    )
 
     def compose(self) -> ComposeResult:
         for color in COLORS:

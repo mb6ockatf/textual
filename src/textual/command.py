@@ -172,7 +172,9 @@ class DiscoveryHit:
 Hits: TypeAlias = AsyncIterator["DiscoveryHit | Hit"]
 """Return type for the command provider's `search` method."""
 
-ProviderSource: TypeAlias = "Iterable[type[Provider] | Callable[[], type[Provider]]]"
+ProviderSource: TypeAlias = (
+    "Iterable[type[Provider] | Callable[[], type[Provider]]]"
+)
 """The type used to declare the providers for a CommandPalette."""
 
 
@@ -183,7 +185,9 @@ class Provider(ABC):
     [`search`][textual.command.Provider.search].
     """
 
-    def __init__(self, screen: Screen[Any], match_style: Style | None = None) -> None:
+    def __init__(
+        self, screen: Screen[Any], match_style: Style | None = None
+    ) -> None:
         """Initialise the command provider.
 
         Args:
@@ -221,7 +225,9 @@ class Provider(ABC):
         """The preferred style to use when highlighting matching portions of the [`match_display`][textual.command.Hit.match_display]."""
         return self.__match_style
 
-    def matcher(self, user_input: str, case_sensitive: bool = False) -> Matcher:
+    def matcher(
+        self, user_input: str, case_sensitive: bool = False
+    ) -> Matcher:
         """Create a [fuzzy matcher][textual.fuzzy.Matcher] for the given user input.
 
         Args:
@@ -634,9 +640,15 @@ class CommandPalette(SystemModalScreen[None]):
         ),
         Binding("down", "cursor_down", "Next command", show=False),
         Binding("escape", "escape", "Exit the command palette"),
-        Binding("pagedown", "command_list('page_down')", "Next page", show=False),
-        Binding("pageup", "command_list('page_up')", "Previous page", show=False),
-        Binding("up", "command_list('cursor_up')", "Previous command", show=False),
+        Binding(
+            "pagedown", "command_list('page_down')", "Next page", show=False
+        ),
+        Binding(
+            "pageup", "command_list('page_up')", "Previous page", show=False
+        ),
+        Binding(
+            "up", "command_list('cursor_up')", "Previous command", show=False
+        ),
     ]
     """
     | Key(s) | Description |
@@ -784,7 +796,9 @@ class CommandPalette(SystemModalScreen[None]):
         with Vertical(id="--container"):
             with Horizontal(id="--input"):
                 yield SearchIcon()
-                yield CommandInput(placeholder=self._placeholder, select_on_focus=False)
+                yield CommandInput(
+                    placeholder=self._placeholder, select_on_focus=False
+                )
                 if not self.run_on_select:
                     yield Button("\u25b6")
             with Vertical(id="--results"):
@@ -811,7 +825,9 @@ class CommandPalette(SystemModalScreen[None]):
         self.app.post_message(CommandPalette.Opened())
         self._calling_screen = self.app.screen_stack[-2]
 
-        match_style = self.get_visual_style("command-palette--highlight", partial=True)
+        match_style = self.get_visual_style(
+            "command-palette--highlight", partial=True
+        )
 
         assert self._calling_screen is not None
         self._providers = [
@@ -826,7 +842,10 @@ class CommandPalette(SystemModalScreen[None]):
         """Shutdown providers when command palette is closed."""
         if self._providers:
             await wait(
-                [create_task(provider._shutdown()) for provider in self._providers],
+                [
+                    create_task(provider._shutdown())
+                    for provider in self._providers
+                ],
             )
             self._providers.clear()
 
@@ -876,7 +895,9 @@ class CommandPalette(SystemModalScreen[None]):
                 command_list = self.query_one(CommandList)
                 command_list.add_option(
                     Option(
-                        Align.center(Text("No matches found", style="not bold")),
+                        Align.center(
+                            Text("No matches found", style="not bold")
+                        ),
                         disabled=True,
                         id=self._NO_MATCHES,
                     )
@@ -909,11 +930,15 @@ class CommandPalette(SystemModalScreen[None]):
         This watcher adds or removes a busy indication depending on the
         flag's state.
         """
-        self.query_one(LoadingIndicator).set_class(self._show_busy, "--visible")
+        self.query_one(LoadingIndicator).set_class(
+            self._show_busy, "--visible"
+        )
         self.query_one(CommandList).set_class(self._show_busy, "--populating")
 
     @staticmethod
-    async def _consume(hits: Hits, commands: Queue[DiscoveryHit | Hit]) -> None:
+    async def _consume(
+        hits: Hits, commands: Queue[DiscoveryHit | Hit]
+    ) -> None:
         """Consume a source of matching commands, feeding the given command queue.
 
         Args:
@@ -1011,7 +1036,10 @@ class CommandPalette(SystemModalScreen[None]):
                 search.cancel()
 
     def _refresh_command_list(
-        self, command_list: CommandList, commands: list[Command], clear_current: bool
+        self,
+        command_list: CommandList,
+        commands: list[Command],
+        clear_current: bool,
     ) -> None:
         """Refresh the command list.
 
@@ -1021,7 +1049,9 @@ class CommandPalette(SystemModalScreen[None]):
             clear_current: Should the current content of the list be cleared first?
         """
 
-        sorted_commands = sorted(commands, key=attrgetter("hit.score"), reverse=True)
+        sorted_commands = sorted(
+            commands, key=attrgetter("hit.score"), reverse=True
+        )
         command_list.clear_options().add_options(sorted_commands)
 
         if sorted_commands:
@@ -1036,7 +1066,9 @@ class CommandPalette(SystemModalScreen[None]):
     _NO_MATCHES: Final[str] = "--no-matches"
     """The ID to give the disabled option that shows there were no matches."""
 
-    _GATHER_COMMANDS_GROUP: Final[str] = "--textual-command-palette-gather-commands"
+    _GATHER_COMMANDS_GROUP: Final[str] = (
+        "--textual-command-palette-gather-commands"
+    )
     """The group name of the command gathering worker."""
 
     @work(exclusive=True, group=_GATHER_COMMANDS_GROUP)
@@ -1116,7 +1148,9 @@ class CommandPalette(SystemModalScreen[None]):
                     help_style = Style.from_styles(
                         self.get_component_styles("command-palette--help-text")
                     )
-                    yield Content.from_markup(hit.help).stylize_before(help_style)
+                    yield Content.from_markup(hit.help).stylize_before(
+                        help_style
+                    )
 
             prompt = Content("\n").join(build_prompt())
 
@@ -1146,7 +1180,9 @@ class CommandPalette(SystemModalScreen[None]):
         # On the way out, if we're still in play, ensure everything has been
         # dropped into the command list.
         if not worker.is_cancelled:
-            self._refresh_command_list(command_list, gathered_commands, clear_current)
+            self._refresh_command_list(
+                command_list, gathered_commands, clear_current
+            )
 
         # One way or another, we're not busy any more.
         self._show_busy = False
@@ -1229,7 +1265,9 @@ class CommandPalette(SystemModalScreen[None]):
                 # ...we should return it to the parent screen and let it
                 # decide what to do with it (hopefully it'll run it).
                 self._cancel_gather_commands()
-                self.app.post_message(CommandPalette.Closed(option_selected=True))
+                self.app.post_message(
+                    CommandPalette.Closed(option_selected=True)
+                )
                 self.app._delay_update()
                 self.dismiss()
                 self.app.call_later(self._selected_command.command)
@@ -1238,7 +1276,9 @@ class CommandPalette(SystemModalScreen[None]):
     def _stop_event_leak(self, event: OptionList.OptionHighlighted) -> None:
         """Stop any unused events so they don't leak to the application."""
         event.stop()
-        self.app.post_message(CommandPalette.OptionHighlighted(highlighted_event=event))
+        self.app.post_message(
+            CommandPalette.OptionHighlighted(highlighted_event=event)
+        )
 
     def _action_escape(self) -> None:
         """Handle a request to escape out of the command palette."""
@@ -1253,7 +1293,9 @@ class CommandPalette(SystemModalScreen[None]):
             action: The action to pass on to the [`CommandList`][textual.command.CommandList].
         """
         try:
-            command_action = getattr(self.query_one(CommandList), f"action_{action}")
+            command_action = getattr(
+                self.query_one(CommandList), f"action_{action}"
+            )
         except AttributeError:
             return
         command_action()

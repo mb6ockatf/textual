@@ -220,7 +220,10 @@ class Button(Widget, can_focus=True):
 
     def get_content_width(self, container: Size, viewport: Size) -> int:
         try:
-            return max([cell_len(line) for line in self.label.plain.splitlines()]) + 2
+            return (
+                max([cell_len(line) for line in self.label.plain.splitlines()])
+                + 2
+            )
         except ValueError:
             # Empty string label
             return 2
@@ -285,7 +288,9 @@ class Button(Widget, can_focus=True):
             self.post_message(Button.Pressed(self))
         else:
             self.call_later(
-                self.app.run_action, self.action, default_namespace=self._parent
+                self.app.run_action,
+                self.action,
+                default_namespace=self._parent,
             )
         return self
 
@@ -294,7 +299,8 @@ class Button(Widget, can_focus=True):
         if self.active_effect_duration > 0:
             self.add_class("-active")
             self.set_timer(
-                self.active_effect_duration, partial(self.remove_class, "-active")
+                self.active_effect_duration,
+                partial(self.remove_class, "-active"),
             )
 
     def action_press(self) -> None:

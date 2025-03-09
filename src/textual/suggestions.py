@@ -21,7 +21,9 @@ def get_suggestion(word: str, possible_words: Sequence[str]) -> str | None:
     return None if not possible_matches else possible_matches[0]
 
 
-def get_suggestions(word: str, possible_words: Sequence[str], count: int) -> list[str]:
+def get_suggestions(
+    word: str, possible_words: Sequence[str], count: int
+) -> list[str]:
     """
     Returns a list of up to `count` matches of `word` amongst `possible_words`.
 

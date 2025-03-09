@@ -48,7 +48,10 @@ def test_from_rich_text():
     content = Content.from_rich_text(text)
     assert len(content) == 11
     assert content.plain == "Hello World"
-    assert [Span(start=0, end=5, style="red"), Span(start=6, end=11, style="blue")]
+    assert [
+        Span(start=0, end=5, style="red"),
+        Span(start=6, end=11, style="blue"),
+    ]
 
 
 def test_styled():
@@ -127,7 +130,9 @@ def test_add() -> None:
     assert "" + Content("foo") == Content("foo")
 
     # Test spans after addition
-    content = Content.styled("foo", "red") + " " + Content.styled("bar", "blue")
+    content = (
+        Content.styled("foo", "red") + " " + Content.styled("bar", "blue")
+    )
     assert str(content) == "foo bar"
     assert content.spans == [Span(0, 3, "red"), Span(4, 7, "blue")]
     assert content.cell_length == 7
@@ -161,7 +166,11 @@ def test_join():
     assert Content(".").join(["foo"]) == "foo"
 
     # Join strings and Content
-    pieces = [Content.styled("foo", "red"), "bar", Content.styled("baz", "blue")]
+    pieces = [
+        Content.styled("foo", "red"),
+        "bar",
+        Content.styled("baz", "blue"),
+    ]
     content = Content(".").join(pieces)
     assert content.plain == "foo.bar.baz"
     assert content.spans == [Span(0, 3, "red"), Span(8, 11, "blue")]
@@ -194,7 +203,9 @@ def test_truncate():
     # Truncate larger results unchanged
     assert content.truncate(15).markup == "[red]Hello World[/red]"
     # Truncate larger with padding increases size
-    assert content.truncate(15, pad=True).markup == "[red]Hello World[/red]    "
+    assert (
+        content.truncate(15, pad=True).markup == "[red]Hello World[/red]    "
+    )
 
 
 def test_assemble():
@@ -204,7 +215,10 @@ def test_assemble():
         Content.from_markup(
             "pieces of [red]text[/red] or [blue]content[/blue] into "
         ),  # Other Content
-        ("a single Content instance", "underline"),  # A tuple of text and a style
+        (
+            "a single Content instance",
+            "underline",
+        ),  # A tuple of text and a style
     )
     assert (
         content.plain

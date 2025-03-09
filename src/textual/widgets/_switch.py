@@ -179,7 +179,9 @@ class Switch(Widget, can_focus=True):
     def get_content_width(self, container: Size, viewport: Size) -> int:
         return 4
 
-    def get_content_height(self, container: Size, viewport: Size, width: int) -> int:
+    def get_content_height(
+        self, container: Size, viewport: Size, width: int
+    ) -> int:
         return 1
 
     async def _on_click(self, event: Click) -> None:

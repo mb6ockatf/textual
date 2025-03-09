@@ -85,7 +85,9 @@ async def test_suggestion_shows_up_after_deleting_extra_chars_in_middle_of_word(
         (string.punctuation[::3], 5),
     ],
 )
-async def test_suggestion_with_special_characters(suggestion: str, truncate_at: int):
+async def test_suggestion_with_special_characters(
+    suggestion: str, truncate_at: int
+):
     app = SuggestionsApp([suggestion])
     async with app.run_test() as pilot:
         await pilot.press(*suggestion[:truncate_at])

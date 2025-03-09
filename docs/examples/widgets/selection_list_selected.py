@@ -27,7 +27,9 @@ class SelectionListApp(App[None]):
         yield Footer()
 
     def on_mount(self) -> None:
-        self.query_one(SelectionList).border_title = "Shall we play some games?"
+        self.query_one(SelectionList).border_title = (
+            "Shall we play some games?"
+        )
         self.query_one(Pretty).border_title = "Selected games"
 
     @on(Mount)

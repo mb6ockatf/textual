@@ -122,7 +122,9 @@ class Resize(Event, bubble=False):
         """The new size of the Widget."""
         self.virtual_size = virtual_size
         """The virtual size (scrollable size) of the Widget."""
-        self.container_size = size if container_size is None else container_size
+        self.container_size = (
+            size if container_size is None else container_size
+        )
         """The size of the Widget's container widget."""
         self.pixel_size = pixel_size
         """Size of terminal window in pixels if known, or `None` if not known."""
@@ -276,7 +278,9 @@ class Key(InputEvent):
         self.key = key
         """The key that was pressed."""
         self.character = (
-            (key if len(key) == 1 else None) if character is None else character
+            (key if len(key) == 1 else None)
+            if character is None
+            else character
         )
         """A printable character or ``None`` if it is not printable."""
         self.aliases: list[str] = _get_key_aliases(key)
@@ -306,7 +310,9 @@ class Key(InputEvent):
         Returns:
             `True` if the key is printable.
         """
-        return False if self.character is None else self.character.isprintable()
+        return (
+            False if self.character is None else self.character.isprintable()
+        )
 
 
 def _key_to_identifier(key: str) -> str:

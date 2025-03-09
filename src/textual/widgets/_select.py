@@ -105,10 +105,14 @@ class SelectOverlay(OptionList):
             if index is not None:
                 self.select(index)
 
-    def check_consume_key(self, key: str, character: str | None = None) -> bool:
+    def check_consume_key(
+        self, key: str, character: str | None = None
+    ) -> bool:
         """Check if the widget may consume the given key."""
         return (
-            self._type_to_search and character is not None and character.isprintable()
+            self._type_to_search
+            and character is not None
+            and character.isprintable()
         )
 
     def select(self, index: int | None) -> None:
@@ -161,7 +165,9 @@ class SelectOverlay(OptionList):
         self.post_message(self.Dismiss(lost_focus=True))
         self.suppress_click()
 
-    def on_option_list_option_selected(self, event: OptionList.OptionSelected) -> None:
+    def on_option_list_option_selected(
+        self, event: OptionList.OptionSelected
+    ) -> None:
         """Inform parent when an option is selected."""
         event.stop()
         self.post_message(self.UpdateSelection(event.option_index))
@@ -274,7 +280,9 @@ class Select(Generic[SelectType], Vertical, can_focus=True):
     """Constant to flag that the widget has no selection."""
 
     BINDINGS = [
-        Binding("enter,down,space,up", "show_overlay", "Show menu", show=False),
+        Binding(
+            "enter,down,space,up", "show_overlay", "Show menu", show=False
+        ),
     ]
     """
     | Key(s) | Description |
@@ -488,7 +496,9 @@ class Select(Generic[SelectType], Vertical, can_focus=True):
 
         This method sets up `self._options` and `self._legal_values`.
         """
-        self._options: list[tuple[RenderableType, SelectType | NoSelection]] = []
+        self._options: list[
+            tuple[RenderableType, SelectType | NoSelection]
+        ] = []
         if self._allow_blank:
             self._options.append(("", self.BLANK))
         self._options.extend(options)
@@ -517,13 +527,17 @@ class Select(Generic[SelectType], Vertical, can_focus=True):
         option_list.clear_options()
         option_list.add_options(options)
 
-    def _init_selected_option(self, hint: SelectType | NoSelection = BLANK) -> None:
+    def _init_selected_option(
+        self, hint: SelectType | NoSelection = BLANK
+    ) -> None:
         """Initialises the selected option for the `Select`."""
         if hint == self.BLANK and not self._allow_blank:
             hint = self._options[0][1]
         self.value = hint
 
-    def set_options(self, options: Iterable[tuple[RenderableType, SelectType]]) -> None:
+    def set_options(
+        self, options: Iterable[tuple[RenderableType, SelectType]]
+    ) -> None:
         """Set the options for the Select.
 
         This will reset the selection. The selection will be empty, if allowed, otherwise
@@ -557,7 +571,9 @@ class Select(Generic[SelectType], Vertical, can_focus=True):
             # It would make sense to use `None` to flag that the Select has no selection,
             # so we provide a helpful message to catch this mistake in case people didn't
             # realise we use a special value to flag "no selection".
-            help_text = " Did you mean to use Select.clear()?" if value is None else ""
+            help_text = (
+                " Did you mean to use Select.clear()?" if value is None else ""
+            )
             raise InvalidSelectValueError(
                 f"Illegal select value {value!r}." + help_text
             )
@@ -681,4 +697,6 @@ class Select(Generic[SelectType], Vertical, can_focus=True):
         if self.value == self.BLANK:
             select_current.update(self.BLANK)
         option_list = self.query_one(SelectOverlay)
-        option_list.replace_option_prompt_at_index(0, Text(prompt, style="dim"))
+        option_list.replace_option_prompt_at_index(
+            0, Text(prompt, style="dim")
+        )

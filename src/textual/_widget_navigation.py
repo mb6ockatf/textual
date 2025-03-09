@@ -77,7 +77,11 @@ def find_first_enabled(
         The first enabled candidate or `None` if none were available.
     """
     return next(
-        (index for index, candidate in enumerate(candidates) if not candidate.disabled),
+        (
+            index
+            for index, candidate in enumerate(candidates)
+            if not candidate.disabled
+        ),
         None,
     )
 
@@ -95,7 +99,9 @@ def find_last_enabled(candidates: Sequence[Disableable]) -> int | None:
     return next(
         (
             total_candidates - offset_from_end
-            for offset_from_end, candidate in enumerate(reversed(candidates), start=1)
+            for offset_from_end, candidate in enumerate(
+                reversed(candidates), start=1
+            )
             if not candidate.disabled
         ),
         None,
@@ -132,7 +138,9 @@ def find_next_enabled(
             )
         return None
 
-    for index, candidate in loop_from_index(candidates, anchor, direction, wrap=True):
+    for index, candidate in loop_from_index(
+        candidates, anchor, direction, wrap=True
+    ):
         if not candidate.disabled:
             return index
     return anchor
@@ -172,7 +180,9 @@ def find_next_enabled_no_wrap(
     start = anchor if with_anchor else anchor + direction
     counter = count(start, direction)
     valid_candidates = (
-        candidates[start:] if direction == 1 else reversed(candidates[: start + 1])
+        candidates[start:]
+        if direction == 1
+        else reversed(candidates[: start + 1])
     )
 
     for idx, candidate in zip(counter, valid_candidates):

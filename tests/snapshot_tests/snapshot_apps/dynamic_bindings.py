@@ -15,7 +15,9 @@ class BindingsApp(App):
     def compose(self) -> ComposeResult:
         yield Footer()
 
-    def check_action(self, action: str, parameters: tuple[object, ...]) -> bool | None:
+    def check_action(
+        self, action: str, parameters: tuple[object, ...]
+    ) -> bool | None:
         if action == "b":
             # A is disabled (not show)
             return False

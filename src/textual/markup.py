@@ -131,7 +131,9 @@ STYLE_ABBREVIATIONS = {
 
 _ReStringMatch = Match[str]  # regex match object
 _ReSubCallable = Callable[[_ReStringMatch], str]  # Callable invoked by re.sub
-_EscapeSubMethod = Callable[[_ReSubCallable, str], str]  # Sub method of a compiled re
+_EscapeSubMethod = Callable[
+    [_ReSubCallable, str], str
+]  # Sub method of a compiled re
 
 
 def escape(
@@ -213,9 +215,17 @@ def parse_style(style: str, variables: dict[str, str] | None = None) -> Style:
                     if token.name == "whitespace" and not parenthesis:
                         break
                     value_text.append(token.value)
-                    if token.name in {"round_start", "square_start", "curly_start"}:
+                    if token.name in {
+                        "round_start",
+                        "square_start",
+                        "curly_start",
+                    }:
                         parenthesis.append(token.value)
-                    elif token.name in {"round_end", "square_end", "curly_end"}:
+                    elif token.name in {
+                        "round_end",
+                        "square_end",
+                        "curly_end",
+                    }:
                         parenthesis.pop()
                         if not parenthesis:
                             break
@@ -264,7 +274,9 @@ def parse_style(style: str, variables: dict[str, str] | None = None) -> Style:
                 if color is not None:
                     color = color.multiply_alpha(percent)
 
-    parsed_style = Style(background, color, link=meta.pop("link", None), **styles)
+    parsed_style = Style(
+        background, color, link=meta.pop("link", None), **styles
+    )
 
     if meta:
         parsed_style += Style.from_meta(meta)
@@ -339,7 +351,9 @@ def _to_content(
 
         def process_text(template_text: str, /) -> str:
             if "$" in template_text:
-                return Template(template_text).safe_substitute(template_variables)
+                return Template(template_text).safe_substitute(
+                    template_variables
+                )
             return template_text
 
     for token in iter_tokens:
@@ -370,13 +384,17 @@ def _to_content(
             closing_tag = "".join(tag_text).strip()
             normalized_closing_tag = normalize_markup_tag(closing_tag)
             if normalized_closing_tag:
-                for index, (tag_position, tag_body, normalized_tag_body) in enumerate(
-                    reversed(style_stack), 1
-                ):
+                for index, (
+                    tag_position,
+                    tag_body,
+                    normalized_tag_body,
+                ) in enumerate(reversed(style_stack), 1):
                     if normalized_tag_body == normalized_closing_tag:
                         style_stack.pop(-index)
                         if tag_position != position:
-                            spans.append(Span(tag_position, position, tag_body))
+                            spans.append(
+                                Span(tag_position, position, tag_body)
+                            )
                         break
                 else:
                     raise MarkupError(
@@ -385,7 +403,9 @@ def _to_content(
 
             else:
                 if not style_stack:
-                    raise MarkupError("auto closing tag ('[/]') has nothing to close")
+                    raise MarkupError(
+                        "auto closing tag ('[/]') has nothing to close"
+                    )
                 open_position, tag_body, _ = style_stack.pop()
                 spans.append(Span(open_position, position, tag_body))
 
@@ -396,7 +416,9 @@ def _to_content(
         spans.append(Span(position, text_length, tag_body))
 
     if style:
-        content = Content(content_text, [Span(0, len(content_text), style), *spans])
+        content = Content(
+            content_text, [Span(0, len(content_text), style), *spans]
+        )
     else:
         content = Content(content_text, spans)
 

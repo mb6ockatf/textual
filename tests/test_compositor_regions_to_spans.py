@@ -34,7 +34,10 @@ def test_regions_to_ranges_fully_overlapping_regions():
 
 def test_regions_to_ranges_disjoint_regions_different_lines():
     regions = [Region(0, 0, 2, 1), Region(2, 2, 2, 1)]
-    assert list(Compositor._regions_to_spans(regions)) == [(0, 0, 2), (2, 2, 4)]
+    assert list(Compositor._regions_to_spans(regions)) == [
+        (0, 0, 2),
+        (2, 2, 4),
+    ]
 
 
 def test_regions_to_ranges_disjoint_regions_same_line():

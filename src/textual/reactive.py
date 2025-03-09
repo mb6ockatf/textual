@@ -88,7 +88,9 @@ def invoke_watcher(
                 old_value, value
             )
         elif param_count == 1:
-            watch_result = cast(WatchCallbackNewValueType, watch_function)(value)
+            watch_result = cast(WatchCallbackNewValueType, watch_function)(
+                value
+            )
         else:
             watch_result = cast(WatchCallbackNoArgsType, watch_function)()
         if isawaitable(watch_result):
@@ -221,7 +223,9 @@ class Reactive(Generic[ReactiveType]):
         public_compute = f"compute_{name}"
         private_compute = f"_compute_{name}"
         compute_name = (
-            private_compute if hasattr(owner, private_compute) else public_compute
+            private_compute
+            if hasattr(owner, private_compute)
+            else public_compute
         )
         if hasattr(owner, compute_name):
             # Compute methods are stored in a list called `__computes`
@@ -251,7 +255,9 @@ class Reactive(Generic[ReactiveType]):
 
         @overload
         def __get__(
-            self: Reactive[ReactiveType], obj: None, obj_type: type[ReactableType]
+            self: Reactive[ReactiveType],
+            obj: None,
+            obj_type: type[ReactableType],
         ) -> Reactive[ReactiveType]: ...
 
     def __get__(
@@ -280,7 +286,9 @@ class Reactive(Generic[ReactiveType]):
         else:
             return getattr(obj, internal_name)
 
-    def _set(self, obj: Reactable, value: ReactiveType, always: bool = False) -> None:
+    def _set(
+        self, obj: Reactable, value: ReactiveType, always: bool = False
+    ) -> None:
         _rich_traceback_omit = True
 
         if not hasattr(obj, "_id"):
@@ -336,7 +344,9 @@ class Reactive(Generic[ReactiveType]):
         self._set(obj, value)
 
     @classmethod
-    def _check_watchers(cls, obj: Reactable, name: str, old_value: Any) -> None:
+    def _check_watchers(
+        cls, obj: Reactable, name: str, old_value: Any
+    ) -> None:
         """Check watchers, and call watch methods / computes
 
         Args:
@@ -388,7 +398,9 @@ class Reactive(Generic[ReactiveType]):
                 except AttributeError:
                     continue
             current_value = getattr(
-                obj, f"_reactive_{compute}", getattr(obj, f"_default_{compute}", None)
+                obj,
+                f"_reactive_{compute}",
+                getattr(obj, f"_default_{compute}", None),
             )
             value = compute_method()
             setattr(obj, f"_reactive_{compute}", value)
@@ -479,7 +491,10 @@ def _watch(
     watchers: dict[str, list[tuple[Reactable, WatchCallbackType]]]
     watchers = getattr(obj, "__watchers")
     watcher_list = watchers.setdefault(attribute_name, [])
-    if any(callback == callback_from_list for _, callback_from_list in watcher_list):
+    if any(
+        callback == callback_from_list
+        for _, callback_from_list in watcher_list
+    ):
         return
     if init:
         current_value = getattr(obj, attribute_name, None)

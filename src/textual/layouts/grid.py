@@ -48,7 +48,10 @@ class GridLayout(Layout):
             )
             table_size_columns = min(table_size_columns, len(children))
             if self.regular:
-                while len(children) % table_size_columns and table_size_columns > 1:
+                while (
+                    len(children) % table_size_columns
+                    and table_size_columns > 1
+                ):
                     table_size_columns -= 1
 
         table_size_rows = styles.grid_size_rows
@@ -100,7 +103,9 @@ class GridLayout(Layout):
                 for row in range(row_start, row_start + rows)
             }
 
-        def repeat_scalars(scalars: Iterable[Scalar], count: int) -> list[Scalar]:
+        def repeat_scalars(
+            scalars: Iterable[Scalar], count: int
+        ) -> list[Scalar]:
             """Repeat an iterable of scalars as many times as required to return
             a list of `count` values.
 
@@ -167,12 +172,20 @@ class GridLayout(Layout):
             if styles.min_width is not None:
                 width = max(
                     width,
-                    int(styles.min_width.resolve(size, viewport, Fraction(width))),
+                    int(
+                        styles.min_width.resolve(
+                            size, viewport, Fraction(width)
+                        )
+                    ),
                 )
             if styles.max_width is not None:
                 width = min(
                     width,
-                    int(styles.max_width.resolve(size, viewport, Fraction(width))),
+                    int(
+                        styles.max_width.resolve(
+                            size, viewport, Fraction(width)
+                        )
+                    ),
                 )
             return width
 
@@ -190,12 +203,20 @@ class GridLayout(Layout):
             if styles.min_height is not None:
                 height = max(
                     height,
-                    int(styles.min_height.resolve(size, viewport, Fraction(height))),
+                    int(
+                        styles.min_height.resolve(
+                            size, viewport, Fraction(height)
+                        )
+                    ),
                 )
             if styles.max_height is not None:
                 height = min(
                     height,
-                    int(styles.max_height.resolve(size, viewport, Fraction(height))),
+                    int(
+                        styles.max_height.resolve(
+                            size, viewport, Fraction(height)
+                        )
+                    ),
                 )
             return height
 
@@ -244,7 +265,9 @@ class GridLayout(Layout):
                         if widget.styles.row_span != 1:
                             continue
                         column_width = columns[column][1]
-                        gutter_width, gutter_height = widget.styles.gutter.totals
+                        gutter_width, gutter_height = (
+                            widget.styles.gutter.totals
+                        )
                         widget_height = apply_height_limits(
                             widget,
                             widget.get_content_height(
@@ -258,7 +281,9 @@ class GridLayout(Layout):
 
                 row_scalars[row] = Scalar.from_number(height)
 
-        rows = resolve(row_scalars, size.height, gutter_horizontal, size, viewport)
+        rows = resolve(
+            row_scalars, size.height, gutter_horizontal, size, viewport
+        )
 
         placements: list[WidgetPlacement] = []
         _WidgetPlacement = WidgetPlacement
@@ -266,7 +291,12 @@ class GridLayout(Layout):
         max_column = len(columns) - 1
         max_row = len(rows) - 1
 
-        for widget, (column, row, column_span, row_span) in cell_size_map.items():
+        for widget, (
+            column,
+            row,
+            column_span,
+            row_span,
+        ) in cell_size_map.items():
             x = columns[column][0]
             if row > max_row:
                 break
@@ -289,7 +319,10 @@ class GridLayout(Layout):
 
             region = (
                 Region(
-                    x, y, int(box_width + margin.width), int(box_height + margin.height)
+                    x,
+                    y,
+                    int(box_width + margin.width),
+                    int(box_height + margin.height),
                 )
                 .crop_size(cell_size)
                 .shrink(margin)
@@ -303,7 +336,8 @@ class GridLayout(Layout):
             )
 
             absolute = (
-                widget_styles.has_rule("position") and styles.position == "absolute"
+                widget_styles.has_rule("position")
+                and styles.position == "absolute"
             )
             add_placement(
                 _WidgetPlacement(

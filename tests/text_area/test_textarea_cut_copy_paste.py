@@ -41,7 +41,11 @@ async def test_paste():
         await pilot.click(text_area)
         await pilot.press(*"Hello, World")
         await pilot.press(
-            "shift+left", "shift+left", "shift+left", "shift+left", "shift+left"
+            "shift+left",
+            "shift+left",
+            "shift+left",
+            "shift+left",
+            "shift+left",
         )
         await pilot.press("ctrl+c")
         assert text_area.text == "Hello, World"

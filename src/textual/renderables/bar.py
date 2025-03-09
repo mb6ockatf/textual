@@ -53,7 +53,9 @@ class Bar:
         output_bar = Text("", end="")
 
         if start == end == 0 or end < 0 or start > end:
-            output_bar.append(Text(bar * width, style=background_style, end=""))
+            output_bar.append(
+                Text(bar * width, style=background_style, end="")
+            )
             yield output_bar
             return
 
@@ -70,7 +72,9 @@ class Bar:
             Text(bar * (int(start - 0.5)), style=background_style, end="")
         )
         if not half_start and start > 0:
-            output_bar.append(Text(half_bar_right, style=background_style, end=""))
+            output_bar.append(
+                Text(half_bar_right, style=background_style, end="")
+            )
 
         highlight_bar = Text("", end="")
         # The highlighted portion
@@ -78,13 +82,19 @@ class Bar:
         if half_start:
             highlight_bar.append(
                 Text(
-                    half_bar_left + bar * (bar_width - 1), style=highlight_style, end=""
+                    half_bar_left + bar * (bar_width - 1),
+                    style=highlight_style,
+                    end="",
                 )
             )
         else:
-            highlight_bar.append(Text(bar * bar_width, style=highlight_style, end=""))
+            highlight_bar.append(
+                Text(bar * bar_width, style=highlight_style, end="")
+            )
         if half_end:
-            highlight_bar.append(Text(half_bar_right, style=highlight_style, end=""))
+            highlight_bar.append(
+                Text(half_bar_right, style=highlight_style, end="")
+            )
 
         if self.gradient is not None:
             _apply_gradient(highlight_bar, self.gradient, width)
@@ -92,9 +102,15 @@ class Bar:
 
         # The non-highlighted tail
         if not half_end and end - width != 0:
-            output_bar.append(Text(half_bar_left, style=background_style, end=""))
+            output_bar.append(
+                Text(half_bar_left, style=background_style, end="")
+            )
         output_bar.append(
-            Text(bar * (int(width) - int(end) - 1), style=background_style, end="")
+            Text(
+                bar * (int(width) - int(end) - 1),
+                style=background_style,
+                end="",
+            )
         )
 
         # Fire actions when certain ranges are clicked (e.g. for tabs)

@@ -17,11 +17,16 @@ def test_partition():
     assert partition(is_odd, [1]) == ([], [1])
     assert partition(is_odd, []) == ([], [])
 
-    assert partition(is_greater_than_five, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]) == (
+    assert partition(
+        is_greater_than_five, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    ) == (
         [1, 2, 3, 4, 5],
         [6, 7, 8, 9, 10],
     )
 
-    assert partition(is_greater_than_five, [6, 7, 8, 9, 10]) == ([], [6, 7, 8, 9, 10])
+    assert partition(is_greater_than_five, [6, 7, 8, 9, 10]) == (
+        [],
+        [6, 7, 8, 9, 10],
+    )
 
     assert partition(is_greater_than_five, [1, 2, 3]) == ([1, 2, 3], [])

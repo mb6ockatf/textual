@@ -242,7 +242,9 @@ async def raw_click(pilot: Pilot, selector: str, times: int = 1):
         await pilot.pause()
 
 
-@pytest.mark.parametrize("number_of_clicks,final_count", [(1, 1), (2, 3), (3, 6)])
+@pytest.mark.parametrize(
+    "number_of_clicks,final_count", [(1, 1), (2, 3), (3, 6)]
+)
 async def test_click_chain_initial_repeated_clicks(
     number_of_clicks: int, final_count: int
 ):
@@ -316,7 +318,9 @@ async def test_click_chain_offset_changes_mid_chain():
     async with MyApp().run_test() as pilot:
         await raw_click(pilot, "#one", times=2)  # Double click
         assert click_count == 2
-        await raw_click(pilot, "#two")  # Single click (because different widget)
+        await raw_click(
+            pilot, "#two"
+        )  # Single click (because different widget)
         assert click_count == 1
 
 

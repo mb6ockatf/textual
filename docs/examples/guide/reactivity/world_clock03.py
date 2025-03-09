@@ -34,7 +34,9 @@ class WorldClockApp(App):
         yield WorldClock("Europe/London").data_bind(
             clock_time=WorldClockApp.time  # (1)!
         )
-        yield WorldClock("Europe/Paris").data_bind(clock_time=WorldClockApp.time)
+        yield WorldClock("Europe/Paris").data_bind(
+            clock_time=WorldClockApp.time
+        )
         yield WorldClock("Asia/Tokyo").data_bind(clock_time=WorldClockApp.time)
 
     def update_time(self) -> None:

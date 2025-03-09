@@ -56,18 +56,27 @@ async def test_watch_async_init_false():
         app.count = NEW_VALUE
         assert app.count == NEW_VALUE  # Value is set immediately
         try:
-            await asyncio.wait_for(app.watcher_called_event.wait(), timeout=0.05)
+            await asyncio.wait_for(
+                app.watcher_called_event.wait(), timeout=0.05
+            )
         except TimeoutError:
-            pytest.fail("Async watch method (watch_count) wasn't called within timeout")
+            pytest.fail(
+                "Async watch method (watch_count) wasn't called within timeout"
+            )
 
         assert app.count == NEW_VALUE  # Sanity check
-        assert app.watcher_old_value == OLD_VALUE  # old_value passed to watch method
-        assert app.watcher_new_value == NEW_VALUE  # new_value passed to watch method
+        assert (
+            app.watcher_old_value == OLD_VALUE
+        )  # old_value passed to watch method
+        assert (
+            app.watcher_new_value == NEW_VALUE
+        )  # new_value passed to watch method
 
 
 async def test_watch_async_init_true():
     """Ensure that when init is True in a reactive, its async watcher gets called
-    by Textual eventually, even when the user does not set the value themselves."""
+    by Textual eventually, even when the user does not set the value themselves.
+    """
 
     class WatchAsyncApp(App):
         count = reactive(OLD_VALUE, init=True)
@@ -83,7 +92,9 @@ async def test_watch_async_init_true():
     app = WatchAsyncApp()
     async with app.run_test():
         try:
-            await asyncio.wait_for(app.watcher_called_event.wait(), timeout=0.05)
+            await asyncio.wait_for(
+                app.watcher_called_event.wait(), timeout=0.05
+            )
         except TimeoutError:
             pytest.fail(
                 "Async watcher wasn't called within timeout when reactive init = True"
@@ -154,7 +165,11 @@ async def test_reactive_always_update():
         # Values changed, watch method always called regardless of always_update
         app.first_name = "abc"
         app.last_name = "def"
-        assert calls == ["first_name Darren", "first_name abc", "last_name def"]
+        assert calls == [
+            "first_name Darren",
+            "first_name abc",
+            "last_name def",
+        ]
 
 
 async def test_reactive_with_callable_default():
@@ -658,7 +673,9 @@ async def test_external_watch_init_does_not_propagate() -> None:
             def watch_test_2_extra() -> None:
                 logs.append("test_2_extra")
 
-            self.watch(self.query_one(SomeWidget), "test_2", watch_test_2_extra)
+            self.watch(
+                self.query_one(SomeWidget), "test_2", watch_test_2_extra
+            )
 
     app = InitOverrideApp()
     async with app.run_test():
@@ -730,7 +747,9 @@ async def test_message_sender_from_reactive() -> None:
         def compose(self) -> ComposeResult:
             yield TestWidget()
 
-        def on_test_widget_test_message(self, event: TestWidget.TestMessage) -> None:
+        def on_test_widget_test_message(
+            self, event: TestWidget.TestMessage
+        ) -> None:
             nonlocal message_senders
             message_senders.append(event._sender)
 

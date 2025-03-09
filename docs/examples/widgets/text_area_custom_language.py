@@ -6,7 +6,9 @@ from textual.app import App, ComposeResult
 from textual.widgets import TextArea
 
 java_language = get_language("java")
-java_highlight_query = (Path(__file__).parent / "java_highlights.scm").read_text()
+java_highlight_query = (
+    Path(__file__).parent / "java_highlights.scm"
+).read_text()
 java_code = """\
 class HelloWorld {
     public static void main(String[] args) {
@@ -22,7 +24,9 @@ class TextAreaCustomLanguage(App):
         text_area.cursor_blink = False
 
         # Register the Java language and highlight query
-        text_area.register_language("java", java_language, java_highlight_query)
+        text_area.register_language(
+            "java", java_language, java_highlight_query
+        )
 
         # Switch to Java
         text_area.language = "java"

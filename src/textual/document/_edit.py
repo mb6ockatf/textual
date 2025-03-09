@@ -34,7 +34,9 @@ class Edit:
     _edit_result: EditResult | None = field(init=False, default=None)
     """The result of doing the edit."""
 
-    def do(self, text_area: TextArea, record_selection: bool = True) -> EditResult:
+    def do(
+        self, text_area: TextArea, record_selection: bool = True
+    ) -> EditResult:
         """Perform the edit operation.
 
         Args:
@@ -62,7 +64,9 @@ class Edit:
         selection_start_row, selection_start_column = selection_start
         selection_end_row, selection_end_column = selection_end
 
-        edit_result = text_area.document.replace_range(self.top, self.bottom, text)
+        edit_result = text_area.document.replace_range(
+            self.top, self.bottom, text
+        )
 
         new_edit_to_row, new_edit_to_column = edit_result.end_location
 
@@ -94,11 +98,16 @@ class Edit:
 
         if self.maintain_selection_offset:
             self._updated_selection = Selection(
-                start=(target_selection_start_row, target_selection_start_column),
+                start=(
+                    target_selection_start_row,
+                    target_selection_start_column,
+                ),
                 end=(target_selection_end_row, target_selection_end_column),
             )
         else:
-            self._updated_selection = Selection.cursor(edit_result.end_location)
+            self._updated_selection = Selection.cursor(
+                edit_result.end_location
+            )
 
         self._edit_result = edit_result
         return edit_result

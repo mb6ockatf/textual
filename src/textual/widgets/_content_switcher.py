@@ -82,7 +82,11 @@ class ContentSwitcher(Container):
 
         `None` if nothing is visible.
         """
-        return self.get_child_by_id(self.current) if self.current is not None else None
+        return (
+            self.get_child_by_id(self.current)
+            if self.current is not None
+            else None
+        )
 
     def watch_current(self, old: str | None, new: str | None) -> None:
         """React to the current visible child choice being changed.
@@ -101,7 +105,11 @@ class ContentSwitcher(Container):
                 self.get_child_by_id(new).display = True
 
     def add_content(
-        self, widget: Widget, *, id: str | None = None, set_current: bool = False
+        self,
+        widget: Widget,
+        *,
+        id: str | None = None,
+        set_current: bool = False,
     ) -> AwaitComplete:
         """Add new content to the `ContentSwitcher`.
 

@@ -73,9 +73,27 @@ class ScrollTo(ScrollMessage, verbose=True):
 
 
 class ScrollBarRender:
-    VERTICAL_BARS: ClassVar[list[str]] = ["▁", "▂", "▃", "▄", "▅", "▆", "▇", " "]
+    VERTICAL_BARS: ClassVar[list[str]] = [
+        "▁",
+        "▂",
+        "▃",
+        "▄",
+        "▅",
+        "▆",
+        "▇",
+        " ",
+    ]
     """Glyphs used for vertical scrollbar ends, for smoother display."""
-    HORIZONTAL_BARS: ClassVar[list[str]] = ["▉", "▊", "▋", "▌", "▍", "▎", "▏", " "]
+    HORIZONTAL_BARS: ClassVar[list[str]] = [
+        "▉",
+        "▊",
+        "▋",
+        "▌",
+        "▍",
+        "▎",
+        "▏",
+        " ",
+    ]
     """Glyphs used for horizontal scrollbar ends, for smoother display."""
     BLANK_GLYPH: ClassVar[str] = " "
     """Glyph used for the main body of the scrollbar"""
@@ -141,14 +159,21 @@ class ScrollBarRender:
             upper = {"@mouse.up": "scroll_up"}
             lower = {"@mouse.up": "scroll_down"}
 
-            upper_back_segment = Segment(blank, _Style(bgcolor=back, meta=upper))
-            lower_back_segment = Segment(blank, _Style(bgcolor=back, meta=lower))
+            upper_back_segment = Segment(
+                blank, _Style(bgcolor=back, meta=upper)
+            )
+            lower_back_segment = Segment(
+                blank, _Style(bgcolor=back, meta=lower)
+            )
 
             segments = [upper_back_segment] * int(size)
             segments[end_index:] = [lower_back_segment] * (size - end_index)
 
             segments[start_index:end_index] = [
-                _Segment(blank, _Style(color=bar, reverse=True, meta=foreground_meta))
+                _Segment(
+                    blank,
+                    _Style(color=bar, reverse=True, meta=foreground_meta),
+                )
             ] * (end_index - start_index)
 
             # Apply the smaller bar characters to head and tail of scrollbar for more "granularity"
@@ -158,7 +183,9 @@ class ScrollBarRender:
                     segments[start_index] = _Segment(
                         bar_character * width_thickness,
                         (
-                            _Style(bgcolor=back, color=bar, meta=foreground_meta)
+                            _Style(
+                                bgcolor=back, color=bar, meta=foreground_meta
+                            )
                             if vertical
                             else _Style(
                                 bgcolor=back,
@@ -181,7 +208,9 @@ class ScrollBarRender:
                                 reverse=True,
                             )
                             if vertical
-                            else _Style(bgcolor=back, color=bar, meta=foreground_meta)
+                            else _Style(
+                                bgcolor=back, color=bar, meta=foreground_meta
+                            )
                         ),
                     )
         else:
@@ -190,7 +219,9 @@ class ScrollBarRender:
         if vertical:
             return Segments(segments, new_lines=True)
         else:
-            return Segments((segments + [_Segment.line()]) * thickness, new_lines=False)
+            return Segments(
+                (segments + [_Segment.line()]) * thickness, new_lines=False
+            )
 
     def __rich_console__(
         self, console: Console, options: ConsoleOptions
@@ -252,7 +283,11 @@ class ScrollBar(Widget):
     ALLOW_SELECT = False
 
     def __init__(
-        self, vertical: bool = True, name: str | None = None, *, thickness: int = 1
+        self,
+        vertical: bool = True,
+        name: str | None = None,
+        *,
+        thickness: int = 1,
     ) -> None:
         self.vertical = vertical
         self.thickness = thickness
@@ -290,7 +325,9 @@ class ScrollBar(Widget):
             base_background, _ = self.parent._opacity_background_colors
             background = base_background + background
         color = background + color
-        scrollbar_style = Style.from_color(color.rich_color, background.rich_color)
+        scrollbar_style = Style.from_color(
+            color.rich_color, background.rich_color
+        )
         if self.screen.styles.scrollbar_color.a == 0:
             return self.renderer(vertical=self.vertical, style=scrollbar_style)
         return self._render_bar(scrollbar_style)
@@ -305,7 +342,9 @@ class ScrollBar(Widget):
             Scrollbar renderable.
         """
         window_size = (
-            self.window_size if self.window_size < self.window_virtual_size else 0
+            self.window_size
+            if self.window_size < self.window_virtual_size
+            else 0
         )
         virtual_size = self.window_virtual_size
 
@@ -382,7 +421,9 @@ class ScrollBar(Widget):
                     * (virtual_size / self.window_size)
                 )
             self.post_message(
-                ScrollTo(x=x, y=y, animate=not self.app.supports_smooth_scrolling)
+                ScrollTo(
+                    x=x, y=y, animate=not self.app.supports_smooth_scrolling
+                )
             )
         event.stop()
 

@@ -36,7 +36,9 @@ class LineFilter(ABC):
         self.enabled = enabled
 
     @abstractmethod
-    def apply(self, segments: list[Segment], background: Color) -> list[Segment]:
+    def apply(
+        self, segments: list[Segment], background: Color
+    ) -> list[Segment]:
         """Transform a list of segments.
 
         Args:
@@ -76,7 +78,9 @@ def monochrome_style(style: Style) -> Style:
 class Monochrome(LineFilter):
     """Convert all colors to monochrome."""
 
-    def apply(self, segments: list[Segment], background: Color) -> list[Segment]:
+    def apply(
+        self, segments: list[Segment], background: Color
+    ) -> list[Segment]:
         """Transform a list of segments.
 
         Args:
@@ -101,7 +105,9 @@ class NoColor(LineFilter):
         RichColor.parse("default"), RichColor.parse("default")
     )
 
-    def apply(self, segments: list[Segment], background: Color) -> list[Segment]:
+    def apply(
+        self, segments: list[Segment], background: Color
+    ) -> list[Segment]:
         """Transform a list of segments.
 
         Args:
@@ -115,7 +121,11 @@ class NoColor(LineFilter):
         _Segment = Segment
         default_colors = self.DEFAULT_COLORS
         return [
-            _Segment(text, None if style is None else (style + default_colors), control)
+            _Segment(
+                text,
+                None if style is None else (style + default_colors),
+                control,
+            )
             for text, style, control in segments
         ]
 
@@ -125,7 +135,9 @@ NO_DIM = Style(dim=False)
 
 
 @lru_cache(1024)
-def dim_color(background: RichColor, color: RichColor, factor: float) -> RichColor:
+def dim_color(
+    background: RichColor, color: RichColor, factor: float
+) -> RichColor:
     """Dim a color by blending towards the background
 
     Args:
@@ -164,7 +176,11 @@ def dim_style(style: Style, background: Color, factor: float) -> Style:
         style
         + Style.from_color(
             dim_color(
-                (background.rich_color if style.bgcolor.is_default else style.bgcolor),
+                (
+                    background.rich_color
+                    if style.bgcolor.is_default
+                    else style.bgcolor
+                ),
                 style.color,
                 factor,
             ),
@@ -186,7 +202,9 @@ class DimFilter(LineFilter):
         self.dim_factor = dim_factor
         super().__init__(enabled=enabled)
 
-    def apply(self, segments: list[Segment], background: Color) -> list[Segment]:
+    def apply(
+        self, segments: list[Segment], background: Color
+    ) -> list[Segment]:
         """Transform a list of segments.
 
         Args:
@@ -250,7 +268,9 @@ class ANSIToTruecolor(LineFilter):
 
         return style + Style.from_color(color, bgcolor)
 
-    def apply(self, segments: list[Segment], background: Color) -> list[Segment]:
+    def apply(
+        self, segments: list[Segment], background: Color
+    ) -> list[Segment]:
         """Transform a list of segments.
 
         Args:

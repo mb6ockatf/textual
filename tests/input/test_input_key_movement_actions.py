@@ -13,7 +13,10 @@ class InputTester(App[None]):
         for value, input_id in (
             ("", "empty"),
             ("Shiny", "single-word"),
-            ("Curse your sudden but inevitable betrayal", "multi-no-punctuation"),
+            (
+                "Curse your sudden but inevitable betrayal",
+                "multi-no-punctuation",
+            ),
             (
                 "We have done the impossible, and that makes us mighty.",
                 "multi-punctuation",
@@ -72,7 +75,9 @@ async def test_input_left_from_end() -> None:
         for input in pilot.app.query(Input):
             input.action_end()
             input.action_cursor_left()
-            assert input.cursor_position == (len(input.value) - 1 if input.value else 0)
+            assert input.cursor_position == (
+                len(input.value) - 1 if input.value else 0
+            )
 
 
 async def test_input_left_word_from_home() -> None:

@@ -48,8 +48,12 @@ async def test_suspend_supported(capfd: pytest.CaptureFixture[str]) -> None:
             calls.add("resume signal")
 
         def on_mount(self) -> None:
-            self.app_suspend_signal.subscribe(self, self.on_suspend, immediate=True)
-            self.app_resume_signal.subscribe(self, self.on_resume, immediate=True)
+            self.app_suspend_signal.subscribe(
+                self, self.on_suspend, immediate=True
+            )
+            self.app_resume_signal.subscribe(
+                self, self.on_resume, immediate=True
+            )
 
     async with SuspendApp(driver_class=HeadlessSuspendDriver).run_test(
         headless=False
@@ -59,5 +63,13 @@ async def test_suspend_supported(capfd: pytest.CaptureFixture[str]) -> None:
             _ = capfd.readouterr()  # Clear the existing buffer.
             print("USE THEM TOGETHER.", end="", flush=True)
             print("USE THEM IN PEACE.", file=sys.stderr, end="", flush=True)
-            assert ("USE THEM TOGETHER.", "USE THEM IN PEACE.") == capfd.readouterr()
-        assert calls == {"suspend", "resume", "suspend signal", "resume signal"}
+            assert (
+                "USE THEM TOGETHER.",
+                "USE THEM IN PEACE.",
+            ) == capfd.readouterr()
+        assert calls == {
+            "suspend",
+            "resume",
+            "suspend signal",
+            "resume signal",
+        }

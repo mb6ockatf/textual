@@ -183,7 +183,9 @@ class LinuxDriver(Driver):
         Args:
             data: Raw data.
         """
-        assert self._writer_thread is not None, "Driver must be in application mode"
+        assert (
+            self._writer_thread is not None
+        ), "Driver must be in application mode"
         self._writer_thread.write(data)
 
     def start_application_mode(self):
@@ -209,7 +211,9 @@ class LinuxDriver(Driver):
                 # out, we perform a no-consequence change and detect the
                 # problem right away.
                 termios.tcsetattr(
-                    self.fileno, termios.TCSANOW, termios.tcgetattr(self.fileno)
+                    self.fileno,
+                    termios.TCSANOW,
+                    termios.tcgetattr(self.fileno),
                 )
             except termios.error:
                 # There was an error doing the tcsetattr; there is no sense
@@ -273,7 +277,9 @@ class LinuxDriver(Driver):
 
         self.write("\x1b[?25l")  # Hide cursor
         self.write("\x1b[?1004h")  # Enable FocusIn/FocusOut.
-        self.write("\x1b[>1u")  # https://sw.kovidgoyal.net/kitty/keyboard-protocol/
+        self.write(
+            "\x1b[>1u"
+        )  # https://sw.kovidgoyal.net/kitty/keyboard-protocol/
 
         self.flush()
         self._key_thread = Thread(target=self._run_input_thread)
@@ -365,7 +371,9 @@ class LinuxDriver(Driver):
 
         if self.attrs_before is not None:
             try:
-                termios.tcsetattr(self.fileno, termios.TCSANOW, self.attrs_before)
+                termios.tcsetattr(
+                    self.fileno, termios.TCSANOW, self.attrs_before
+                )
             except termios.error:
                 pass
 
@@ -428,7 +436,9 @@ class LinuxDriver(Driver):
             """
             for last, (_selector_key, mask) in loop_last(selector_events):
                 if mask & EVENT_READ:
-                    unicode_data = decode(read(fileno, 1024 * 4), final=final and last)
+                    unicode_data = decode(
+                        read(fileno, 1024 * 4), final=final and last
+                    )
                     if not unicode_data:
                         # This can occur if the stdin is piped
                         break

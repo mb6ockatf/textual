@@ -73,14 +73,18 @@ def test_adjust_cell_length():
         [Segment("💩"), Segment(" ")]
     )
 
-    assert Strip([Segment("💩💩")]).adjust_cell_length(3) == Strip([Segment("💩 ")])
-    assert Strip([Segment("💩💩")]).adjust_cell_length(4) == Strip([Segment("💩💩")])
-    assert Strip([Segment("💩"), Segment("💩💩")]).adjust_cell_length(2) == Strip(
-        [Segment("💩")]
+    assert Strip([Segment("💩💩")]).adjust_cell_length(3) == Strip(
+        [Segment("💩 ")]
     )
-    assert Strip([Segment("💩"), Segment("💩💩")]).adjust_cell_length(4) == Strip(
-        [Segment("💩"), Segment("💩")]
+    assert Strip([Segment("💩💩")]).adjust_cell_length(4) == Strip(
+        [Segment("💩💩")]
     )
+    assert Strip([Segment("💩"), Segment("💩💩")]).adjust_cell_length(
+        2
+    ) == Strip([Segment("💩")])
+    assert Strip([Segment("💩"), Segment("💩💩")]).adjust_cell_length(
+        4
+    ) == Strip([Segment("💩"), Segment("💩")])
 
 
 def test_extend_cell_length():

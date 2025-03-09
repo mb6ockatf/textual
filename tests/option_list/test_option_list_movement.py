@@ -36,7 +36,9 @@ async def test_cleared_movement_does_nothing() -> None:
         option_list = pilot.app.query_one(OptionList)
         option_list.clear_options()
         assert option_list.highlighted is None
-        await pilot.press("tab", "down", "up", "pagedown", "pageup", "home", "end")
+        await pilot.press(
+            "tab", "down", "up", "pagedown", "pageup", "home", "end"
+        )
         assert option_list.highlighted is None
 
 

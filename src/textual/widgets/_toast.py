@@ -139,7 +139,9 @@ class Toast(Static, inherit_css=False):
         # Note that we attempt to remove our parent, because we're wrapped
         # inside an alignment container. The testing that we are is as much
         # to keep type checkers happy as anything else.
-        (self.parent if isinstance(self.parent, ToastHolder) else self).remove()
+        (
+            self.parent if isinstance(self.parent, ToastHolder) else self
+        ).remove()
 
 
 class ToastRack(Container, inherit_css=False):

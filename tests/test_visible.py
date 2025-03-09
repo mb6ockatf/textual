@@ -23,7 +23,9 @@ async def test_visibility_changes() -> None:
 
         def compose(self) -> ComposeResult:
             yield VerticalScroll(
-                Widget(id="keep"), Widget(id="hide-via-code"), Widget(id="hide-via-css")
+                Widget(id="keep"),
+                Widget(id="hide-via-code"),
+                Widget(id="hide-via-css"),
             )
 
     async with VisibleTester().run_test() as pilot:

@@ -72,7 +72,10 @@ Markdown syntax and extensions are supported.
 class ThemeList(OptionList):
     def on_mount(self) -> None:
         self.add_options(
-            [Option(name, id=name) for name in self.app.available_themes.keys()]
+            [
+                Option(name, id=name)
+                for name in self.app.available_themes.keys()
+            ]
         )
 
 
@@ -285,7 +288,9 @@ class ChangingThemeApp(App[None]):
     ]
 
     def action_toggle_dark(self) -> None:
-        self.theme = "textual-light" if self.theme == "textual-dark" else "textual-dark"
+        self.theme = (
+            "textual-light" if self.theme == "textual-dark" else "textual-dark"
+        )
 
     def action_toggle_panel(self) -> None:
         self.query_one("#widget-list").toggle_class("panel")
@@ -385,7 +390,12 @@ class ChangingThemeApp(App[None]):
             )
 
             yield Select(
-                [("foo", "foo"), ("bar", "bar"), ("baz", "baz"), ("qux", "qux")]
+                [
+                    ("foo", "foo"),
+                    ("bar", "bar"),
+                    ("baz", "baz"),
+                    ("qux", "qux"),
+                ]
             )
             with Collapsible(title="An interesting story."):
                 yield Label("Interesting but verbose story.")
@@ -436,7 +446,9 @@ class ChangingThemeApp(App[None]):
                         "Cake",
                         "Pie",
                     )
-                    yield OptionList("Extra 1", "Extra 2", "Extra 3", "Extra 4")
+                    yield OptionList(
+                        "Extra 1", "Extra 2", "Extra 3", "Extra 4"
+                    )
 
             yield MaskedInput(
                 template="9999-9999-9999-9999;0",

@@ -117,10 +117,15 @@ def test_align_lines_vertical_middle():
     """Regression test for an issue found while working on
     https://github.com/Textualize/textual/issues/3628 - an extra vertical line
     was being produced when aligning. If you passed in a Size of height=1 to
-    `align_lines`, it was producing a result containing 2 lines instead of 1."""
+    `align_lines`, it was producing a result containing 2 lines instead of 1.
+    """
     lines = [[Segment("  "), Segment("hello"), Segment("   ")]]
     result = align_lines(
-        lines, Style(), size=Size(10, 3), horizontal="center", vertical="middle"
+        lines,
+        Style(),
+        size=Size(10, 3),
+        horizontal="center",
+        vertical="middle",
     )
     assert list(result) == [
         [Segment("          ", Style())],
@@ -177,9 +182,15 @@ def test_align_lines_perfect_fit_horizontal_center():
     """When the content perfectly fits the available horizontal space,
     no empty segments should be produced. This is a regression test for
     the issue https://github.com/Textualize/textual/issues/3628."""
-    lines = [[Segment("  "), Segment("hello"), Segment("   ")]]  # 10 cells of content
+    lines = [
+        [Segment("  "), Segment("hello"), Segment("   ")]
+    ]  # 10 cells of content
     result = align_lines(
-        lines, Style(), size=Size(10, 1), horizontal="center", vertical="middle"
+        lines,
+        Style(),
+        size=Size(10, 1),
+        horizontal="center",
+        vertical="middle",
     )
     assert list(result) == [[Segment("  "), Segment("hello"), Segment("   ")]]
 
@@ -188,7 +199,9 @@ def test_align_lines_perfect_fit_horizontal_right():
     """When the content perfectly fits the available horizontal space,
     no empty segments should be produced. This is a regression test for
     the issue https://github.com/Textualize/textual/issues/3628."""
-    lines = [[Segment("  "), Segment("hello"), Segment("   ")]]  # 10 cells of content
+    lines = [
+        [Segment("  "), Segment("hello"), Segment("   ")]
+    ]  # 10 cells of content
     result = align_lines(
         lines, Style(), size=Size(10, 1), horizontal="right", vertical="middle"
     )

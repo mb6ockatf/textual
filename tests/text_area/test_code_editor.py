@@ -9,7 +9,12 @@ def test_code_editor_parameters_kept_up_to_date():
     """
     text_area_params = inspect.signature(TextArea.__init__).parameters
     code_editor_params = inspect.signature(TextArea.code_editor).parameters
-    expected_diffs = ["theme", "soft_wrap", "tab_behavior", "show_line_numbers"]
+    expected_diffs = [
+        "theme",
+        "soft_wrap",
+        "tab_behavior",
+        "show_line_numbers",
+    ]
     for param in text_area_params:
         if param == "self":
             continue

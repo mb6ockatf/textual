@@ -68,7 +68,9 @@ class DocumentBase(ABC):
     provide in order to be used by the TextArea widget."""
 
     @abstractmethod
-    def replace_range(self, start: Location, end: Location, text: str) -> EditResult:
+    def replace_range(
+        self, start: Location, end: Location, text: str
+    ) -> EditResult:
         """Replace the text at the given range.
 
         Args:
@@ -250,7 +252,9 @@ class Document(DocumentBase):
         height = len(lines)
         return Size(max_cell_length, height)
 
-    def replace_range(self, start: Location, end: Location, text: str) -> EditResult:
+    def replace_range(
+        self, start: Location, end: Location, text: str
+    ) -> EditResult:
         """Replace text at the given range.
 
         This is the only method by which a document may be updated.
@@ -327,7 +331,9 @@ class Document(DocumentBase):
             selected_text = line[top_column:bottom_column]
         else:
             start_line = lines[top_row]
-            end_line = lines[bottom_row] if bottom_row <= self.line_count - 1 else ""
+            end_line = (
+                lines[bottom_row] if bottom_row <= self.line_count - 1 else ""
+            )
             selected_text = start_line[top_column:]
             for row in range(top_row + 1, bottom_row):
                 selected_text += self._newline + lines[row]
@@ -381,9 +387,7 @@ class Document(DocumentBase):
         Raises:
             ValueError: If the index is doesn't correspond to a location in the document.
         """
-        error_message = (
-            f"Index {index!r} does not correspond to a location in the document."
-        )
+        error_message = f"Index {index!r} does not correspond to a location in the document."
         if index < 0 or index > len(self.text):
             raise ValueError(error_message)
 

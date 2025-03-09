@@ -28,7 +28,9 @@ async def test_many_remove_all_widgets():
 async def test_many_remove_some_widgets():
     """It should be possible to remove some widgets on a multi-widget screen."""
     async with App().run_test() as pilot:
-        await pilot.app.mount(*[Static(classes=f"is-{n % 2}") for n in range(10)])
+        await pilot.app.mount(
+            *[Static(classes=f"is-{n % 2}") for n in range(10)]
+        )
         assert len(pilot.app.screen._nodes) == 10
         await pilot.app.query(".is-0").remove()
         assert len(pilot.app.screen._nodes) == 5
@@ -89,7 +91,9 @@ async def test_widget_remove_order() -> None:
 
     async with App().run_test() as pilot:
         await pilot.app.mount(
-            Removable(Removable(Removable(id="grandchild"), id="child"), id="parent")
+            Removable(
+                Removable(Removable(id="grandchild"), id="child"), id="parent"
+            )
         )
         assert len(pilot.app.screen.walk_children(with_self=False)) == 3
         await pilot.app.screen._nodes[0].remove()
@@ -108,7 +112,9 @@ async def test_query_remove_order():
 
     async with App().run_test() as pilot:
         await pilot.app.mount(
-            Removable(Removable(Removable(id="grandchild"), id="child"), id="parent")
+            Removable(
+                Removable(Removable(id="grandchild"), id="child"), id="parent"
+            )
         )
         assert len(pilot.app.screen.walk_children(with_self=False)) == 3
         await pilot.app.query(Removable).remove()

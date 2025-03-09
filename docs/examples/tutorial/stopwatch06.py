@@ -15,7 +15,9 @@ class TimeDisplay(Digits):
 
     def on_mount(self) -> None:
         """Event handler called when widget is added to the app."""
-        self.update_timer = self.set_interval(1 / 60, self.update_time, pause=True)
+        self.update_timer = self.set_interval(
+            1 / 60, self.update_time, pause=True
+        )
 
     def update_time(self) -> None:
         """Method to update time to current."""
@@ -83,7 +85,9 @@ class StopwatchApp(App):
     def action_toggle_dark(self) -> None:
         """An action to toggle dark mode."""
         self.theme = (
-            "textual-dark" if self.theme == "textual-light" else "textual-light"
+            "textual-dark"
+            if self.theme == "textual-light"
+            else "textual-light"
         )
 
 

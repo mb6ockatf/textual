@@ -69,7 +69,8 @@ class Digits(Widget):
         if not isinstance(value, str):
             raise TypeError("value must be a str")
         layout_required = len(value) != len(self._value) or (
-            DigitsRenderable.get_width(self._value) != DigitsRenderable.get_width(value)
+            DigitsRenderable.get_width(self._value)
+            != DigitsRenderable.get_width(value)
         )
         self._value = value
         self.refresh(layout=layout_required)
@@ -81,7 +82,11 @@ class Digits(Widget):
             rich_style += self.selection_style
         digits = DigitsRenderable(self._value, rich_style)
         text_align = self.styles.text_align
-        align = "left" if text_align not in {"left", "center", "right"} else text_align
+        align = (
+            "left"
+            if text_align not in {"left", "center", "right"}
+            else text_align
+        )
         return Align(digits, cast(AlignMethod, align), rich_style)
 
     def get_content_width(self, container: Size, viewport: Size) -> int:
@@ -96,7 +101,9 @@ class Digits(Widget):
         """
         return DigitsRenderable.get_width(self._value)
 
-    def get_content_height(self, container: Size, viewport: Size, width: int) -> int:
+    def get_content_height(
+        self, container: Size, viewport: Size, width: int
+    ) -> int:
         """Called by Textual to get the height of the content area.
 
         Args:

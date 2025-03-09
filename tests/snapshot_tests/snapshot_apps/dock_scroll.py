@@ -16,7 +16,10 @@ class TestApp(App):
 
     def compose(self):
         text = (
-            "this is a sample sentence and here are some words".replace(" ", "\n") * 2
+            "this is a sample sentence and here are some words".replace(
+                " ", "\n"
+            )
+            * 2
         )
         yield Header()
         yield Label(text)

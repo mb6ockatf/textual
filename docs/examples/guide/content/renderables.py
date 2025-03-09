@@ -16,7 +16,9 @@ class CodeView(Widget):
 
     def render(self) -> RenderResult:
         # Syntax is a Rich renderable that displays syntax highlighted code
-        syntax = Syntax(self.code, "python", line_numbers=True, indent_guides=True)
+        syntax = Syntax(
+            self.code, "python", line_numbers=True, indent_guides=True
+        )
         return syntax
 
 

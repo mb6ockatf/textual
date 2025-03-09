@@ -32,7 +32,10 @@ from textual.document._syntax_aware_document import (
     SyntaxAwareDocumentError,
 )
 from textual.document._wrapped_document import WrappedDocument
-from textual.expand_tabs import expand_tabs_inline, expand_text_tabs_from_widths
+from textual.expand_tabs import (
+    expand_tabs_inline,
+    expand_text_tabs_from_widths,
+)
 
 if TYPE_CHECKING:
     from tree_sitter import Language, Query
@@ -181,12 +184,22 @@ TextArea {
         Binding("down", "cursor_down", "Cursor down", show=False),
         Binding("left", "cursor_left", "Cursor left", show=False),
         Binding("right", "cursor_right", "Cursor right", show=False),
-        Binding("ctrl+left", "cursor_word_left", "Cursor word left", show=False),
-        Binding("ctrl+right", "cursor_word_right", "Cursor word right", show=False),
-        Binding("home,ctrl+a", "cursor_line_start", "Cursor line start", show=False),
-        Binding("end,ctrl+e", "cursor_line_end", "Cursor line end", show=False),
+        Binding(
+            "ctrl+left", "cursor_word_left", "Cursor word left", show=False
+        ),
+        Binding(
+            "ctrl+right", "cursor_word_right", "Cursor word right", show=False
+        ),
+        Binding(
+            "home,ctrl+a", "cursor_line_start", "Cursor line start", show=False
+        ),
+        Binding(
+            "end,ctrl+e", "cursor_line_end", "Cursor line end", show=False
+        ),
         Binding("pageup", "cursor_page_up", "Cursor page up", show=False),
-        Binding("pagedown", "cursor_page_down", "Cursor page down", show=False),
+        Binding(
+            "pagedown", "cursor_page_down", "Cursor page down", show=False
+        ),
         # Making selections (generally holding the shift key and moving cursor)
         Binding(
             "ctrl+shift+left",
@@ -207,30 +220,58 @@ TextArea {
             show=False,
         ),
         Binding(
-            "shift+end", "cursor_line_end(True)", "Cursor line end select", show=False
+            "shift+end",
+            "cursor_line_end(True)",
+            "Cursor line end select",
+            show=False,
         ),
         Binding("shift+up", "cursor_up(True)", "Cursor up select", show=False),
-        Binding("shift+down", "cursor_down(True)", "Cursor down select", show=False),
-        Binding("shift+left", "cursor_left(True)", "Cursor left select", show=False),
-        Binding("shift+right", "cursor_right(True)", "Cursor right select", show=False),
+        Binding(
+            "shift+down", "cursor_down(True)", "Cursor down select", show=False
+        ),
+        Binding(
+            "shift+left", "cursor_left(True)", "Cursor left select", show=False
+        ),
+        Binding(
+            "shift+right",
+            "cursor_right(True)",
+            "Cursor right select",
+            show=False,
+        ),
         # Shortcut ways of making selections
         # Binding("f5", "select_word", "select word", show=False),
         Binding("f6", "select_line", "Select line", show=False),
         Binding("f7", "select_all", "Select all", show=False),
         # Deletion
-        Binding("backspace", "delete_left", "Delete character left", show=False),
         Binding(
-            "ctrl+w", "delete_word_left", "Delete left to start of word", show=False
+            "backspace", "delete_left", "Delete character left", show=False
         ),
-        Binding("delete,ctrl+d", "delete_right", "Delete character right", show=False),
         Binding(
-            "ctrl+f", "delete_word_right", "Delete right to start of word", show=False
+            "ctrl+w",
+            "delete_word_left",
+            "Delete left to start of word",
+            show=False,
+        ),
+        Binding(
+            "delete,ctrl+d",
+            "delete_right",
+            "Delete character right",
+            show=False,
+        ),
+        Binding(
+            "ctrl+f",
+            "delete_word_right",
+            "Delete right to start of word",
+            show=False,
         ),
         Binding("ctrl+x", "cut", "Cut", show=False),
         Binding("ctrl+c", "copy", "Copy", show=False),
         Binding("ctrl+v", "paste", "Paste", show=False),
         Binding(
-            "ctrl+u", "delete_to_start_of_line", "Delete to line start", show=False
+            "ctrl+u",
+            "delete_to_start_of_line",
+            "Delete to line start",
+            show=False,
         ),
         Binding(
             "ctrl+k",
@@ -284,7 +325,9 @@ TextArea {
     | ctrl+v                 | Paste from clipboard.                        |
     """
 
-    language: Reactive[str | None] = reactive(None, always_update=True, init=False)
+    language: Reactive[str | None] = reactive(
+        None, always_update=True, init=False
+    )
     """The language to use.
 
     This must be set to a valid, non-None value for syntax highlighting to work.
@@ -349,7 +392,9 @@ TextArea {
     The document can still be edited programmatically via the API.
     """
 
-    _cursor_visible: Reactive[bool] = reactive(False, repaint=False, init=False)
+    _cursor_visible: Reactive[bool] = reactive(
+        False, repaint=False, init=False
+    )
     """Indicates where the cursor is in the blink cycle. If it's currently
     not visible due to blinking, this is False."""
 
@@ -468,7 +513,9 @@ TextArea {
         self.wrapped_document: WrappedDocument = WrappedDocument(self.document)
         """The wrapped view of the document."""
 
-        self.navigator: DocumentNavigator = DocumentNavigator(self.wrapped_document)
+        self.navigator: DocumentNavigator = DocumentNavigator(
+            self.wrapped_document
+        )
         """Queried to determine where the cursor should move given a navigation
         action, accounting for wrapping etc."""
 
@@ -571,7 +618,9 @@ TextArea {
 
         return highlight_query
 
-    def check_consume_key(self, key: str, character: str | None = None) -> bool:
+    def check_consume_key(
+        self, key: str, character: str | None = None
+    ) -> bool:
         """Check if the widget may consume the given key.
 
         As a textarea we are expecting to capture printable keys.
@@ -606,7 +655,11 @@ TextArea {
                 node_end_row, node_end_column = node.end_point
 
                 if node_start_row == node_end_row:
-                    highlight = (node_start_column, node_end_column, highlight_name)
+                    highlight = (
+                        node_start_column,
+                        node_end_column,
+                        highlight_name,
+                    )
                     highlights[node_start_row].append(highlight)
                 else:
                     # Add the first line of the node range
@@ -698,9 +751,10 @@ TextArea {
         bracket_stack: list[str] = []
         if bracket in _OPENING_BRACKETS:
             # Search forwards for a closing bracket
-            for candidate, candidate_location in self._yield_character_locations(
-                search_from
-            ):
+            for (
+                candidate,
+                candidate_location,
+            ) in self._yield_character_locations(search_from):
                 if candidate in _OPENING_BRACKETS:
                     bracket_stack.append(candidate)
                 elif candidate in _CLOSING_BRACKETS:
@@ -874,7 +928,9 @@ TextArea {
         """
         if not TREE_SITTER:
             return
-        self._languages[name] = TextAreaLanguage(name, language, highlight_query)
+        self._languages[name] = TextAreaLanguage(
+            name, language, highlight_query
+        )
 
     def update_highlight_query(self, name: str, highlight_query: str) -> None:
         """Update the highlight query for an already registered language.
@@ -933,7 +989,9 @@ TextArea {
             document = Document(text)
 
         self.document = document
-        self.wrapped_document = WrappedDocument(document, tab_width=self.indent_width)
+        self.wrapped_document = WrappedDocument(
+            document, tab_width=self.indent_width
+        )
         self.navigator = DocumentNavigator(self.wrapped_document)
         self._build_highlight_map()
         self.move_cursor((0, 0))
@@ -987,7 +1045,9 @@ TextArea {
         return 0
 
     def _rewrap_and_refresh_virtual_size(self) -> None:
-        self.wrapped_document.wrap(self.wrap_width, tab_width=self.indent_width)
+        self.wrapped_document.wrap(
+            self.wrap_width, tab_width=self.indent_width
+        )
         self._refresh_size()
 
     @property
@@ -1115,14 +1175,19 @@ TextArea {
             line.stylize(cursor_line_style)
 
         # Selection styling
-        if start != end and selection_top_row <= line_index <= selection_bottom_row:
+        if (
+            start != end
+            and selection_top_row <= line_index <= selection_bottom_row
+        ):
             # If this row intersects with the selection range
             selection_style = theme.selection_style if theme else None
             cursor_row, _ = end
             if selection_style:
                 if line_character_count == 0 and line_index != cursor_row:
                     # A simple highlight to show empty lines are included in the selection
-                    line = Text("▌", end="", style=Style(color=selection_style.bgcolor))
+                    line = Text(
+                        "▌", end="", style=Style(color=selection_style.bgcolor)
+                    )
                 else:
                     if line_index == selection_top_row == selection_bottom_row:
                         # Selection within a single line
@@ -1140,9 +1205,13 @@ TextArea {
                                 end=line_character_count,
                             )
                         elif line_index == selection_bottom_row:
-                            line.stylize(selection_style, end=selection_bottom_column)
+                            line.stylize(
+                                selection_style, end=selection_bottom_column
+                            )
                         else:
-                            line.stylize(selection_style, end=line_character_count)
+                            line.stylize(
+                                selection_style, end=line_character_count
+                            )
 
         highlights = self._highlights
         if highlights and theme:
@@ -1150,20 +1219,30 @@ TextArea {
             byte_to_codepoint = build_byte_to_codepoint_dict(line_bytes)
             get_highlight_from_theme = theme.syntax_styles.get
             line_highlights = highlights[line_index]
-            for highlight_start, highlight_end, highlight_name in line_highlights:
+            for (
+                highlight_start,
+                highlight_end,
+                highlight_name,
+            ) in line_highlights:
                 node_style = get_highlight_from_theme(highlight_name)
                 if node_style is not None:
                     line.stylize(
                         node_style,
                         byte_to_codepoint.get(highlight_start, 0),
-                        byte_to_codepoint.get(highlight_end) if highlight_end else None,
+                        (
+                            byte_to_codepoint.get(highlight_end)
+                            if highlight_end
+                            else None
+                        ),
                     )
 
         # Highlight the cursor
         matching_bracket = self._matching_bracket_location
         match_cursor_bracket = self.match_cursor_bracket
         draw_matched_brackets = (
-            match_cursor_bracket and matching_bracket is not None and start == end
+            match_cursor_bracket
+            and matching_bracket is not None
+            and start == end
         )
 
         if cursor_row == line_index:
@@ -1173,7 +1252,9 @@ TextArea {
                 or (self.cursor_blink and self._cursor_visible)
             )
             if draw_matched_brackets:
-                matching_bracket_style = theme.bracket_matching_style if theme else None
+                matching_bracket_style = (
+                    theme.bracket_matching_style if theme else None
+                )
                 if matching_bracket_style:
                     line.stylize(
                         matching_bracket_style,
@@ -1184,7 +1265,9 @@ TextArea {
             if draw_cursor:
                 cursor_style = theme.cursor_style if theme else None
                 if cursor_style:
-                    line.stylize(cursor_style, cursor_column, cursor_column + 1)
+                    line.stylize(
+                        cursor_style, cursor_column, cursor_column + 1
+                    )
 
         # Highlight the partner opening/closing bracket.
         if draw_matched_brackets:
@@ -1210,7 +1293,9 @@ TextArea {
 
             gutter_width_no_margin = gutter_width - 2
             gutter_content = (
-                str(line_index + self.line_number_start) if section_offset == 0 else ""
+                str(line_index + self.line_number_start)
+                if section_offset == 0
+                else ""
             )
             gutter = Text(
                 f"{gutter_content:>{gutter_width_no_margin}}  ",
@@ -1224,7 +1309,9 @@ TextArea {
         #  We should cache sections with the edit counts.
         wrap_offsets = wrapped_document.get_offsets(line_index)
         if wrap_offsets:
-            sections = line.divide(wrap_offsets)  # TODO cache result with edit count
+            sections = line.divide(
+                wrap_offsets
+            )  # TODO cache result with edit count
             line = sections[section_offset]
             line_tab_widths = wrapped_document.get_tab_widths(line_index)
             line.end = ""
@@ -1481,7 +1568,9 @@ TextArea {
             if self.indent_type == "tabs":
                 insert_values["tab"] = "\t"
             else:
-                insert_values["tab"] = " " * self._find_columns_to_next_tab_stop()
+                insert_values["tab"] = (
+                    " " * self._find_columns_to_next_tab_stop()
+                )
 
         if event.is_printable or key in insert_values:
             event.stop()
@@ -1526,7 +1615,9 @@ TextArea {
         scroll_x, scroll_y = self.scroll_offset
         target_x = event.x - self.gutter_width + scroll_x - self.gutter.left
         target_y = event.y + scroll_y - self.gutter.top
-        location = self.wrapped_document.offset_to_location(Offset(target_x, target_y))
+        location = self.wrapped_document.offset_to_location(
+            Offset(target_x, target_y)
+        )
         return location
 
     @property
@@ -1619,7 +1710,9 @@ TextArea {
         if result := self._replace_via_keyboard(event.text, *self.selection):
             self.move_cursor(result.end_location)
 
-    def cell_width_to_column_index(self, cell_width: int, row_index: int) -> int:
+    def cell_width_to_column_index(
+        self, cell_width: int, row_index: int
+    ) -> int:
         """Return the column that the cell width corresponds to on the given row.
 
         Args:
@@ -1732,7 +1825,9 @@ TextArea {
         clamp_visitable = self.clamp_visitable
         _start, end = self.selection
         current_row, current_column = end
-        target = clamp_visitable((current_row + rows, current_column + columns))
+        target = clamp_visitable(
+            (current_row + rows, current_column + columns)
+        )
         self.move_cursor(target, select, center, record_width)
 
     def select_line(self, index: int) -> None:
@@ -1932,7 +2027,9 @@ TextArea {
         target = self.get_cursor_line_start_location(smart_home=True)
         self.move_cursor(target, select=select)
 
-    def get_cursor_line_start_location(self, smart_home: bool = False) -> Location:
+    def get_cursor_line_start_location(
+        self, smart_home: bool = False
+    ) -> Location:
         """Get the location of the start of the current line.
 
         Args:
@@ -1993,7 +2090,9 @@ TextArea {
         """
         cursor_row, cursor_column = self.selection.end
         line = self.document[cursor_row]
-        if cursor_row < self.document.line_count - 1 and cursor_column == len(line):
+        if cursor_row < self.document.line_count - 1 and cursor_column == len(
+            line
+        ):
             # Moving to the line below
             return cursor_row + 1, 0
 
@@ -2082,7 +2181,9 @@ TextArea {
         """
         if location is None:
             location = self.cursor_location
-        return self.edit(Edit(text, location, location, maintain_selection_offset))
+        return self.edit(
+            Edit(text, location, location, maintain_selection_offset)
+        )
 
     def delete(
         self,
@@ -2136,7 +2237,9 @@ TextArea {
         Returns:
             An EditResult relating to the deletion of all content.
         """
-        return self.delete((0, 0), self.document.end, maintain_selection_offset=False)
+        return self.delete(
+            (0, 0), self.document.end, maintain_selection_offset=False
+        )
 
     def _delete_via_keyboard(
         self,
@@ -2174,7 +2277,9 @@ TextArea {
         """
         if self.read_only:
             return None
-        return self.replace(insert, start, end, maintain_selection_offset=False)
+        return self.replace(
+            insert, start, end, maintain_selection_offset=False
+        )
 
     def action_delete_left(self) -> None:
         """Deletes the character to the left of the cursor and updates the cursor location.
@@ -2272,7 +2377,10 @@ TextArea {
         """
         # Assume we're just going to delete to the end of the line.
         action = "delete_to_end_of_line"
-        if self.get_cursor_line_start_location() == self.get_cursor_line_end_location():
+        if (
+            self.get_cursor_line_start_location()
+            == self.get_cursor_line_end_location()
+        ):
             # The line is empty, so we'll simply remove the line itself.
             action = "delete_line"
         elif (

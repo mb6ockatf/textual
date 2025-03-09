@@ -42,7 +42,9 @@ class EditHistory:
     """
 
     def __post_init__(self) -> None:
-        self._undo_stack: deque[list[Edit]] = deque(maxlen=self.max_checkpoints)
+        self._undo_stack: deque[list[Edit]] = deque(
+            maxlen=self.max_checkpoints
+        )
         """Batching Edit operations together (edits are simply grouped together in lists)."""
         self._redo_stack: deque[list[Edit]] = deque()
         """Stores batches that have been undone, allowing them to be redone."""
@@ -86,7 +88,9 @@ class EditHistory:
         undo_stack = self._undo_stack
         current_time = self._get_time()
         edit_characters = len(edit.text)
-        contains_newline = "\n" in edit.text or "\n" in edit_result.replaced_text
+        contains_newline = (
+            "\n" in edit.text or "\n" in edit_result.replaced_text
+        )
 
         # Determine whether to create a new batch, or add to the latest batch.
         if (
@@ -96,7 +100,8 @@ class EditHistory:
             or contains_newline
             or is_replacement != self._previously_replaced
             or current_time - self._last_edit_time > self.checkpoint_timer
-            or self._character_count + edit_characters > self.checkpoint_max_characters
+            or self._character_count + edit_characters
+            > self.checkpoint_max_characters
         ):
             # Create a new batch (creating a "checkpoint").
             undo_stack.append([edit])

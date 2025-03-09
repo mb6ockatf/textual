@@ -81,5 +81,7 @@ class AwaitComplete:
         """Returns an already completed instance of AwaitComplete."""
         instance = cls()
         instance._future = Future()
-        instance._future.set_result(None)  # Mark it as completed with no result
+        instance._future.set_result(
+            None
+        )  # Mark it as completed with no result
         return instance

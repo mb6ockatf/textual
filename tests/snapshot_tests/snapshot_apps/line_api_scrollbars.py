@@ -45,7 +45,9 @@ class ScrollViewApp(App):
         yield VerticalScroll(MyWidget())
 
     def on_ready(self) -> None:
-        self.query_one(RichLog).write("\n".join(f"{n} 0123456789" for n in range(20)))
+        self.query_one(RichLog).write(
+            "\n".join(f"{n} 0123456789" for n in range(20))
+        )
         self.query_one(VerticalScroll).scroll_end(animate=False)
 
 

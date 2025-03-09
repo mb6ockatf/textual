@@ -18,9 +18,13 @@ from textual.message import Message
 # to be unsuccessful?
 _MAX_SEQUENCE_SEARCH_THRESHOLD = 32
 
-_re_mouse_event = re.compile("^" + re.escape("\x1b[") + r"(<?[\d;]+[mM]|M...)\Z")
+_re_mouse_event = re.compile(
+    "^" + re.escape("\x1b[") + r"(<?[\d;]+[mM]|M...)\Z"
+)
 _re_terminal_mode_response = re.compile(
-    "^" + re.escape("\x1b[") + r"\?(?P<mode_id>\d+);(?P<setting_parameter>\d)\$y"
+    "^"
+    + re.escape("\x1b[")
+    + r"\?(?P<mode_id>\d+);(?P<setting_parameter>\d)\$y"
 )
 
 _re_cursor_position = re.compile(r"\x1b\[(?P<row>\d+);(?P<col>\d+)R")
@@ -34,10 +38,17 @@ FOCUSIN: Final[str] = "\x1b[I"
 FOCUSOUT: Final[str] = "\x1b[O"
 """Sequence received when focus is lost from the terminal."""
 
-SPECIAL_SEQUENCES = {BRACKETED_PASTE_START, BRACKETED_PASTE_END, FOCUSIN, FOCUSOUT}
+SPECIAL_SEQUENCES = {
+    BRACKETED_PASTE_START,
+    BRACKETED_PASTE_END,
+    FOCUSIN,
+    FOCUSOUT,
+}
 """Set of special sequences."""
 
-_re_extended_key: Final = re.compile(r"\x1b\[(?:(\d+)(?:;(\d+))?)?([u~ABCDEFHPQRS])")
+_re_extended_key: Final = re.compile(
+    r"\x1b\[(?:(\d+)(?:;(\d+))?)?([u~ABCDEFHPQRS])"
+)
 _re_in_band_window_resize: Final = re.compile(
     r"\x1b\[48;(\d+(?:\:.*?)?);(\d+(?:\:.*?)?);(\d+(?:\:.*?)?);(\d+(?:\:.*?)?)t"
 )
@@ -98,7 +109,9 @@ class XTermParser(Parser[Message]):
 
             if buttons & 64:
                 event_class = (
-                    events.MouseScrollDown if buttons & 1 else events.MouseScrollUp
+                    events.MouseScrollDown
+                    if buttons & 1
+                    else events.MouseScrollUp
                 )
                 button = 0
             else:
@@ -108,7 +121,9 @@ class XTermParser(Parser[Message]):
                 if buttons & 32 or button == 0:
                     event_class = events.MouseMove
                 else:
-                    event_class = events.MouseDown if state == "M" else events.MouseUp
+                    event_class = (
+                        events.MouseDown if state == "M" else events.MouseUp
+                    )
 
             event = event_class(
                 None,
@@ -286,22 +301,26 @@ class XTermParser(Parser[Message]):
 
                     # Or a mode report?
                     # (i.e. the terminal saying it supports a mode we requested)
-                    mode_report_match = _re_terminal_mode_response.match(sequence)
+                    mode_report_match = _re_terminal_mode_response.match(
+                        sequence
+                    )
                     if mode_report_match is not None:
                         mode_id = mode_report_match["mode_id"]
-                        setting_parameter = int(mode_report_match["setting_parameter"])
+                        setting_parameter = int(
+                            mode_report_match["setting_parameter"]
+                        )
                         if mode_id == "2026" and setting_parameter > 0:
-                            on_token(messages.TerminalSupportsSynchronizedOutput())
+                            on_token(
+                                messages.TerminalSupportsSynchronizedOutput()
+                            )
                         elif (
                             mode_id == "2048"
                             and constants.SMOOTH_SCROLL
                             and not IS_ITERM
                         ):
                             # TODO: iTerm is buggy in one or more of the protocols required here
-                            in_band_event = (
-                                messages.InBandWindowResize.from_setting_parameter(
-                                    setting_parameter
-                                )
+                            in_band_event = messages.InBandWindowResize.from_setting_parameter(
+                                setting_parameter
                             )
                             on_token(in_band_event)
                         break
@@ -358,7 +377,9 @@ class XTermParser(Parser[Message]):
             # If the sequence mapped to a tuple, then it's values from the
             # `Keys` enum. Raise key events from what we find in the tuple.
             for key in keys:
-                yield events.Key(key.value, sequence if len(sequence) == 1 else None)
+                yield events.Key(
+                    key.value, sequence if len(sequence) == 1 else None
+                )
             return
         # If keys is a string, the intention is that it's a mapping to a
         # character, which should really be treated as the sequence for the

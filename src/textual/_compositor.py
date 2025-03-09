@@ -85,7 +85,9 @@ class LayoutUpdate(CompositorUpdate):
         x = self.region.x
         new_line = Segment.line()
         move_to = Control.move_to
-        for last, (y, line) in loop_last(enumerate(self.strips, self.region.y)):
+        for last, (y, line) in loop_last(
+            enumerate(self.strips, self.region.y)
+        ):
             yield move_to(x, y).segment
             yield from line
             if not last:
@@ -104,7 +106,9 @@ class LayoutUpdate(CompositorUpdate):
         append = sequences.append
         x = self.region.x
         move_to = Control.move_to
-        for last, (y, line) in loop_last(enumerate(self.strips, self.region.y)):
+        for last, (y, line) in loop_last(
+            enumerate(self.strips, self.region.y)
+        ):
             append(move_to(x, y).segment.text)
             append(line.render(console))
             if not last:
@@ -152,8 +156,12 @@ class InlineUpdate(CompositorUpdate):
                 append("\n")
             append("\x1b[J")  # Clear down
         if len(self.strips) > 1:
-            back_lines = len(self.strips) if self.clear else len(self.strips) - 1
-            append(f"\x1b[{back_lines}A\r")  # Move cursor back to original position
+            back_lines = (
+                len(self.strips) if self.clear else len(self.strips) - 1
+            )
+            append(
+                f"\x1b[{back_lines}A\r"
+            )  # Move cursor back to original position
         else:
             append("\r")
         append("\x1b[6n")  # Query new cursor position
@@ -293,7 +301,9 @@ class Compositor:
         self.widgets: set[Widget] = set()
 
         # Mapping of visible widgets on to their region, and clip region
-        self._visible_widgets: dict[Widget, tuple[Region, Region]] | None = None
+        self._visible_widgets: dict[Widget, tuple[Region, Region]] | None = (
+            None
+        )
 
         # The top level widget
         self.root: Widget | None = None
@@ -308,7 +318,9 @@ class Compositor:
         self._dirty_regions: set[Region] = set()
 
         # Mapping of line numbers on to lists of widget and regions
-        self._layers_visible: list[list[tuple[Widget, Region, Region]]] | None = None
+        self._layers_visible: (
+            list[list[tuple[Widget, Region, Region]]] | None
+        ) = None
 
     def clear(self) -> None:
         """Remove all references to widgets (used when the screen closes)."""
@@ -419,7 +431,10 @@ class Compositor:
         resized_widgets = {
             widget
             for widget, (region, *_) in changes
-            if (widget in common_widgets and old_map[widget].region[2:] != region[2:])
+            if (
+                widget in common_widgets
+                and old_map[widget].region[2:] != region[2:]
+            )
         }
         return ReflowResult(
             hidden=hidden_widgets,
@@ -483,7 +498,9 @@ class Compositor:
             return {}
         if self._full_map_invalidated:
             self._full_map_invalidated = False
-            map, _widgets = self._arrange_root(self.root, self.size, visible_only=False)
+            map, _widgets = self._arrange_root(
+                self.root, self.size, visible_only=False
+            )
             # Update any widgets which became visible in the interim
             self._full_map = map
             self._visible_widgets = None
@@ -517,7 +534,8 @@ class Compositor:
             ]
             visible_widgets.sort(key=itemgetter(0), reverse=True)
             self._visible_widgets = {
-                widget: (region, clip) for _, widget, region, clip in visible_widgets
+                widget: (region, clip)
+                for _, widget, region, clip in visible_widgets
             }
         return self._visible_widgets
 
@@ -607,18 +625,26 @@ class Compositor:
 
                     if visible_only:
                         placements = arrange_result.get_visible_placements(
-                            sub_clip - child_region.offset + widget.scroll_offset
+                            sub_clip
+                            - child_region.offset
+                            + widget.scroll_offset
                         )
                     else:
                         placements = arrange_result.placements
-                    total_region = total_region.union(arrange_result.total_region)
+                    total_region = total_region.union(
+                        arrange_result.total_region
+                    )
 
                     # An offset added to all placements
                     placement_offset = container_region.offset
-                    placement_scroll_offset = placement_offset - widget.scroll_offset
+                    placement_scroll_offset = (
+                        placement_offset - widget.scroll_offset
+                    )
 
                     placements = [
-                        placement.process_offset(size.region, placement_scroll_offset)
+                        placement.process_offset(
+                            size.region, placement_scroll_offset
+                        )
                         for placement in placements
                     ]
 
@@ -655,11 +681,15 @@ class Compositor:
                         # Combine regions with children to calculate the "virtual size"
                         if fixed:
                             widget_region = (
-                                sub_region + sub_region_offset + placement_offset
+                                sub_region
+                                + sub_region_offset
+                                + placement_offset
                             )
                         else:
                             widget_region = (
-                                sub_region + sub_region_offset + placement_scroll_offset
+                                sub_region
+                                + sub_region_offset
+                                + placement_scroll_offset
                             )
 
                         widget_order = order + ((layer_index, z, layer_order),)
@@ -683,9 +713,10 @@ class Compositor:
                         widget.show_vertical_scrollbar
                         or widget.show_horizontal_scrollbar
                     ):
-                        for chrome_widget, chrome_region in widget._arrange_scrollbars(
-                            container_region
-                        ):
+                        for (
+                            chrome_widget,
+                            chrome_region,
+                        ) in widget._arrange_scrollbars(container_region):
                             map[chrome_widget] = _MapGeometry(
                                 chrome_region,
                                 order,
@@ -735,7 +766,11 @@ class Compositor:
     @property
     def layers(self) -> list[tuple[Widget, MapGeometry]]:
         """Get widgets and geometry in layer order."""
-        map = self._visible_map if self._visible_map is not None else self._full_map
+        map = (
+            self._visible_map
+            if self._visible_map is not None
+            else self._full_map
+        )
         if self._layers is None:
             self._layers = sorted(
                 map.items(), key=lambda item: item[1].order, reverse=True
@@ -825,7 +860,9 @@ class Compositor:
                     return widget, region
         raise errors.NoWidget(f"No widget under screen coordinate ({x}, {y})")
 
-    def get_widgets_at(self, x: int, y: int) -> Iterable[tuple[Widget, Region]]:
+    def get_widgets_at(
+        self, x: int, y: int
+    ) -> Iterable[tuple[Widget, Region]]:
         """Get all widgets under a given coordinate.
 
         Args:
@@ -931,7 +968,9 @@ class Compositor:
                         )
             start = end
 
-        return widget, (None if offset_y is None else Offset(offset_x2, offset_y))
+        return widget, (
+            None if offset_y is None else Offset(offset_x2, offset_y)
+        )
 
     def find_widget(self, widget: Widget) -> MapGeometry:
         """Get information regarding the relative position of a widget in the Compositor.
@@ -1044,7 +1083,9 @@ class Compositor:
                     ),
                 )
             else:
-                new_x, new_y, new_width, new_height = intersection(region, clip)
+                new_x, new_y, new_width, new_height = intersection(
+                    region, clip
+                )
                 if new_width and new_height:
                     yield (
                         region,
@@ -1118,7 +1159,8 @@ class Compositor:
         chops = self._render_chops(crop, lambda y: True)
         if simplify:
             render_strips = [
-                Strip.join(chop.values()).simplify().discard_meta() for chop in chops
+                Strip.join(chop.values()).simplify().discard_meta()
+                for chop in chops
             ]
         else:
             render_strips = [Strip.join(chop.values()) for chop in chops]
@@ -1136,7 +1178,9 @@ class Compositor:
         self._dirty_regions.clear()
         if update_regions:
             # Create a crop region that surrounds all updates.
-            crop = Region.from_union(update_regions).intersection(screen_region)
+            crop = Region.from_union(update_regions).intersection(
+                screen_region
+            )
             spans = list(self._regions_to_spans(update_regions))
             is_rendered_line = {y for y, _, _ in spans}.__contains__
         else:
@@ -1157,7 +1201,9 @@ class Compositor:
         if size is None:
             size = self.size
         chops = self._render_chops(size.region, lambda y: True)
-        render_strips = [Strip.join(chop.values()) for chop in chops[: size.height]]
+        render_strips = [
+            Strip.join(chop.values()) for chop in chops[: size.height]
+        ]
         return render_strips
 
     def _render_chops(
@@ -1175,7 +1221,9 @@ class Compositor:
             Chops structure.
         """
         cuts = self.cuts
-        fromkeys = cast("Callable[[list[int]], dict[int, Strip | None]]", dict.fromkeys)
+        fromkeys = cast(
+            "Callable[[list[int]], dict[int, Strip | None]]", dict.fromkeys
+        )
         chops: list[dict[int, Strip | None]]
         chops = [fromkeys(cut_set[:-1]) for cut_set in cuts]
 
@@ -1195,8 +1243,12 @@ class Compositor:
                     continue
 
                 chops_line = chops[y]
-                final_cuts = [cut for cut in cuts[y] if (last_cut >= cut >= first_cut)]
-                cut_strips = strip.divide([cut - render_x for cut in final_cuts[1:]])
+                final_cuts = [
+                    cut for cut in cuts[y] if (last_cut >= cut >= first_cut)
+                ]
+                cut_strips = strip.divide(
+                    [cut - render_x for cut in final_cuts[1:]]
+                )
 
                 # Since we are painting front to back, the first segments for a cut "wins"
                 get_chops_line = chops_line.get

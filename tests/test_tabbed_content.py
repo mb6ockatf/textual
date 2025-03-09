@@ -124,7 +124,9 @@ async def test_unsetting_tabbed_content_active():
                 with TabPane("baz", id="baz"):
                     yield Label("Baz", id="baz-label")
 
-        def on_tabbed_content_cleared(self, event: TabbedContent.Cleared) -> None:
+        def on_tabbed_content_cleared(
+            self, event: TabbedContent.Cleared
+        ) -> None:
             messages.append(event)
 
     app = TabbedApp()
@@ -239,7 +241,9 @@ async def test_tabbed_content_add_before_id():
         tabbed_content = pilot.app.query_one(TabbedContent)
         assert tabbed_content.tab_count == 1
         assert tabbed_content.active == "initial-1"
-        await tabbed_content.add_pane(TabPane("Added", id="new-1"), before="initial-1")
+        await tabbed_content.add_pane(
+            TabPane("Added", id="new-1"), before="initial-1"
+        )
         assert tabbed_content.tab_count == 2
         assert tabbed_content.active == "initial-1"
         assert [
@@ -301,7 +305,9 @@ async def test_tabbed_content_add_after():
         tabbed_content = pilot.app.query_one(TabbedContent)
         assert tabbed_content.tab_count == 1
         assert tabbed_content.active == "initial-1"
-        await tabbed_content.add_pane(TabPane("Added", id="new-1"), after="initial-1")
+        await tabbed_content.add_pane(
+            TabPane("Added", id="new-1"), after="initial-1"
+        )
         assert tabbed_content.tab_count == 2
         assert tabbed_content.active == "initial-1"
         assert [
@@ -367,7 +373,9 @@ async def test_tabbed_content_add_before_and_after():
         assert tabbed_content.active == "initial-1"
         with pytest.raises(Tabs.TabError):
             await tabbed_content.add_pane(
-                TabPane("Added", id="new-1"), before="initial-1", after="initial-1"
+                TabPane("Added", id="new-1"),
+                before="initial-1",
+                after="initial-1",
             )
 
 

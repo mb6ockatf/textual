@@ -118,7 +118,9 @@ def line_crop(
     return output_segments
 
 
-def line_trim(segments: list[Segment], start: bool, end: bool) -> list[Segment]:
+def line_trim(
+    segments: list[Segment], start: bool, end: bool
+) -> list[Segment]:
     """Optionally remove a cell from the start and / or end of a list of segments.
 
     Args:

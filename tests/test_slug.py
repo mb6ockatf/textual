@@ -59,6 +59,8 @@ def tracker() -> TrackedSlugs:
         (" test ", "test-5"),
     ],
 )
-def test_tracked_slugs(tracker: TrackedSlugs, text: str, expected: str) -> None:
+def test_tracked_slugs(
+    tracker: TrackedSlugs, text: str, expected: str
+) -> None:
     """The tracked slugging class should produce the expected slugs."""
     assert tracker.slug(text) == expected

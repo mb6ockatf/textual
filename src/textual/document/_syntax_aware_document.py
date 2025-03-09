@@ -9,7 +9,12 @@ except ImportError:
 
 
 from textual._tree_sitter import BUILTIN_LANGUAGES
-from textual.document._document import Document, EditResult, Location, _utf8_encode
+from textual.document._document import (
+    Document,
+    EditResult,
+    Location,
+    _utf8_encode,
+)
 
 
 class SyntaxAwareDocumentError(Exception):
@@ -57,7 +62,9 @@ class SyntaxAwareDocument(Document):
         # If the language is `None`, then avoid doing any parsing related stuff.
         if isinstance(language, str):
             if language not in BUILTIN_LANGUAGES:
-                raise SyntaxAwareDocumentError(f"Invalid language {language!r}")
+                raise SyntaxAwareDocumentError(
+                    f"Invalid language {language!r}"
+                )
             # If tree-sitter-languages is not installed properly, get_language
             # and get_parser may raise an OSError when unable to load their
             # resources
@@ -134,10 +141,14 @@ class SyntaxAwareDocument(Document):
         if end_point is not None:
             captures_kwargs["end_point"] = end_point
 
-        captures = query.captures(self._syntax_tree.root_node, **captures_kwargs)
+        captures = query.captures(
+            self._syntax_tree.root_node, **captures_kwargs
+        )
         return captures
 
-    def replace_range(self, start: Location, end: Location, text: str) -> EditResult:
+    def replace_range(
+        self, start: Location, end: Location, text: str
+    ) -> EditResult:
         """Replace text at the given range.
 
         Args:
@@ -234,7 +245,9 @@ class SyntaxAwareDocument(Document):
             bytes_on_left = 0
         return row, bytes_on_left
 
-    def _read_callable(self, byte_offset: int, point: tuple[int, int]) -> bytes:
+    def _read_callable(
+        self, byte_offset: int, point: tuple[int, int]
+    ) -> bytes:
         """A callable which informs tree-sitter about the document content.
 
         This is passed to tree-sitter which will call it frequently to retrieve

@@ -73,7 +73,11 @@ class CodeBrowser(App):
                 line_numbers=True,
                 word_wrap=False,
                 indent_guides=True,
-                theme="github-dark" if self.current_theme.dark else "github-light",
+                theme=(
+                    "github-dark"
+                    if self.current_theme.dark
+                    else "github-light"
+                ),
             )
         except Exception:
             code_view.update(Traceback(theme="github-dark", width=None))

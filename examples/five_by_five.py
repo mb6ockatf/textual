@@ -159,7 +159,9 @@ class Game(Screen):
 
     BINDINGS = [
         Binding("n", "new_game", "New Game"),
-        Binding("question_mark", "app.push_screen('help')", "Help", key_display="?"),
+        Binding(
+            "question_mark", "app.push_screen('help')", "Help", key_display="?"
+        ),
         Binding("q", "app.quit", "Quit"),
         Binding("up,w,k", "navigate(-1,0)", "Move Up", False),
         Binding("down,s,j", "navigate(1,0)", "Move Down", False),
@@ -253,7 +255,9 @@ class Game(Screen):
         self.toggle_cells(cell)
         self.query_one(GameHeader).moves += 1
         if self.all_filled:
-            self.query_one(WinnerMessage).show(self.query_one(GameHeader).moves)
+            self.query_one(WinnerMessage).show(
+                self.query_one(GameHeader).moves
+            )
             self.game_playable(False)
 
     def on_button_pressed(self, event: GameCell.Pressed) -> None:

@@ -38,7 +38,9 @@ class ModalApp(App):
     def get_system_commands(self, screen: Screen) -> Iterable[SystemCommand]:
         yield from super().get_system_commands(screen)
         yield SystemCommand(
-            "try a modal quit dialog", "this should work", self.action_request_quit
+            "try a modal quit dialog",
+            "this should work",
+            self.action_request_quit,
         )
 
     def action_request_quit(self) -> None:

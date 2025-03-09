@@ -92,7 +92,9 @@ else:
 
         async def cancel():
             """Cancels the timer by setting the cancel event."""
-            await asyncio.get_running_loop().run_in_executor(None, cancel_inner)
+            await asyncio.get_running_loop().run_in_executor(
+                None, cancel_inner
+            )
 
         def wait_inner():
             """Function responsible for waiting for the timer or the cancel event."""
@@ -110,7 +112,9 @@ else:
         async def wait():
             """Wraps the actual sleeping so we can detect if the thread was cancelled."""
             try:
-                await asyncio.get_running_loop().run_in_executor(None, wait_inner)
+                await asyncio.get_running_loop().run_in_executor(
+                    None, wait_inner
+                )
             except asyncio.CancelledError:
                 await cancel()
                 raise

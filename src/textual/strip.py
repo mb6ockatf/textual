@@ -35,7 +35,9 @@ def get_line_length(segments: Iterable[Segment]) -> int:
         Length of line in cells.
     """
     _cell_len = cell_len
-    return sum([_cell_len(text) for text, _, control in segments if not control])
+    return sum(
+        [_cell_len(text) for text, _, control in segments if not control]
+    )
 
 
 class StripRenderable:
@@ -92,10 +94,14 @@ class Strip:
     ) -> None:
         self._segments = list(segments)
         self._cell_length = cell_length
-        self._divide_cache: FIFOCache[tuple[int, ...], list[Strip]] = FIFOCache(4)
+        self._divide_cache: FIFOCache[tuple[int, ...], list[Strip]] = (
+            FIFOCache(4)
+        )
         self._crop_cache: FIFOCache[tuple[int, int], Strip] = FIFOCache(16)
         self._style_cache: FIFOCache[Style, Strip] = FIFOCache(16)
-        self._filter_cache: FIFOCache[tuple[LineFilter, Color], Strip] = FIFOCache(4)
+        self._filter_cache: FIFOCache[tuple[LineFilter, Color], Strip] = (
+            FIFOCache(4)
+        )
         self._line_length_cache: FIFOCache[
             tuple[int, Style | None],
             Strip,
@@ -128,7 +134,9 @@ class Strip:
         """A set of the link ids in this Strip."""
         if self._link_ids is None:
             self._link_ids = {
-                style._link_id for _, style, _ in self._segments if style is not None
+                style._link_id
+                for _, style, _ in self._segments
+                if style is not None
             }
         return self._link_ids
 
@@ -225,7 +233,12 @@ class Strip:
                     yield strip
                 else:
                     yield Strip(
-                        line_pad(strip._segments, 0, width - strip.cell_length, style),
+                        line_pad(
+                            strip._segments,
+                            0,
+                            width - strip.cell_length,
+                            style,
+                        ),
                         width,
                     )
         elif horizontal == "center":
@@ -250,7 +263,12 @@ class Strip:
                     yield strip
                 else:
                     yield cls(
-                        line_pad(strip._segments, width - strip.cell_length, 0, style),
+                        line_pad(
+                            strip._segments,
+                            width - strip.cell_length,
+                            0,
+                            style,
+                        ),
                         width,
                     )
 
@@ -313,10 +331,13 @@ class Strip:
 
     def __eq__(self, strip: object) -> bool:
         return isinstance(strip, Strip) and (
-            self._segments == strip._segments and self.cell_length == strip.cell_length
+            self._segments == strip._segments
+            and self.cell_length == strip.cell_length
         )
 
-    def extend_cell_length(self, cell_length: int, style: Style | None = None) -> Strip:
+    def extend_cell_length(
+        self, cell_length: int, style: Style | None = None
+    ) -> Strip:
         """Extend the cell length if it is less than the given value.
 
         Args:
@@ -333,7 +354,9 @@ class Strip:
         else:
             return self
 
-    def adjust_cell_length(self, cell_length: int, style: Style | None = None) -> Strip:
+    def adjust_cell_length(
+        self, cell_length: int, style: Style | None = None
+    ) -> Strip:
         """Adjust the cell length, possibly truncating or extending.
 
         Args:
@@ -464,7 +487,9 @@ class Strip:
                 text,
                 (
                     (style + link_style if style is not None else None)
-                    if (style and not style._null and style._link_id == link_id)
+                    if (
+                        style and not style._null and style._link_id == link_id
+                    )
                     else style
                 ),
                 control,
@@ -574,7 +599,9 @@ class Strip:
         else:
             strips = []
             add_strip = strips.append
-            for segments, cut in zip(Segment.divide(self._segments, cuts), cuts):
+            for segments, cut in zip(
+                Segment.divide(self._segments, cuts), cuts
+            ):
                 add_strip(Strip(segments, cut - pos))
                 pos = cut
 
@@ -622,7 +649,11 @@ class Strip:
                     (
                         style
                         if style._meta is None
-                        else (style + link_style if "@click" in style.meta else style)
+                        else (
+                            style + link_style
+                            if "@click" in style.meta
+                            else style
+                        )
                     ),
                     control,
                 )
@@ -654,7 +685,9 @@ class Strip:
             )
         return self._render_cache
 
-    def crop_pad(self, cell_length: int, left: int, right: int, style: Style) -> Strip:
+    def crop_pad(
+        self, cell_length: int, left: int, right: int, style: Style
+    ) -> Strip:
         """Crop the strip to `cell_length`, and add optional padding.
 
         Args:
@@ -685,7 +718,12 @@ class Strip:
                 return self
             else:
                 return Strip(
-                    line_pad(self._segments, 0, width - self.cell_length, Style.null()),
+                    line_pad(
+                        self._segments,
+                        0,
+                        width - self.cell_length,
+                        Style.null(),
+                    ),
                     width,
                 )
         elif align == "center":
@@ -709,7 +747,12 @@ class Strip:
                 return self
             else:
                 return Strip(
-                    line_pad(self._segments, width - self.cell_length, 0, Style.null()),
+                    line_pad(
+                        self._segments,
+                        width - self.cell_length,
+                        0,
+                        Style.null(),
+                    ),
                     width,
                 )
 

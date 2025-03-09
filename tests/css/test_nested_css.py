@@ -41,7 +41,9 @@ async def test_nest_app():
         assert app.query_one("#foo").styles.background == Color.parse("red")
         assert app.query_one("#foo").styles.color == Color.parse("magenta")
         assert app.query_one("#egg").styles.background == Color.parse("green")
-        assert app.query_one("#foo .paul").styles.background == Color.parse("blue")
+        assert app.query_one("#foo .paul").styles.background == Color.parse(
+            "blue"
+        )
 
 
 class ListOfNestedSelectorsApp(App[None]):

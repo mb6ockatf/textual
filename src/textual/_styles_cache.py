@@ -164,7 +164,9 @@ class StylesCache:
                 link_style_hover = widget.link_style_hover
                 if link_style_hover:
                     strips = [
-                        strip.style_links(hover_style.link_id, link_style_hover)
+                        strip.style_links(
+                            hover_style.link_id, link_style_hover
+                        )
                         for strip in strips
                     ]
 
@@ -223,7 +225,9 @@ class StylesCache:
         is_dirty = self._dirty_lines.__contains__
         render_line = self.render_line
         apply_filters = (
-            [] if filters is None else [filter for filter in filters if filter.enabled]
+            []
+            if filters is None
+            else [filter for filter in filters if filter.enabled]
         )
         for y in crop.line_range:
             if is_dirty(y) or y not in self._cache:
@@ -249,8 +253,15 @@ class StylesCache:
                 strip = strip.apply_filter(filter, background)
 
             if DEBUG:
-                if any([not (segment.control or segment.text) for segment in strip]):
-                    log.warning(f"Strip contains invalid empty Segments: {strip!r}.")
+                if any(
+                    [
+                        not (segment.control or segment.text)
+                        for segment in strip
+                    ]
+                ):
+                    log.warning(
+                        f"Strip contains invalid empty Segments: {strip!r}."
+                    )
 
             add_strip(strip)
 
@@ -350,7 +361,9 @@ class StylesCache:
                 ansi_theme = DEFAULT_TERMINAL_THEME
 
             if styles.tint.a:
-                segments = Tint.process_segments(segments, styles.tint, ansi_theme)
+                segments = Tint.process_segments(
+                    segments, styles.tint, ansi_theme
+                )
             if opacity != 1.0:
                 segments = _apply_opacity(segments, base_background, opacity)
             return segments
@@ -409,7 +422,9 @@ class StylesCache:
                 border_color_as_style,
             )
             label_alignment = (
-                styles.border_title_align if is_top else styles.border_subtitle_align
+                styles.border_title_align
+                if is_top
+                else styles.border_subtitle_align
             )
             line = render_row(
                 box_segments[0 if is_top else 2],
@@ -426,15 +441,21 @@ class StylesCache:
         ):
             background_rich_style = from_color(bgcolor=background.rich_color)
             left_style = Style(
-                foreground=base_background + border_left_color.multiply_alpha(opacity)
+                foreground=base_background
+                + border_left_color.multiply_alpha(opacity)
             )
             left = get_box(border_left, inner, outer, left_style)[1][0]
             right_style = Style(
-                foreground=base_background + border_right_color.multiply_alpha(opacity)
+                foreground=base_background
+                + border_right_color.multiply_alpha(opacity)
             )
             right = get_box(border_right, inner, outer, right_style)[1][2]
             if border_left and border_right:
-                line = [left, make_blank(width - 2, background_rich_style), right]
+                line = [
+                    left,
+                    make_blank(width - 2, background_rich_style),
+                    right,
+                ]
             elif border_left:
                 line = [left, make_blank(width - 1, background_rich_style)]
             elif border_right:
@@ -456,7 +477,9 @@ class StylesCache:
                 line = TextOpacity.process_segments(
                     line, styles.text_opacity, ansi_theme
                 )
-            line = line_post(line_pad(line, pad_left, pad_right, inner.rich_style))
+            line = line_post(
+                line_pad(line, pad_left, pad_right, inner.rich_style)
+            )
 
             if border_left or border_right:
                 # Add left / right border
@@ -481,7 +504,9 @@ class StylesCache:
         # Draw any outline
         if (outline_top and y == 0) or (outline_bottom and y == height - 1):
             # Top or bottom outlines
-            outline_color = outline_top_color if y == 0 else outline_bottom_color
+            outline_color = (
+                outline_top_color if y == 0 else outline_bottom_color
+            )
             box_segments = get_box(
                 outline_top if y == 0 else outline_bottom,
                 inner,
@@ -498,11 +523,17 @@ class StylesCache:
 
         elif outline_left or outline_right:
             # Lines in side outline
-            left_style = Style(foreground=(base_background + outline_left_color))
+            left_style = Style(
+                foreground=(base_background + outline_left_color)
+            )
             left = get_box(outline_left, inner, outer, left_style)[1][0]
-            right_style = Style(foreground=(base_background + outline_right_color))
+            right_style = Style(
+                foreground=(base_background + outline_right_color)
+            )
             right = get_box(outline_right, inner, outer, right_style)[1][2]
-            line = line_trim(list(line), outline_left != "", outline_right != "")
+            line = line_trim(
+                list(line), outline_left != "", outline_right != ""
+            )
             if outline_left and outline_right:
                 line = [left, *line, right]
             elif outline_left:

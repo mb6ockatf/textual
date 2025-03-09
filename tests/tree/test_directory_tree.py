@@ -23,7 +23,8 @@ class DirectoryTreeApp(App[None]):
     @on(DirectoryTree.FileSelected)
     @on(DirectoryTree.DirectorySelected)
     def record(
-        self, event: DirectoryTree.FileSelected | DirectoryTree.DirectorySelected
+        self,
+        event: DirectoryTree.FileSelected | DirectoryTree.DirectorySelected,
     ) -> None:
         self.messages.append(event.__class__.__name__)
 
@@ -51,7 +52,9 @@ async def test_directory_tree_file_selected_message(tmp_path: Path) -> None:
         assert pilot.app.messages == ["FileSelected"]
 
 
-async def test_directory_tree_directory_selected_message(tmp_path: Path) -> None:
+async def test_directory_tree_directory_selected_message(
+    tmp_path: Path,
+) -> None:
     """Selecting a directory should result in a directory selected message being emitted."""
 
     SUBDIR = "subdir"
@@ -159,7 +162,9 @@ async def test_directory_tree_reload_other_node(tmp_path: Path) -> None:
         node.expand()
         await pilot.pause()
         assert len(unaffected_node.children) == 1
-        assert unaffected_node.children[0].label == Text(NOT_RELOADED_FILE3_NAME)
+        assert unaffected_node.children[0].label == Text(
+            NOT_RELOADED_FILE3_NAME
+        )
 
         # Creating new file under the node that won't be reloaded
         file4 = non_reloaded_dir / NOT_RELOADED_FILE4_NAME
@@ -174,10 +179,14 @@ async def test_directory_tree_reload_other_node(tmp_path: Path) -> None:
 
         # After reloading one node, the new file under the other one does not show up
         assert len(unaffected_node.children) == 1
-        assert unaffected_node.children[0].label == Text(NOT_RELOADED_FILE3_NAME)
+        assert unaffected_node.children[0].label == Text(
+            NOT_RELOADED_FILE3_NAME
+        )
 
 
-async def test_directory_tree_reloading_preserves_state(tmp_path: Path) -> None:
+async def test_directory_tree_reloading_preserves_state(
+    tmp_path: Path,
+) -> None:
     """Regression test for https://github.com/Textualize/textual/issues/4122.
 
     Ensures `clear_node` does clear the node specified.

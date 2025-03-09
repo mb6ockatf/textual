@@ -25,7 +25,9 @@ class InputApp(App):
     """
 
     def compose(self) -> ComposeResult:
-        yield Label("Enter an even number between 1 and 100 that is also a palindrome.")
+        yield Label(
+            "Enter an even number between 1 and 100 that is also a palindrome."
+        )
         yield Input(
             placeholder="Enter a number...",
             validators=[
@@ -40,7 +42,9 @@ class InputApp(App):
     def show_invalid_reasons(self, event: Input.Changed) -> None:
         # Updating the UI to show the reasons why validation failed
         if not event.validation_result.is_valid:  # (4)!
-            self.query_one(Pretty).update(event.validation_result.failure_descriptions)
+            self.query_one(Pretty).update(
+                event.validation_result.failure_descriptions
+            )
         else:
             self.query_one(Pretty).update([])
 

@@ -63,7 +63,9 @@ async def test_suggestion_ready_message():
 async def test_no_message_if_no_suggestion():
     log = []
     suggester = FillSuggester()
-    await suggester._get_suggestion(LogListNode(log), "this is a longer string")
+    await suggester._get_suggestion(
+        LogListNode(log), "this is a longer string"
+    )
     assert log == []
 
 

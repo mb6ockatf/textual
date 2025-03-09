@@ -16,7 +16,12 @@ from textual.css.model import (
     SelectorType,
 )
 from textual.css.styles import Styles
-from textual.css.tokenize import Token, tokenize, tokenize_declarations, tokenize_values
+from textual.css.tokenize import (
+    Token,
+    tokenize,
+    tokenize_declarations,
+    tokenize_values,
+)
 from textual.css.tokenizer import EOFError, ReferencedBy
 from textual.css.types import CSSLocation, Specificity3
 from textual.suggestions import get_suggestion
@@ -212,7 +217,8 @@ def parse_rule_set(
                             | nested_selector.pseudo_classes
                         ),
                         specificity=_add_specificity(
-                            final_selector.specificity, nested_selector.specificity
+                            final_selector.specificity,
+                            nested_selector.specificity,
                         ),
                     )
                     return [*selectors1[:-1], merged_selector, *selectors2[1:]]
@@ -225,7 +231,8 @@ def parse_rule_set(
                         [
                             SelectorSet(
                                 combine_selectors(
-                                    rule_selector, recursive_selectors.selectors
+                                    rule_selector,
+                                    recursive_selectors.selectors,
                                 )
                             )._total_specificity()
                             for recursive_selectors in rule_set.selector_set
@@ -318,7 +325,9 @@ def parse_declarations(css: str, read_from: CSSLocation) -> Styles:
     return styles_builder.styles
 
 
-def _unresolved(variable_name: str, variables: Iterable[str], token: Token) -> NoReturn:
+def _unresolved(
+    variable_name: str, variables: Iterable[str], token: Token
+) -> NoReturn:
     """Raise a TokenError regarding an unresolved variable.
 
     Args:
@@ -344,7 +353,8 @@ def _unresolved(variable_name: str, variables: Iterable[str], token: Token) -> N
 
 
 def substitute_references(
-    tokens: Iterable[Token], css_variables: dict[str, list[Token]] | None = None
+    tokens: Iterable[Token],
+    css_variables: dict[str, list[Token]] | None = None,
 ) -> Iterable[Token]:
     """Replace variable references with values by substituting variable reference
     tokens with the tokens representing their values.
@@ -360,7 +370,9 @@ def substitute_references(
             but with variables resolved. Substituted tokens will have their referenced_by
             attribute populated with information about where the tokens are being substituted to.
     """
-    variables: dict[str, list[Token]] = css_variables.copy() if css_variables else {}
+    variables: dict[str, list[Token]] = (
+        css_variables.copy() if css_variables else {}
+    )
     iter_tokens = iter(tokens)
 
     while True:
@@ -368,7 +380,9 @@ def substitute_references(
         if token is None:
             break
         if token.name == "variable_name":
-            variable_name = token.value[1:-1]  # Trim the $ and the :, i.e. "$x:" -> "x"
+            variable_name = token.value[
+                1:-1
+            ]  # Trim the $ and the :, i.e. "$x:" -> "x"
             variable_tokens = variables.setdefault(variable_name, [])
             yield token
 
@@ -401,7 +415,10 @@ def substitute_references(
                         for _token in reference_tokens:
                             yield _token.with_reference(
                                 ReferencedBy(
-                                    ref_name, ref_location, ref_length, token.code
+                                    ref_name,
+                                    ref_location,
+                                    ref_length,
+                                    token.code,
                                 )
                             )
                     else:
@@ -419,7 +436,9 @@ def substitute_references(
                 ref_code = token.code
                 for _token in variable_tokens:
                     yield _token.with_reference(
-                        ReferencedBy(variable_name, ref_location, ref_length, ref_code)
+                        ReferencedBy(
+                            variable_name, ref_location, ref_length, ref_code
+                        )
                     )
             else:
                 _unresolved(variable_name, variables.keys(), token)
@@ -447,11 +466,15 @@ def parse(
         is_default_rules: True if the rules we're extracting are
             default (i.e. in Widget.DEFAULT_CSS) rules. False if they're from user defined CSS.
     """
-    reference_tokens = tokenize_values(variables) if variables is not None else {}
+    reference_tokens = (
+        tokenize_values(variables) if variables is not None else {}
+    )
     if variable_tokens:
         reference_tokens.update(variable_tokens)
 
-    tokens = iter(substitute_references(tokenize(css, read_from), variable_tokens))
+    tokens = iter(
+        substitute_references(tokenize(css, read_from), variable_tokens)
+    )
     while True:
         token = next(tokens, None)
         if token is None:

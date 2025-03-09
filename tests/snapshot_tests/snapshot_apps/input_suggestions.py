@@ -3,7 +3,15 @@ from textual.suggester import SuggestFromList
 from textual.widgets import Input
 
 
-fruits = ["apple", "pear", "mango", "peach", "strawberry", "blueberry", "banana"]
+fruits = [
+    "apple",
+    "pear",
+    "mango",
+    "peach",
+    "strawberry",
+    "blueberry",
+    "banana",
+]
 
 
 class FruitsApp(App[None]):
@@ -15,7 +23,9 @@ class FruitsApp(App[None]):
     """
 
     def compose(self) -> ComposeResult:
-        yield Input("straw", suggester=SuggestFromList(fruits), select_on_focus=False)
+        yield Input(
+            "straw", suggester=SuggestFromList(fruits), select_on_focus=False
+        )
         yield Input("straw", suggester=SuggestFromList(fruits))
         yield Input("p", suggester=SuggestFromList(fruits))
         yield Input("b", suggester=SuggestFromList(fruits))

@@ -20,7 +20,9 @@ class IndeterminateProgressBar(App[None]):
 
     def on_mount(self) -> None:
         """Set up a timer to simulate progress happening."""
-        self.progress_timer = self.set_interval(1 / 10, self.make_progress, pause=True)
+        self.progress_timer = self.set_interval(
+            1 / 10, self.make_progress, pause=True
+        )
 
     def make_progress(self) -> None:
         """Called automatically to advance the progress bar."""

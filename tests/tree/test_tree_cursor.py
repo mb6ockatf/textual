@@ -50,8 +50,14 @@ async def test_move_cursor() -> None:
 
         # Note there are no Selected messages. We only move the cursor.
         assert app.messages == [
-            ("NodeExpanded", 0),  # From the call to `tree.root.expand()` in compose
-            ("NodeHighlighted", 0),  # From the initial highlight of the root node
+            (
+                "NodeExpanded",
+                0,
+            ),  # From the call to `tree.root.expand()` in compose
+            (
+                "NodeHighlighted",
+                0,
+            ),  # From the initial highlight of the root node
             ("NodeHighlighted", 1),  # From the call to `tree.move_cursor`
         ]
 
@@ -64,10 +70,19 @@ async def test_move_cursor_reset() -> None:
         tree.move_cursor(None)
         await pilot.pause()
         assert app.messages == [
-            ("NodeExpanded", 0),  # From the call to `tree.root.expand()` in compose
-            ("NodeHighlighted", 0),  # From the initial highlight of the root node
+            (
+                "NodeExpanded",
+                0,
+            ),  # From the call to `tree.root.expand()` in compose
+            (
+                "NodeHighlighted",
+                0,
+            ),  # From the initial highlight of the root node
             ("NodeHighlighted", 1),  # From the 1st call to `tree.move_cursor`
-            ("NodeHighlighted", 0),  # From the call to `tree.move_cursor(None)`
+            (
+                "NodeHighlighted",
+                0,
+            ),  # From the call to `tree.move_cursor(None)`
         ]
 
 
@@ -78,8 +93,14 @@ async def test_select_node() -> None:
         tree.select_node(app.node)
         await pilot.pause()
         assert app.messages == [
-            ("NodeExpanded", 0),  # From the call to `tree.root.expand()` in compose
-            ("NodeHighlighted", 0),  # From the initial highlight of the root node
+            (
+                "NodeExpanded",
+                0,
+            ),  # From the call to `tree.root.expand()` in compose
+            (
+                "NodeHighlighted",
+                0,
+            ),  # From the initial highlight of the root node
             ("NodeHighlighted", 1),  # From the `tree.select_node` call
             ("NodeSelected", 1),  # From the call to `tree.select_node`
         ]
@@ -95,8 +116,17 @@ async def test_select_node_reset() -> None:
 
         # Notice no Selected messages.
         assert app.messages == [
-            ("NodeExpanded", 0),  # From the call to `tree.root.expand()` in compose
-            ("NodeHighlighted", 0),  # From the initial highlight of the root node
+            (
+                "NodeExpanded",
+                0,
+            ),  # From the call to `tree.root.expand()` in compose
+            (
+                "NodeHighlighted",
+                0,
+            ),  # From the initial highlight of the root node
             ("NodeHighlighted", 1),  # From the `tree.move_cursor` call
-            ("NodeHighlighted", 0),  # From the call to `tree.select_node(None)`
+            (
+                "NodeHighlighted",
+                0,
+            ),  # From the call to `tree.select_node(None)`
         ]

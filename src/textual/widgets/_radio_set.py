@@ -153,7 +153,11 @@ class RadioSet(VerticalScroll, can_focus=True, can_focus_children=False):
         """Holds the radio buttons we're responsible for."""
         super().__init__(
             *[
-                (button if isinstance(button, RadioButton) else RadioButton(button))
+                (
+                    button
+                    if isinstance(button, RadioButton)
+                    else RadioButton(button)
+                )
                 for button in buttons
             ],
             name=name,
@@ -292,4 +296,6 @@ class RadioSet(VerticalScroll, can_focus=True, can_focus_children=False):
         """Ensure that the selected button is in view."""
         if self._selected is not None:
             button = self._nodes[self._selected]
-            self.call_after_refresh(self.scroll_to_widget, button, animate=False)
+            self.call_after_refresh(
+                self.scroll_to_widget, button, animate=False
+            )

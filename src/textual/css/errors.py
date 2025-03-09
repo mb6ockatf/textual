@@ -7,7 +7,9 @@ from textual.css.tokenizer import Token, TokenError
 
 
 class DeclarationError(Exception):
-    def __init__(self, name: str, token: Token, message: str | HelpText) -> None:
+    def __init__(
+        self, name: str, token: Token, message: str | HelpText
+    ) -> None:
         self.name = name
         self.token = token
         self.message = message

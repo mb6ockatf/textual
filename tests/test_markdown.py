@@ -59,7 +59,11 @@ class MarkdownApp(App[None]):
         ("- One\n-Two", [MD.MarkdownBulletList, MD.MarkdownParagraph]),
         (
             "1. One\n2. Two",
-            [MD.MarkdownOrderedList, MD.MarkdownParagraph, MD.MarkdownParagraph],
+            [
+                MD.MarkdownOrderedList,
+                MD.MarkdownParagraph,
+                MD.MarkdownParagraph,
+            ],
         ),
         ("    1", [MD.MarkdownFence]),
         ("```\n1\n```", [MD.MarkdownFence]),
@@ -91,7 +95,8 @@ async def test_markdown_nodes(
 
     async with MarkdownApp(document).run_test() as pilot:
         assert [
-            node.__class__ for node in markdown_nodes(pilot.app.query_one(Markdown))
+            node.__class__
+            for node in markdown_nodes(pilot.app.query_one(Markdown))
         ] == expected_nodes
 
 
@@ -110,10 +115,18 @@ URL](https://example.com)\
         assert paragraph._text.plain == "My site has this URL"
         expected_spans = [
             Span(8, 11, Style(meta={"@click": "link('https://example.com')"})),
-            Span(11, 12, Style(meta={"@click": "link('https://example.com')"})),
-            Span(12, 16, Style(meta={"@click": "link('https://example.com')"})),
-            Span(16, 17, Style(meta={"@click": "link('https://example.com')"})),
-            Span(17, 20, Style(meta={"@click": "link('https://example.com')"})),
+            Span(
+                11, 12, Style(meta={"@click": "link('https://example.com')"})
+            ),
+            Span(
+                12, 16, Style(meta={"@click": "link('https://example.com')"})
+            ),
+            Span(
+                16, 17, Style(meta={"@click": "link('https://example.com')"})
+            ),
+            Span(
+                17, 20, Style(meta={"@click": "link('https://example.com')"})
+            ),
         ]
 
     assert paragraph._text.spans == expected_spans
@@ -143,7 +156,9 @@ async def test_goto_anchor(anchor: str, found: bool) -> None:
         assert markdown.goto_anchor(anchor) is found
 
 
-async def test_update_of_document_posts_table_of_content_update_message() -> None:
+async def test_update_of_document_posts_table_of_content_update_message() -> (
+    None
+):
     """Updating the document should post a TableOfContentsUpdated message."""
 
     messages: list[str] = []

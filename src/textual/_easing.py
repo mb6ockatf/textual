@@ -99,16 +99,24 @@ EASING = {
     "in_out_sine": lambda x: -(cos(x * pi) - 1) / 2,
     "out_sine": lambda x: sin((x * pi) / 2),
     "in_quad": lambda x: x * x,
-    "in_out_quad": lambda x: 2 * x * x if x < 0.5 else 1 - pow(-2 * x + 2, 2) / 2,
+    "in_out_quad": lambda x: (
+        2 * x * x if x < 0.5 else 1 - pow(-2 * x + 2, 2) / 2
+    ),
     "out_quad": lambda x: 1 - pow(1 - x, 2),
     "in_cubic": lambda x: x * x * x,
-    "in_out_cubic": lambda x: 4 * x * x * x if x < 0.5 else 1 - pow(-2 * x + 2, 3) / 2,
+    "in_out_cubic": lambda x: (
+        4 * x * x * x if x < 0.5 else 1 - pow(-2 * x + 2, 3) / 2
+    ),
     "out_cubic": lambda x: 1 - pow(1 - x, 3),
     "in_quart": lambda x: pow(x, 4),
-    "in_out_quart": lambda x: 8 * pow(x, 4) if x < 0.5 else 1 - pow(-2 * x + 2, 4) / 2,
+    "in_out_quart": lambda x: (
+        8 * pow(x, 4) if x < 0.5 else 1 - pow(-2 * x + 2, 4) / 2
+    ),
     "out_quart": lambda x: 1 - pow(1 - x, 4),
     "in_quint": lambda x: pow(x, 5),
-    "in_out_quint": lambda x: 16 * pow(x, 5) if x < 0.5 else 1 - pow(-2 * x + 2, 5) / 2,
+    "in_out_quint": lambda x: (
+        16 * pow(x, 5) if x < 0.5 else 1 - pow(-2 * x + 2, 5) / 2
+    ),
     "out_quint": lambda x: 1 - pow(1 - x, 5),
     "in_expo": lambda x: pow(2, 10 * x - 10) if x else 0,
     "in_out_expo": _in_out_expo,
@@ -118,7 +126,9 @@ EASING = {
     "out_circ": lambda x: sqrt(1 - pow(x - 1, 2)),
     "in_back": lambda x: 2.70158 * pow(x, 3) - 1.70158 * pow(x, 2),
     "in_out_back": _in_out_back,
-    "out_back": lambda x: 1 + 2.70158 * pow(x - 1, 3) + 1.70158 * pow(x - 1, 2),
+    "out_back": lambda x: 1
+    + 2.70158 * pow(x - 1, 3)
+    + 1.70158 * pow(x - 1, 2),
     "in_elastic": _in_elastic,
     "in_out_elastic": _in_out_elastic,
     "out_elastic": _out_elastic,

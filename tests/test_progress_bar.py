@@ -142,11 +142,15 @@ def test_go_back_to_indeterminate():
         (False, False, False),
     ],
 )
-async def test_show_sub_widgets(show_bar: bool, show_percentage: bool, show_eta: bool):
+async def test_show_sub_widgets(
+    show_bar: bool, show_percentage: bool, show_eta: bool
+):
     class PBApp(App[None]):
         def compose(self):
             self.pb = ProgressBar(
-                show_bar=show_bar, show_percentage=show_percentage, show_eta=show_eta
+                show_bar=show_bar,
+                show_percentage=show_percentage,
+                show_eta=show_eta,
             )
             yield self.pb
 

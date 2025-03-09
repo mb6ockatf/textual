@@ -31,14 +31,20 @@ def test_text_opacity_value_of_one_noop(text):
 
 def test_text_opacity_no_style_noop():
     text_no_style = Text("Hello, world!", end="")
-    assert render(TextOpacity(text_no_style, opacity=0.2)) == render(text_no_style)
+    assert render(TextOpacity(text_no_style, opacity=0.2)) == render(
+        text_no_style
+    )
 
 
 def test_text_opacity_only_fg_noop():
     text_only_fg = Text("Hello, world!", style="#ff0000", end="")
-    assert render(TextOpacity(text_only_fg, opacity=0.5)) == render(text_only_fg)
+    assert render(TextOpacity(text_only_fg, opacity=0.5)) == render(
+        text_only_fg
+    )
 
 
 def test_text_opacity_only_bg_noop():
     text_only_bg = Text("Hello, world!", style="on #ff0000", end="")
-    assert render(TextOpacity(text_only_bg, opacity=0.5)) == render(text_only_bg)
+    assert render(TextOpacity(text_only_bg, opacity=0.5)) == render(
+        text_only_bg
+    )

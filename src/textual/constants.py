@@ -27,7 +27,9 @@ def _get_environ_bool(name: str) -> bool:
     return has_environ
 
 
-def _get_environ_int(name: str, default: int, minimum: int | None = None) -> int:
+def _get_environ_int(
+    name: str, default: int, minimum: int | None = None
+) -> int:
     """Retrieves an integer environment variable.
 
     Args:
@@ -121,13 +123,19 @@ DEVTOOLS_HOST: Final[str] = get_environ("TEXTUAL_DEVTOOLS_HOST", "127.0.0.1")
 DEVTOOLS_PORT: Final[int] = _get_environ_port("TEXTUAL_DEVTOOLS_PORT", 8081)
 """Constant with the port that the devtools will connect to."""
 
-SCREENSHOT_DELAY: Final[int] = _get_environ_int("TEXTUAL_SCREENSHOT", -1, minimum=-1)
+SCREENSHOT_DELAY: Final[int] = _get_environ_int(
+    "TEXTUAL_SCREENSHOT", -1, minimum=-1
+)
 """Seconds delay before taking screenshot, -1 for no screenshot."""
 
-SCREENSHOT_LOCATION: Final[str | None] = get_environ("TEXTUAL_SCREENSHOT_LOCATION")
+SCREENSHOT_LOCATION: Final[str | None] = get_environ(
+    "TEXTUAL_SCREENSHOT_LOCATION"
+)
 """The location where screenshots should be written."""
 
-SCREENSHOT_FILENAME: Final[str | None] = get_environ("TEXTUAL_SCREENSHOT_FILENAME")
+SCREENSHOT_FILENAME: Final[str | None] = get_environ(
+    "TEXTUAL_SCREENSHOT_FILENAME"
+)
 """The filename to use for the screenshot."""
 
 PRESS: Final[str] = get_environ("TEXTUAL_PRESS", "")
@@ -145,10 +153,14 @@ COLOR_SYSTEM: Final[str | None] = get_environ("TEXTUAL_COLOR_SYSTEM", "auto")
 TEXTUAL_ANIMATIONS: Final[AnimationLevel] = _get_textual_animations()
 """Determines whether animations run or not."""
 
-ESCAPE_DELAY: Final[float] = _get_environ_int("ESCDELAY", 100, minimum=1) / 1000.0
+ESCAPE_DELAY: Final[float] = (
+    _get_environ_int("ESCDELAY", 100, minimum=1) / 1000.0
+)
 """The delay (in seconds) before reporting an escape key (not used if the extend key protocol is available)."""
 
-SLOW_THRESHOLD: int = _get_environ_int("TEXTUAL_SLOW_THRESHOLD", 500, minimum=100)
+SLOW_THRESHOLD: int = _get_environ_int(
+    "TEXTUAL_SLOW_THRESHOLD", 500, minimum=100
+)
 """The time threshold (in milliseconds) after which a warning is logged 
 if message processing exceeds this duration.
 """

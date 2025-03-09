@@ -12,7 +12,9 @@ class SelectionListApp(App[None]):
         self._default_state = default_state
 
     def compose(self) -> ComposeResult:
-        yield SelectionList[int](*[(str(n), n, self._default_state) for n in range(50)])
+        yield SelectionList[int](
+            *[(str(n), n, self._default_state) for n in range(50)]
+        )
 
 
 async def test_empty_selected() -> None:
@@ -42,7 +44,9 @@ async def test_programatic_deselect() -> None:
     async with SelectionListApp(True).run_test() as pilot:
         selection = pilot.app.query_one(SelectionList)
         selection.deselect(0)
-        assert pilot.app.query_one(SelectionList).selected == list(range(50)[1:])
+        assert pilot.app.query_one(SelectionList).selected == list(
+            range(50)[1:]
+        )
 
 
 async def test_programatic_deselect_all() -> None:
@@ -61,7 +65,9 @@ async def test_programatic_toggle() -> None:
             selection.select(n)
         for n in range(50):
             selection.toggle(n)
-        assert pilot.app.query_one(SelectionList).selected == list(range(50)[:25])
+        assert pilot.app.query_one(SelectionList).selected == list(
+            range(50)[:25]
+        )
 
 
 async def test_programatic_toggle_all() -> None:

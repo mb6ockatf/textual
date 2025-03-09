@@ -27,10 +27,20 @@ def test_arrange_dock_top():
 
     assert result.placements == [
         WidgetPlacement(
-            Region(0, 0, 80, 1), NULL_OFFSET, Spacing(), header, order=TOP_Z, fixed=True
+            Region(0, 0, 80, 1),
+            NULL_OFFSET,
+            Spacing(),
+            header,
+            order=TOP_Z,
+            fixed=True,
         ),
         WidgetPlacement(
-            Region(0, 1, 80, 23), NULL_OFFSET, Spacing(), child, order=0, fixed=False
+            Region(0, 1, 80, 23),
+            NULL_OFFSET,
+            Spacing(),
+            child,
+            order=0,
+            fixed=False,
         ),
     ]
     assert result.widgets == {child, header}
@@ -55,7 +65,12 @@ def test_arrange_dock_left():
             fixed=True,
         ),
         WidgetPlacement(
-            Region(10, 0, 70, 24), NULL_OFFSET, Spacing(), child, order=0, fixed=False
+            Region(10, 0, 70, 24),
+            NULL_OFFSET,
+            Spacing(),
+            child,
+            order=0,
+            fixed=False,
         ),
     ]
     assert result.widgets == {child, header}
@@ -80,7 +95,12 @@ def test_arrange_dock_right():
             fixed=True,
         ),
         WidgetPlacement(
-            Region(0, 0, 70, 24), NULL_OFFSET, Spacing(), child, order=0, fixed=False
+            Region(0, 0, 70, 24),
+            NULL_OFFSET,
+            Spacing(),
+            child,
+            order=0,
+            fixed=False,
         ),
     ]
     assert result.widgets == {child, header}
@@ -105,7 +125,12 @@ def test_arrange_dock_bottom():
             fixed=True,
         ),
         WidgetPlacement(
-            Region(0, 0, 80, 23), NULL_OFFSET, Spacing(), child, order=0, fixed=False
+            Region(0, 0, 80, 23),
+            NULL_OFFSET,
+            Spacing(),
+            child,
+            order=0,
+            fixed=False,
         ),
     ]
     assert result.widgets == {child, header}

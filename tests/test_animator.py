@@ -16,15 +16,21 @@ class Animatable:
         self.value = value
 
     def blend(self, destination: Animatable, factor: float) -> Animatable:
-        return Animatable(self.value + (destination.value - self.value) * factor)
+        return Animatable(
+            self.value + (destination.value - self.value) * factor
+        )
 
 
 @dataclass
 class AnimateTest:
     """An object with animatable properties."""
 
-    foo: float | None = 0.0  # Plain float that may be set to None on final_value
-    bar: Animatable = Animatable(0)  # A mock object supporting the animatable protocol
+    foo: float | None = (
+        0.0  # Plain float that may be set to None on final_value
+    )
+    bar: Animatable = Animatable(
+        0
+    )  # A mock object supporting the animatable protocol
 
 
 def test_simple_animation():
@@ -62,7 +68,9 @@ def test_simple_animation():
     assert animation(time + 2.9) is False  # Not quite final value
     assert animate_test.foo == pytest.approx(49.0)
 
-    assert animation(time + 3.0) is True  # True to indicate animation is complete
+    assert (
+        animation(time + 3.0) is True
+    )  # True to indicate animation is complete
     assert animate_test.foo is None  # This is final_value
 
     assert animation(time + 3.0) is True
@@ -163,7 +171,9 @@ def test_animatable():
     assert animation(time + 2.9) is False
     assert animate_test.bar.value == pytest.approx(49.0)
 
-    assert animation(time + 3.0) is True  # True to indicate animation is complete
+    assert (
+        animation(time + 3.0) is True
+    )  # True to indicate animation is complete
     assert animate_test.bar.value == 50.0
 
 
@@ -248,7 +258,9 @@ async def test_animator_on_complete_callback_not_fired_before_duration_ends():
     animate_test = AnimateTest()
     animator = MockAnimator(Mock())
 
-    animator.animate(animate_test, "foo", 200, duration=10, on_complete=callback)
+    animator.animate(
+        animate_test, "foo", 200, duration=10, on_complete=callback
+    )
 
     animator._time = 9
     animator()
@@ -262,7 +274,9 @@ async def test_animator_on_complete_callback_fired_at_duration():
     mock_app = Mock()
     animator = MockAnimator(mock_app)
 
-    animator.animate(animate_test, "foo", 200, duration=10, on_complete=callback)
+    animator.animate(
+        animate_test, "foo", 200, duration=10, on_complete=callback
+    )
 
     animator._time = 10
     animator()
@@ -277,7 +291,9 @@ def test_force_stop_animation():
     mock_app = Mock()
     animator = MockAnimator(mock_app)
 
-    animator.animate(animate_test, "foo", 200, duration=10, on_complete=callback)
+    animator.animate(
+        animate_test, "foo", 200, duration=10, on_complete=callback
+    )
 
     assert animator.is_being_animated(animate_test, "foo")
     assert animate_test.foo != 200

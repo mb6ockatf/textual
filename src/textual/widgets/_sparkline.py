@@ -50,7 +50,9 @@ class Sparkline(Widget):
 
     data = reactive[Optional[Sequence[float]]](None)
     """The data that populates the sparkline."""
-    summary_function = reactive[Callable[[Sequence[float]], float]](_max_factory)
+    summary_function = reactive[Callable[[Sequence[float]], float]](
+        _max_factory
+    )
     """The function that computes the value that represents each bar."""
 
     def __init__(

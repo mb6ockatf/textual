@@ -25,4 +25,6 @@ def test_nodes_take_display_property_into_account_when_they_display_their_childr
 
     displayed_children = screen.displayed_children
     assert isinstance(displayed_children, list)
-    assert (widget in screen.displayed_children) is expected_in_displayed_children
+    assert (
+        widget in screen.displayed_children
+    ) is expected_in_displayed_children

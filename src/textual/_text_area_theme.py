@@ -65,7 +65,9 @@ class TextAreaTheme:
     syntax_styles: dict[str, Style] = field(default_factory=dict)
     """The mapping of tree-sitter names from the `highlight_query` to Rich styles."""
 
-    _theme_configured_attributes: set[str] = field(init=False, default_factory=set)
+    _theme_configured_attributes: set[str] = field(
+        init=False, default_factory=set
+    )
     """Records which attributes were set via the theme object (as opposed to CSS components)."""
 
     def __post_init__(self) -> None:
@@ -88,7 +90,9 @@ class TextAreaTheme:
         get_style = text_area.get_component_rich_style
 
         if self.base_style.color is None:
-            self.base_style = Style(color="#f3f3f3", bgcolor=self.base_style.bgcolor)
+            self.base_style = Style(
+                color="#f3f3f3", bgcolor=self.base_style.bgcolor
+            )
 
         app_theme = text_area.app.current_theme
 
@@ -128,7 +132,9 @@ class TextAreaTheme:
             self.cursor_line_style = get_style("text-area--cursor-line")
 
         if not configured("cursor_line_gutter_style"):
-            self.cursor_line_gutter_style = get_style("text-area--cursor-gutter")
+            self.cursor_line_gutter_style = get_style(
+                "text-area--cursor-gutter"
+            )
 
         if not configured("bracket_matching_style"):
             matching_bracket_style = get_style("text-area--matching-bracket")
@@ -257,7 +263,9 @@ _DRACULA = TextAreaTheme(
     gutter_style=Style(color="#6272a4"),
     cursor_style=Style(color="#282a36", bgcolor="#f8f8f0"),
     cursor_line_style=Style(bgcolor="#282b45"),
-    cursor_line_gutter_style=Style(color="#c2c2bf", bgcolor="#282b45", bold=True),
+    cursor_line_gutter_style=Style(
+        color="#c2c2bf", bgcolor="#282b45", bold=True
+    ),
     bracket_matching_style=Style(bgcolor="#99999d", bold=True, underline=True),
     selection_style=Style(bgcolor="#44475A"),
     syntax_styles={

@@ -75,7 +75,9 @@ class WrappedDocument:
 
         In other words, this is True if the length of any line in the document is greater
         than the available width."""
-        return len(self._line_index_to_offsets) == len(self._offset_to_line_info)
+        return len(self._line_index_to_offsets) == len(
+            self._offset_to_line_info
+        )
 
     def wrap(self, width: int, tab_width: int | None = None) -> None:
         """Wrap and cache all lines in the document.
@@ -191,10 +193,14 @@ class WrappedDocument:
         new_bottom_line_index = max((start_line_index, new_end_line_index))
 
         top_y_offset = self._line_index_to_offsets[top_line_index][0]
-        old_bottom_y_offset = self._line_index_to_offsets[old_bottom_line_index][-1]
+        old_bottom_y_offset = self._line_index_to_offsets[
+            old_bottom_line_index
+        ][-1]
 
         # Get the new range of the edit from top to bottom.
-        new_lines = self.document.lines[top_line_index : new_bottom_line_index + 1]
+        new_lines = self.document.lines[
+            top_line_index : new_bottom_line_index + 1
+        ]
 
         new_wrap_offsets: list[list[int]] = []
         new_line_index_to_offsets: list[list[VerticalOffset]] = []
@@ -213,7 +219,10 @@ class WrappedDocument:
             tab_sections = get_tab_widths(line, tab_width)
             wrap_offsets = (
                 compute_wrap_offsets(
-                    line, width, tab_width, precomputed_tab_sections=tab_sections
+                    line,
+                    width,
+                    tab_width,
+                    precomputed_tab_sections=tab_sections,
                 )
                 if width
                 else []
@@ -236,9 +245,9 @@ class WrappedDocument:
             new_offset_to_line_info
         )
 
-        self._line_index_to_offsets[top_line_index : old_bottom_line_index + 1] = (
-            new_line_index_to_offsets
-        )
+        self._line_index_to_offsets[
+            top_line_index : old_bottom_line_index + 1
+        ] = new_line_index_to_offsets
 
         self._tab_width_cache[top_line_index : old_bottom_line_index + 1] = (
             new_tab_widths
@@ -256,7 +265,9 @@ class WrappedDocument:
             for y_offset in range(
                 top_y_offset + new_height, len(self._offset_to_line_info)
             ):
-                old_line_index, section_offset = self._offset_to_line_info[y_offset]
+                old_line_index, section_offset = self._offset_to_line_info[
+                    y_offset
+                ]
                 new_line_index = old_line_index + line_shift
                 new_line_info = (new_line_index, section_offset)
                 self._offset_to_line_info[y_offset] = new_line_info
@@ -264,7 +275,8 @@ class WrappedDocument:
         # Update the offsets at all lines below the edit region
         if offset_shift:
             for line_index in range(
-                top_line_index + len(new_lines), len(self._line_index_to_offsets)
+                top_line_index + len(new_lines),
+                len(self._line_index_to_offsets),
             ):
                 old_offsets = self._line_index_to_offsets[line_index]
                 new_offsets = [offset + offset_shift for offset in old_offsets]
@@ -346,7 +358,9 @@ class WrappedDocument:
 
         # Get the y-offsets corresponding to this line index
         y_offsets = self._line_index_to_offsets[line_index]
-        section_column_index = column_index - section_start_columns[section_index]
+        section_column_index = (
+            column_index - section_start_columns[section_index]
+        )
 
         section = self.get_sections(line_index)[section_index]
         x_offset = cell_len(
@@ -389,8 +403,11 @@ class WrappedDocument:
         )
 
         # Get the column index within this wrapped section of the line
-        target_column_index = target_section_start + cell_width_to_column_index(
-            target_section, x_offset, self._tab_width
+        target_column_index = (
+            target_section_start
+            + cell_width_to_column_index(
+                target_section, x_offset, self._tab_width
+            )
         )
 
         # If we're on the final section of a line, the cursor can legally rest beyond
@@ -398,7 +415,8 @@ class WrappedDocument:
         # keeping the cursor within the bounds of the target section.
         if y_offset != len(sections) - 1 and y_offset != -1:
             target_column_index = min(
-                target_column_index, target_section_start + len(target_section) - 1
+                target_column_index,
+                target_section_start + len(target_section) - 1,
             )
 
         return target_column_index
@@ -417,7 +435,9 @@ class WrappedDocument:
             The wrapped line as a list of strings.
         """
         line_offsets = self._wrap_offsets[line_index]
-        wrapped_lines = Text(self.document[line_index], end="").divide(line_offsets)
+        wrapped_lines = Text(self.document[line_index], end="").divide(
+            line_offsets
+        )
         return [line.plain for line in wrapped_lines]
 
     def get_offsets(self, line_index: int) -> list[int]:

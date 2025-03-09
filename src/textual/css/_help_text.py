@@ -88,7 +88,11 @@ def _contextualize_property_name(
     Returns:
         The property name converted to the given context.
     """
-    return _css_name(property_name) if context == "css" else _python_name(property_name)
+    return (
+        _css_name(property_name)
+        if context == "css"
+        else _python_name(property_name)
+    )
 
 
 def _spacing_examples(property_name: str) -> ContextSpecificBullets:
@@ -116,7 +120,9 @@ def _spacing_examples(property_name: str) -> ContextSpecificBullets:
                 "Supply 1, 2 or 4 integers separated by a space",
                 examples=[
                     Example(f"{property_name}: 1;"),
-                    Example(f"{property_name}: 1 2;     [dim]# Vertical, horizontal"),
+                    Example(
+                        f"{property_name}: 1 2;     [dim]# Vertical, horizontal"
+                    ),
                     Example(
                         f"{property_name}: 1 2 3 4; [dim]# Top, right, bottom, left"
                     ),
@@ -236,7 +242,9 @@ def scalar_help_text(
                         examples=[
                             Example(f'widget.styles.{property_name} = "50%"'),
                             Example(f"widget.styles.{property_name} = 10"),
-                            Example(f"widget.styles.{property_name} = Scalar(...)"),
+                            Example(
+                                f"widget.styles.{property_name} = Scalar(...)"
+                            ),
                         ],
                     ),
                 ],
@@ -282,7 +290,9 @@ def string_enum_help_text(
                     Bullet(
                         "Assign any of the valid strings to the property",
                         examples=[
-                            Example(f'widget.styles.{property_name} = "{valid_value}"')
+                            Example(
+                                f'widget.styles.{property_name} = "{valid_value}"'
+                            )
                             for valid_value in sorted(valid_values)
                         ],
                     )
@@ -323,9 +333,13 @@ def color_property_help_text(
     if value is None:
         summary = f"Invalid value for the [i]{property_name}[/] property"
     else:
-        summary = f"Invalid value ({value!r}) for the [i]{property_name}[/] property"
+        summary = (
+            f"Invalid value ({value!r}) for the [i]{property_name}[/] property"
+        )
     suggested_color = (
-        error.suggested_color if error and isinstance(error, ColorParseError) else None
+        error.suggested_color
+        if error and isinstance(error, ColorParseError)
+        else None
     )
     if suggested_color:
         summary += f". Did you mean '{suggested_color}'?"
@@ -335,13 +349,17 @@ def color_property_help_text(
             Bullet(
                 f"The [i]{property_name}[/] property can only be set to a valid color"
             ),
-            Bullet("Colors can be specified using hex, RGB, or ANSI color names"),
+            Bullet(
+                "Colors can be specified using hex, RGB, or ANSI color names"
+            ),
             *ContextSpecificBullets(
                 inline=[
                     Bullet(
                         "Assign colors using strings or Color objects",
                         examples=[
-                            Example(f'widget.styles.{property_name} = "#ff00aa"'),
+                            Example(
+                                f'widget.styles.{property_name} = "#ff00aa"'
+                            ),
                             Example(
                                 f'widget.styles.{property_name} = "rgb(12,231,45)"'
                             ),
@@ -367,7 +385,9 @@ def color_property_help_text(
     )
 
 
-def border_property_help_text(property_name: str, context: StylingContext) -> HelpText:
+def border_property_help_text(
+    property_name: str, context: StylingContext
+) -> HelpText:
     """Help text to show when the user supplies an invalid value for a border
     property (such as border, border-right, outline).
 
@@ -425,7 +445,9 @@ def border_property_help_text(property_name: str, context: StylingContext) -> He
     )
 
 
-def layout_property_help_text(property_name: str, context: StylingContext) -> HelpText:
+def layout_property_help_text(
+    property_name: str, context: StylingContext
+) -> HelpText:
     """Help text to show when the user supplies an invalid value
     for a layout property.
 
@@ -447,7 +469,9 @@ def layout_property_help_text(property_name: str, context: StylingContext) -> He
     )
 
 
-def dock_property_help_text(property_name: str, context: StylingContext) -> HelpText:
+def dock_property_help_text(
+    property_name: str, context: StylingContext
+) -> HelpText:
     """Help text to show when the user supplies an invalid value for dock.
 
     Args:
@@ -482,7 +506,9 @@ def dock_property_help_text(property_name: str, context: StylingContext) -> Help
     )
 
 
-def split_property_help_text(property_name: str, context: StylingContext) -> HelpText:
+def split_property_help_text(
+    property_name: str, context: StylingContext
+) -> HelpText:
     """Help text to show when the user supplies an invalid value for split.
 
     Args:
@@ -496,7 +522,9 @@ def split_property_help_text(property_name: str, context: StylingContext) -> Hel
     return HelpText(
         summary=f"Invalid value for [i]{property_name}[/] property",
         bullets=[
-            Bullet("The value must be one of 'top', 'right', 'bottom' or 'left'"),
+            Bullet(
+                "The value must be one of 'top', 'right', 'bottom' or 'left'"
+            ),
             *ContextSpecificBullets(
                 inline=[
                     Bullet(
@@ -590,7 +618,9 @@ def offset_property_help_text(context: StylingContext) -> HelpText:
                     ),
                 ],
             ).get_by_context(context),
-            Bullet("<horizontal> and <vertical> can be a number or scalar value"),
+            Bullet(
+                "<horizontal> and <vertical> can be a number or scalar value"
+            ),
         ],
     )
 
@@ -627,7 +657,9 @@ def scrollbar_size_property_help_text(context: StylingContext) -> HelpText:
                     ),
                 ],
             ).get_by_context(context),
-            Bullet("<horizontal> and <vertical> must be non-negative integers."),
+            Bullet(
+                "<horizontal> and <vertical> must be non-negative integers."
+            ),
         ],
     )
 
@@ -722,7 +754,9 @@ def keyline_help_text() -> HelpText:
                     Example("keyline: <type> <color>"),
                 ],
             ),
-            Bullet(f"Valid values for <type> are {friendly_list(VALID_KEYLINE)}"),
+            Bullet(
+                f"Valid values for <type> are {friendly_list(VALID_KEYLINE)}"
+            ),
         ],
     )
 
@@ -823,7 +857,9 @@ def style_flags_property_help_text(
                 css=[
                     Bullet(
                         markup="Supply style flags separated by spaces",
-                        examples=[Example(f"{property_name}: bold italic underline;")],
+                        examples=[
+                            Example(f"{property_name}: bold italic underline;")
+                        ],
                     )
                 ],
             ).get_by_context(context),

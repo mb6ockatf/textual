@@ -29,14 +29,18 @@ class HorizontalLayout(Layout):
 
         child_styles = [child.styles for child in children]
         box_margins: list[Spacing] = [
-            styles.margin for styles in child_styles if styles.overlay != "screen"
+            styles.margin
+            for styles in child_styles
+            if styles.overlay != "screen"
         ]
         if box_margins:
             resolve_margin = Size(
                 sum(
                     [
                         max(margin1[1], margin2[3])
-                        for margin1, margin2 in zip(box_margins, box_margins[1:])
+                        for margin1, margin2 in zip(
+                            box_margins, box_margins[1:]
+                        )
                     ]
                 )
                 + (box_margins[0].left + box_margins[-1].right),
@@ -86,7 +90,9 @@ class HorizontalLayout(Layout):
             overlay = styles.overlay == "screen"
             offset = (
                 styles.offset.resolve(
-                    _Size(content_width.__floor__(), content_height.__floor__()),
+                    _Size(
+                        content_width.__floor__(), content_height.__floor__()
+                    ),
                     viewport,
                 )
                 if styles.has_rule("offset")
@@ -101,7 +107,9 @@ class HorizontalLayout(Layout):
                 (next_x - x.__floor__()).__floor__(),
                 content_height.__floor__(),
             )
-            absolute = styles.has_rule("position") and styles.position == "absolute"
+            absolute = (
+                styles.has_rule("position") and styles.position == "absolute"
+            )
             add_placement(
                 _WidgetPlacement(
                     region,

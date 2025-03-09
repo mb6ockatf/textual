@@ -195,7 +195,9 @@ class OptionList(ScrollView, can_focus=True):
     class OptionMessage(Message):
         """Base class for all option messages."""
 
-        def __init__(self, option_list: OptionList, option: Option, index: int) -> None:
+        def __init__(
+            self, option_list: OptionList, option: Option, index: int
+        ) -> None:
             """Initialise the option message.
 
             Args:
@@ -354,7 +356,9 @@ class OptionList(ScrollView, can_focus=True):
             self._option_to_index[option] = len(options)
             if option._id is not None:
                 if option._id in self._id_to_option:
-                    raise DuplicateID(f"Unable to add {option!r} due to duplicate ID")
+                    raise DuplicateID(
+                        f"Unable to add {option!r} due to duplicate ID"
+                    )
                 self._id_to_option[option._id] = option
             add_option(option)
         if self.is_mounted:
@@ -594,7 +598,9 @@ class OptionList(ScrollView, can_focus=True):
         self.get_option_at_index(index)._set_prompt(prompt)
         self._clear_caches()
 
-    def replace_option_prompt(self, option_id: str, prompt: VisualType) -> Self:
+    def replace_option_prompt(
+        self, option_id: str, prompt: VisualType
+    ) -> Self:
         """Replace the prompt of the option with the given ID.
 
         Args:
@@ -610,7 +616,9 @@ class OptionList(ScrollView, can_focus=True):
         self._replace_option_prompt(self.get_option_index(option_id), prompt)
         return self
 
-    def replace_option_prompt_at_index(self, index: int, prompt: VisualType) -> Self:
+    def replace_option_prompt_at_index(
+        self, index: int, prompt: VisualType
+    ) -> Self:
         """Replace the prompt of the option at the given index.
 
         Args:
@@ -675,7 +683,10 @@ class OptionList(ScrollView, can_focus=True):
             event: The click event.
         """
         clicked_option: int | None = event.style.meta.get("option")
-        if clicked_option is not None and not self._options[clicked_option].disabled:
+        if (
+            clicked_option is not None
+            and not self._options[clicked_option].disabled
+        ):
             self.highlighted = clicked_option
             self.action_select()
 
@@ -747,7 +758,9 @@ class OptionList(ScrollView, can_focus=True):
             strips = visual.to_strips(self, visual, width, None, style)
             meta = {"option": self._option_to_index[option]}
             strips = [
-                strip.extend_cell_length(width, style.rich_style).apply_meta(meta)
+                strip.extend_cell_length(width, style.rich_style).apply_meta(
+                    meta
+                )
                 for strip in strips
             ]
             if option._divider:
@@ -767,14 +780,21 @@ class OptionList(ScrollView, can_focus=True):
         lines = line_cache.lines
         next_index = lines[-1][0] + 1 if lines else 0
         get_visual = self._get_visual
-        width = self.scrollable_content_region.width - self._get_left_gutter_width()
+        width = (
+            self.scrollable_content_region.width
+            - self._get_left_gutter_width()
+        )
 
         if next_index < len(self.options):
             padding = self.get_component_styles("option-list--option").padding
-            for index, option in enumerate(self.options[next_index:], next_index):
+            for index, option in enumerate(
+                self.options[next_index:], next_index
+            ):
                 line_cache.index_to_line[index] = len(line_cache.lines)
                 line_count = (
-                    get_visual(option).get_height(self.styles, width - padding.width)
+                    get_visual(option).get_height(
+                        self.styles, width - padding.width
+                    )
                     + option._divider
                 )
                 line_cache.heights[index] = line_count
@@ -783,7 +803,9 @@ class OptionList(ScrollView, can_focus=True):
                 )
 
         last_divider = self.options and self.options[-1]._divider
-        self.virtual_size = Size(width, len(lines) - (1 if last_divider else 0))
+        self.virtual_size = Size(
+            width, len(lines) - (1 if last_divider else 0)
+        )
         self._scroll_update(self.virtual_size)
 
     def get_content_width(self, container: Size, viewport: Size) -> int:
@@ -797,7 +819,9 @@ class OptionList(ScrollView, can_focus=True):
         container_width = container.width
         width = (
             max(
-                get_visual_from_index(index).get_optimal_width(styles, container_width)
+                get_visual_from_index(index).get_optimal_width(
+                    styles, container_width
+                )
                 for index in range(len(self.options))
             )
             + padding.width
@@ -805,11 +829,15 @@ class OptionList(ScrollView, can_focus=True):
         )
         return width
 
-    def get_content_height(self, container: Size, viewport: Size, width: int) -> int:
+    def get_content_height(
+        self, container: Size, viewport: Size, width: int
+    ) -> int:
         """Get height for the given width."""
         styles = self.styles
         rules = cast(RulesMap, styles)
-        padding_width = self.get_component_styles("option-list--option").padding.width
+        padding_width = self.get_component_styles(
+            "option-list--option"
+        ).padding.width
         get_visual = self._get_visual
         height = sum(
             (
@@ -848,7 +876,9 @@ class OptionList(ScrollView, can_focus=True):
             component_class = "option-list--option-hover"
 
         if component_class:
-            style = self.get_visual_style("option-list--option", component_class)
+            style = self.get_visual_style(
+                "option-list--option", component_class
+            )
         else:
             style = self.get_visual_style("option-list--option")
 
@@ -876,7 +906,9 @@ class OptionList(ScrollView, can_focus=True):
         if not self._options[highlighted].disabled:
             self.scroll_to_highlight()
             self.post_message(
-                self.OptionHighlighted(self, self.options[highlighted], highlighted)
+                self.OptionHighlighted(
+                    self, self.options[highlighted], highlighted
+                )
             )
 
     def scroll_to_highlight(self, top: bool = False) -> None:

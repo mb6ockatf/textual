@@ -78,7 +78,9 @@ def layout_resolve(total: int, edges: Sequence[EdgeProtocol]) -> list[int]:
             # to the following line
             remainder = Fraction(0)
             for index, edge in flexible_edges:
-                sizes[index], remainder = divmod(portion * edge.fraction + remainder, 1)
+                sizes[index], remainder = divmod(
+                    portion * edge.fraction + remainder, 1
+                )
             break
 
     # Sizes now contains integers only

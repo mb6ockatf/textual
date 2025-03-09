@@ -19,7 +19,9 @@ class InputApp(App[None]):
 
     def compose(self) -> ComposeResult:
         yield MaskedInput(
-            template=self.template, placeholder=self.placeholder, select_on_focus=False
+            template=self.template,
+            placeholder=self.placeholder,
+            select_on_focus=False,
         )
 
     @on(MaskedInput.Changed)

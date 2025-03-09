@@ -16,7 +16,14 @@ import rich.repr
 from textual._wait import wait_for_idle
 from textual.app import App, ReturnType
 from textual.drivers.headless_driver import HeadlessDriver
-from textual.events import Click, MouseDown, MouseEvent, MouseMove, MouseUp, Resize
+from textual.events import (
+    Click,
+    MouseDown,
+    MouseEvent,
+    MouseMove,
+    MouseUp,
+    Resize,
+)
 from textual.geometry import Offset, Size
 from textual.widget import Widget
 
@@ -364,7 +371,9 @@ class Pilot(Generic[ReturnType]):
         # "settle" before moving it to the new hover position.
         await self.pause()
         try:
-            return await self._post_mouse_events([MouseMove], widget, offset, button=0)
+            return await self._post_mouse_events(
+                [MouseMove], widget, offset, button=0
+            )
         except OutOfBounds as error:
             raise error from None
 

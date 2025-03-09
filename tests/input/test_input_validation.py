@@ -161,7 +161,9 @@ async def test_validation_on_submitted_should_not_happen(validate_on):
         {"fried", "garbage"},
     ],
 )
-async def test_validation_on_blur_should_not_happen_unless_specified(validate_on):
+async def test_validation_on_blur_should_not_happen_unless_specified(
+    validate_on,
+):
     app = InputApp(validate_on)
     async with app.run_test() as pilot:
         # sanity checks

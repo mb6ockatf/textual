@@ -36,7 +36,9 @@ class Suggester(ABC):
     cache: LRUCache[str, str | None] | None
     """Suggestion cache, if used."""
 
-    def __init__(self, *, use_cache: bool = True, case_sensitive: bool = False) -> None:
+    def __init__(
+        self, *, use_cache: bool = True, case_sensitive: bool = False
+    ) -> None:
         """Create a suggester object.
 
         Args:

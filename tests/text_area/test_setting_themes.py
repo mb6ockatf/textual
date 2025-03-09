@@ -22,7 +22,9 @@ async def test_default_theme():
 async def test_setting_builtin_themes():
     class MyTextAreaApp(App[None]):
         def compose(self) -> ComposeResult:
-            yield TextArea("print('hello')", language="python", theme="vscode_dark")
+            yield TextArea(
+                "print('hello')", language="python", theme="vscode_dark"
+            )
 
     app = MyTextAreaApp()
 

@@ -121,7 +121,9 @@ class InBandWindowResize(Message):
         yield "enabled", self.enabled
 
     @classmethod
-    def from_setting_parameter(cls, setting_parameter: int) -> InBandWindowResize:
+    def from_setting_parameter(
+        cls, setting_parameter: int
+    ) -> InBandWindowResize:
         """Construct the message from the setting parameter.
 
         Args:

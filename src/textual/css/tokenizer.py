@@ -121,7 +121,9 @@ class Expect:
         self.regexes = list(tokens.values())
         self._regex = re.compile(
             "("
-            + "|".join(f"(?P<{name}>{regex})" for name, regex in tokens.items())
+            + "|".join(
+                f"(?P<{name}>{regex})" for name, regex in tokens.items()
+            )
             + ")"
         )
         self.match = self._regex.match
@@ -203,7 +205,9 @@ class Token(NamedTuple):
             "read_from",
             self.read_from[0] if not self.read_from[1] else self.read_from,
         )
-        yield "code", self.code if len(self.code) < 40 else self.code[:40] + "..."
+        yield "code", (
+            self.code if len(self.code) < 40 else self.code[:40] + "..."
+        )
         yield "location", self.location
         yield "referenced_by", self.referenced_by, None
 
@@ -290,9 +294,14 @@ class Tokenizer:
                 f"{expect.description} (found {error_line.split(';')[0]!r})."
             )
             if expect._expect_semicolon and not error_line.endswith(";"):
-                error_message += "; Did you forget a semicolon at the end of a line?"
+                error_message += (
+                    "; Did you forget a semicolon at the end of a line?"
+                )
             raise TokenError(
-                self.read_from, self.code, (line_no + 1, col_no + 1), error_message
+                self.read_from,
+                self.code,
+                (line_no + 1, col_no + 1),
+                error_message,
             )
 
         for name, value in zip(expect.names, match.groups()[1:]):
@@ -316,7 +325,9 @@ class Tokenizer:
             and token.value.strip(":") not in VALID_PSEUDO_CLASSES
         ):
             pseudo_class = token.value.strip(":")
-            suggestion = get_suggestion(pseudo_class, list(VALID_PSEUDO_CLASSES))
+            suggestion = get_suggestion(
+                pseudo_class, list(VALID_PSEUDO_CLASSES)
+            )
             all_valid = f"must be one of {friendly_list(VALID_PSEUDO_CLASSES)}"
             if suggestion:
                 raise TokenError(

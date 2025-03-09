@@ -218,9 +218,9 @@ class DocumentNavigator:
         Returns:
             True if and only if the cursor is at the end of the document.
         """
-        return self.is_last_document_line(location) and self.is_end_of_document_line(
+        return self.is_last_document_line(
             location
-        )
+        ) and self.is_end_of_document_line(location)
 
     def get_location_left(self, location: Location) -> Location:
         """Get the location to the left of the given location.
@@ -284,7 +284,9 @@ class DocumentNavigator:
         # on within the current line. When we know the section index, we can use it
         # to find the section which sits above it.
         section_index = bisect_right(wrap_offsets, column_index)
-        offset_within_section = column_index - section_start_columns[section_index]
+        offset_within_section = (
+            column_index - section_start_columns[section_index]
+        )
         wrapped_line = self._wrapped_document.get_sections(line_index)
         section = wrapped_line[section_index]
 
@@ -330,7 +332,9 @@ class DocumentNavigator:
         wrap_offsets = self._wrapped_document.get_offsets(line_index)
         section_start_columns = [0, *wrap_offsets]
         section_index = bisect(wrap_offsets, column_index)
-        offset_within_section = column_index - section_start_columns[section_index]
+        offset_within_section = (
+            column_index - section_start_columns[section_index]
+        )
         wrapped_line = self._wrapped_document.get_sections(line_index)
         section = wrapped_line[section_index]
         current_visual_offset = cell_len(section[:offset_within_section])
@@ -429,7 +433,9 @@ class DocumentNavigator:
             The location after the offset has been applied.
         """
         # Convert into offset-space to apply the offset.
-        x_offset, y_offset = self._wrapped_document.location_to_offset(location)
+        x_offset, y_offset = self._wrapped_document.location_to_offset(
+            location
+        )
         # Convert the offset with the delta applied back to location-space.
         return self._wrapped_document.offset_to_location(
             Offset(x_offset, y_offset + vertical_offset),

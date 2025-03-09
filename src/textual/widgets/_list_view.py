@@ -162,7 +162,9 @@ class ListView(VerticalScroll, can_focus=True, can_focus_children=False):
             if index >= len(self.children):
                 index = 0
             if self._nodes[index].disabled:
-                for index, node in loop_from_index(self._nodes, index, wrap=True):
+                for index, node in loop_from_index(
+                    self._nodes, index, wrap=True
+                ):
                     if not node.disabled:
                         break
             self.index = index
@@ -201,7 +203,9 @@ class ListView(VerticalScroll, can_focus=True, can_focus_children=False):
             return False
         return 0 <= index < len(self._nodes)
 
-    def watch_index(self, old_index: int | None, new_index: int | None) -> None:
+    def watch_index(
+        self, old_index: int | None, new_index: int | None
+    ) -> None:
         """Updates the highlighting when the index changes."""
 
         if new_index is not None:
@@ -365,7 +369,9 @@ class ListView(VerticalScroll, can_focus=True, can_focus_children=False):
                 self.index = 0
         else:
             index = self.index
-            for index, item in loop_from_index(self._nodes, self.index, wrap=False):
+            for index, item in loop_from_index(
+                self._nodes, self.index, wrap=False
+            ):
                 if not item.disabled:
                     self.index = index
                     break
@@ -383,7 +389,9 @@ class ListView(VerticalScroll, can_focus=True, can_focus_children=False):
                     self.index = index
                     break
 
-    def _on_list_item__child_clicked(self, event: ListItem._ChildClicked) -> None:
+    def _on_list_item__child_clicked(
+        self, event: ListItem._ChildClicked
+    ) -> None:
         event.stop()
         self.focus()
         self.index = self._nodes.index(event.item)

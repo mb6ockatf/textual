@@ -215,7 +215,9 @@ class DOMNode(MessagePump):
 
         self._auto_refresh: float | None = None
         self._auto_refresh_timer: Timer | None = None
-        self._css_types = {cls.__name__ for cls in self._css_bases(self.__class__)}
+        self._css_types = {
+            cls.__name__ for cls in self._css_bases(self.__class__)
+        }
         self._bindings = (
             BindingsMap()
             if self._merged_bindings is None
@@ -231,7 +233,9 @@ class DOMNode(MessagePump):
             dict[str, tuple[MessagePump, Reactive[object] | object]] | None
         ) = None
         self._pruning = False
-        self._query_one_cache: LRUCache[QueryOneCacheKey, DOMNode] = LRUCache(1024)
+        self._query_one_cache: LRUCache[QueryOneCacheKey, DOMNode] = LRUCache(
+            1024
+        )
 
         super().__init__()
 
@@ -254,7 +258,9 @@ class DOMNode(MessagePump):
         """
         name = reactive.name
         if not isinstance(reactive, Reactive):
-            raise TypeError("A Reactive class is required; for example: MyApp.theme")
+            raise TypeError(
+                "A Reactive class is required; for example: MyApp.theme"
+            )
         if name not in self._reactives:
             raise AttributeError(
                 f"No reactive called {name!r}; Have you called super().__init__(...) in the {self.__class__.__name__} constructor?"
@@ -318,7 +324,10 @@ class DOMNode(MessagePump):
 
         if self._reactive_connect is None:
             self._reactive_connect = {}
-        bind_vars = {**{reactive.name: reactive for reactive in reactives}, **bind_vars}
+        bind_vars = {
+            **{reactive.name: reactive for reactive in reactives},
+            **bind_vars,
+        }
         for name, reactive in bind_vars.items():
             if name not in self._reactives:
                 raise ReactiveError(
@@ -345,7 +354,10 @@ class DOMNode(MessagePump):
         """
         if not self._reactive_connect:
             return
-        for variable_name, (compose_parent, reactive) in self._reactive_connect.items():
+        for variable_name, (
+            compose_parent,
+            reactive,
+        ) in self._reactive_connect.items():
 
             def make_setter(variable_name: str) -> Callable[[object], None]:
                 """Make a setter for the given variable name.
@@ -477,7 +489,9 @@ class DOMNode(MessagePump):
         # If we're running a worker from inside a secondary thread,
         # do so in a thread-safe way.
         if self.app._thread_id != threading.get_ident():
-            creator = partial(self.app.call_from_thread, self.workers._new_worker)
+            creator = partial(
+                self.app.call_from_thread, self.workers._new_worker
+            )
         else:
             creator = self.workers._new_worker
         worker: Worker[ResultType] = creator(
@@ -717,7 +731,9 @@ class DOMNode(MessagePump):
 
         component_classes: set[str] = set()
         for base in cls._css_bases(cls):
-            component_classes.update(base.__dict__.get("COMPONENT_CLASSES", set()))
+            component_classes.update(
+                base.__dict__.get("COMPONENT_CLASSES", set())
+            )
             if not base.__dict__.get("_inherit_component_classes", True):
                 break
 
@@ -806,7 +822,9 @@ class DOMNode(MessagePump):
             tokens.append(f"#{self.id}", style="bold")
         if self.classes:
             tokens.append(".")
-            tokens.append(".".join(class_name for class_name in self.classes), "italic")
+            tokens.append(
+                ".".join(class_name for class_name in self.classes), "italic"
+            )
         if self.name:
             tokens.append(f"[name={self.name}]", style="underline")
         return tokens
@@ -1021,7 +1039,8 @@ class DOMNode(MessagePump):
             A Rich Style.
         """
         return Style.combine(
-            node.styles.text_style for node in reversed(self.ancestors_with_self)
+            node.styles.text_style
+            for node in reversed(self.ancestors_with_self)
         )
 
     @property
@@ -1063,7 +1082,11 @@ class DOMNode(MessagePump):
                 color = text_background.get_contrast_text(color.a)
 
         style += Style.from_color(
-            (background + color).rich_color if (background.a or color.a) else None,
+            (
+                (background + color).rich_color
+                if (background.a or color.a)
+                else None
+            ),
             background.rich_color if background.a else None,
         )
         return style
@@ -1122,7 +1145,9 @@ class DOMNode(MessagePump):
         """
         styles = self.styles
         if styles.auto_border_subtitle_color:
-            color = background.get_contrast_text(styles.border_subtitle_color.a)
+            color = background.get_contrast_text(
+                styles.border_subtitle_color.a
+            )
         else:
             color = styles.border_subtitle_color
         return (
@@ -1158,9 +1183,9 @@ class DOMNode(MessagePump):
             styles = node.styles
             base_background = background
             opacity *= styles.opacity
-            background += styles.background.tint(styles.background_tint).multiply_alpha(
-                opacity
-            )
+            background += styles.background.tint(
+                styles.background_tint
+            ).multiply_alpha(opacity)
         return (base_background, background)
 
     @property
@@ -1388,10 +1413,14 @@ class DOMNode(MessagePump):
     if TYPE_CHECKING:
 
         @overload
-        def query_children(self, selector: str | None = None) -> DOMQuery[Widget]: ...
+        def query_children(
+            self, selector: str | None = None
+        ) -> DOMQuery[Widget]: ...
 
         @overload
-        def query_children(self, selector: type[QueryType]) -> DOMQuery[QueryType]: ...
+        def query_children(
+            self, selector: type[QueryType]
+        ) -> DOMQuery[QueryType]: ...
 
     def query_children(
         self, selector: str | type[QueryType] | None = None
@@ -1414,7 +1443,9 @@ class DOMNode(MessagePump):
         if isinstance(selector, str) or selector is None:
             return DOMQuery[Widget](self, deep=False, filter=selector)
         else:
-            return DOMQuery[QueryType](self, deep=False, filter=selector.__name__)
+            return DOMQuery[QueryType](
+                self, deep=False, filter=selector.__name__
+            )
 
     if TYPE_CHECKING:
 
@@ -1486,7 +1517,9 @@ class DOMNode(MessagePump):
         def query_exactly_one(self, selector: str) -> Widget: ...
 
         @overload
-        def query_exactly_one(self, selector: type[QueryType]) -> QueryType: ...
+        def query_exactly_one(
+            self, selector: type[QueryType]
+        ) -> QueryType: ...
 
         @overload
         def query_exactly_one(
@@ -1547,7 +1580,9 @@ class DOMNode(MessagePump):
                 continue
             for later_node in iter_children:
                 if match(selector_set, later_node):
-                    if expect_type is not None and not isinstance(node, expect_type):
+                    if expect_type is not None and not isinstance(
+                        node, expect_type
+                    ):
                         continue
                     raise TooManyMatches(
                         "Call to query_one resulted in more than one matched node"
@@ -1604,7 +1639,9 @@ class DOMNode(MessagePump):
             for node in self.parent.ancestors_with_self:
                 if not match(selector_set, node):
                     continue
-                if expect_type is not None and not isinstance(node, expect_type):
+                if expect_type is not None and not isinstance(
+                    node, expect_type
+                ):
                     continue
                 return node
         raise NoMatches(f"No ancestor matches {selector!r} on {self!r}")
@@ -1622,9 +1659,13 @@ class DOMNode(MessagePump):
 
         if css is not None:
             try:
-                new_styles = parse_declarations(css, read_from=("set_styles", ""))
+                new_styles = parse_declarations(
+                    css, read_from=("set_styles", "")
+                )
             except DeclarationError as error:
-                raise DeclarationError(error.name, error.token, error.message) from None
+                raise DeclarationError(
+                    error.name, error.token, error.message
+                ) from None
             self._inline_styles.merge(new_styles)
             self.refresh(layout=True)
 
@@ -1644,7 +1685,9 @@ class DOMNode(MessagePump):
         """
         return self._classes.issuperset(class_names)
 
-    def set_class(self, add: bool, *class_names: str, update: bool = True) -> Self:
+    def set_class(
+        self, add: bool, *class_names: str, update: bool = True
+    ) -> Self:
         """Add or remove class(es) based on a condition.
 
         Args:
@@ -1773,11 +1816,17 @@ class DOMNode(MessagePump):
         return ()
 
     def refresh(
-        self, *, repaint: bool = True, layout: bool = False, recompose: bool = False
+        self,
+        *,
+        repaint: bool = True,
+        layout: bool = False,
+        recompose: bool = False,
     ) -> Self:
         return self
 
-    def check_action(self, action: str, parameters: tuple[object, ...]) -> bool | None:
+    def check_action(
+        self, action: str, parameters: tuple[object, ...]
+    ) -> bool | None:
         """Check whether an action is enabled.
 
         Implement this method to add logic for [dynamic actions](/guide/actions#dynamic-actions) / bindings.

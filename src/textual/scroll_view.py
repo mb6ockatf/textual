@@ -57,7 +57,9 @@ class ScrollView(ScrollableContainer):
         """
         return self.virtual_size.width
 
-    def get_content_height(self, container: Size, viewport: Size, width: int) -> int:
+    def get_content_height(
+        self, container: Size, viewport: Size, width: int
+    ) -> int:
         """Gets the height (number of lines) in the content area.
 
         Args:
@@ -71,7 +73,11 @@ class ScrollView(ScrollableContainer):
         return self.virtual_size.height
 
     def _size_updated(
-        self, size: Size, virtual_size: Size, container_size: Size, layout: bool = True
+        self,
+        size: Size,
+        virtual_size: Size,
+        container_size: Size,
+        layout: bool = True,
     ) -> bool:
         """Called when size is updated.
 

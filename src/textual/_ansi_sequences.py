@@ -31,7 +31,9 @@ ANSI_SEQUENCES_KEYS: Mapping[str, Tuple[Keys, ...] | str | IgnoredSequence] = {
     "\x08": (Keys.Backspace,),  # Control-H (8) (Identical to '\b')
     "\x09": (Keys.Tab,),  # Control-I (9) (Identical to '\t')
     "\x0a": (Keys.ControlJ,),  # Control-J (10) (Identical to '\n')
-    "\x0b": (Keys.ControlK,),  # Control-K (delete until end of line; vertical tab)
+    "\x0b": (
+        Keys.ControlK,
+    ),  # Control-K (delete until end of line; vertical tab)
     "\x0c": (Keys.ControlL,),  # Control-L (clear; form feed)
     # "\x0d": (Keys.ControlM,),  # Control-M (13) (Identical to '\r')
     "\x0e": (Keys.ControlN,),  # Control-N (14) (history forward)
@@ -55,7 +57,9 @@ ANSI_SEQUENCES_KEYS: Mapping[str, Tuple[Keys, ...] | str | IgnoredSequence] = {
     "\x1c": (Keys.ControlBackslash,),  # Both Control-\ (also Ctrl-| )
     "\x1d": (Keys.ControlSquareClose,),  # Control-]
     "\x1e": (Keys.ControlCircumflex,),  # Control-^
-    "\x1f": (Keys.ControlUnderscore,),  # Control-underscore (Also for Ctrl-hyphen.)
+    "\x1f": (
+        Keys.ControlUnderscore,
+    ),  # Control-underscore (Also for Ctrl-hyphen.)
     # ASCII Delete (0x7f)
     # Vt220 (and Linux terminal) send this when pressing backspace. We map this
     # to ControlH, because that will make it easier to create key bindings that

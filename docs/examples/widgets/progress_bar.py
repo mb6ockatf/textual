@@ -32,7 +32,9 @@ class FundingProgressApp(App[None]):
         except ValueError:
             return
         self.query_one(ProgressBar).advance(value)
-        self.query_one(VerticalScroll).mount(Label(f"Donation for ${value} received!"))
+        self.query_one(VerticalScroll).mount(
+            Label(f"Donation for ${value} received!")
+        )
         self.query_one(Input).value = ""
 
 

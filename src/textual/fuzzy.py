@@ -58,8 +58,8 @@ class FuzzySearch:
     Unlike a regex solution, this will finds all possible matches.
     """
 
-    cache: LRUCache[tuple[str, str, bool], tuple[float, tuple[int, ...]]] = LRUCache(
-        1024 * 4
+    cache: LRUCache[tuple[str, str, bool], tuple[float, tuple[int, ...]]] = (
+        LRUCache(1024 * 4)
     )
 
     def __init__(self, case_sensitive: bool = False) -> None:
@@ -71,7 +71,9 @@ class FuzzySearch:
 
         self.case_sensitive = case_sensitive
 
-    def match(self, query: str, candidate: str) -> tuple[float, tuple[int, ...]]:
+    def match(
+        self, query: str, candidate: str
+    ) -> tuple[float, tuple[int, ...]]:
         """Match against a query.
 
         Args:
@@ -81,9 +83,13 @@ class FuzzySearch:
         Returns:
             A pair of (score, tuple of offsets). `(0, ())` for no result.
         """
-        query_regex = ".*?".join(f"({escape(character)})" for character in query)
+        query_regex = ".*?".join(
+            f"({escape(character)})" for character in query
+        )
         if not search(
-            query_regex, candidate, flags=0 if self.case_sensitive else IGNORECASE
+            query_regex,
+            candidate,
+            flags=0 if self.case_sensitive else IGNORECASE,
         ):
             # Bail out early if there is no possibility of a match
             return (0.0, ())
@@ -114,7 +120,9 @@ class FuzzySearch:
             candidate = candidate.lower()
 
         # We need this to give a bonus to first letters.
-        first_letters = {match.start() for match in finditer(r"\w+", candidate)}
+        first_letters = {
+            match.start() for match in finditer(r"\w+", candidate)
+        }
 
         def score(search: _Search) -> float:
             """Sore a search.
@@ -133,7 +141,9 @@ class FuzzySearch:
                 first_letters.intersection(search.offsets)
             )
             # Boost to favor less groups
-            normalized_groups = (offset_count - (search.groups - 1)) / offset_count
+            normalized_groups = (
+                offset_count - (search.groups - 1)
+            ) / offset_count
             score *= 1 + (normalized_groups * normalized_groups)
             return score
 
@@ -182,7 +192,9 @@ class Matcher:
             case_sensitive: Should matching be case sensitive?
         """
         self._query = query
-        self._match_style = Style(reverse=True) if match_style is None else match_style
+        self._match_style = (
+            Style(reverse=True) if match_style is None else match_style
+        )
         self._case_sensitive = case_sensitive
         self.fuzzy_search = FuzzySearch()
 
@@ -227,5 +239,7 @@ class Matcher:
             return content
         for offset in offsets:
             if not candidate[offset].isspace():
-                content = content.stylize(self._match_style, offset, offset + 1)
+                content = content.stylize(
+                    self._match_style, offset, offset + 1
+                )
         return content

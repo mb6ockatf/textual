@@ -27,7 +27,9 @@ class VerticalLayout(Layout):
 
         child_styles = [child.styles for child in children]
         box_margins: list[Spacing] = [
-            styles.margin for styles in child_styles if styles.overlay != "screen"
+            styles.margin
+            for styles in child_styles
+            if styles.overlay != "screen"
         ]
         if box_margins:
             resolve_margin = Size(
@@ -62,10 +64,13 @@ class VerticalLayout(Layout):
         margins = [
             (
                 margin_bottom
-                if (margin_bottom := margin1.bottom) > (margin_top := margin2.top)
+                if (margin_bottom := margin1.bottom)
+                > (margin_top := margin2.top)
                 else margin_top
             )
-            for (_, _, margin1), (_, _, margin2) in zip(box_models, box_models[1:])
+            for (_, _, margin1), (_, _, margin2) in zip(
+                box_models, box_models[1:]
+            )
         ]
 
         if box_models:
@@ -91,7 +96,9 @@ class VerticalLayout(Layout):
             next_y = y + content_height
             offset = (
                 styles.offset.resolve(
-                    _Size(content_width.__floor__(), content_height.__floor__()),
+                    _Size(
+                        content_width.__floor__(), content_height.__floor__()
+                    ),
                     viewport,
                 )
                 if styles.has_rule("offset")
@@ -105,7 +112,9 @@ class VerticalLayout(Layout):
                 next_y.__floor__() - y.__floor__(),
             )
 
-            absolute = styles.has_rule("position") and styles.position == "absolute"
+            absolute = (
+                styles.has_rule("position") and styles.position == "absolute"
+            )
             add_placement(
                 _WidgetPlacement(
                     region,

@@ -58,7 +58,10 @@ async def test_outline_importance():
 async def test_align_importance():
     """Align without direction should support !important"""
     async with StyleApp().run_test() as pilot:
-        assert pilot.app.query_one(Container).styles.align == ("right", "bottom")
+        assert pilot.app.query_one(Container).styles.align == (
+            "right",
+            "bottom",
+        )
 
 
 async def test_content_align_importance():
@@ -73,9 +76,9 @@ async def test_content_align_importance():
 async def test_offset_importance():
     """Offset without direction should support !important"""
     async with StyleApp().run_test() as pilot:
-        assert pilot.app.query_one(Container).styles.offset == ScalarOffset.from_offset(
-            (17, 23)
-        )
+        assert pilot.app.query_one(
+            Container
+        ).styles.offset == ScalarOffset.from_offset((17, 23))
 
 
 async def test_overflow_importance():
@@ -98,5 +101,10 @@ async def test_padding_importance():
 async def test_scrollbar_size_importance():
     """Scrollbar size without direction should support !important"""
     async with StyleApp().run_test() as pilot:
-        assert pilot.app.query_one(Container).styles.scrollbar_size_horizontal == 23
-        assert pilot.app.query_one(Container).styles.scrollbar_size_vertical == 42
+        assert (
+            pilot.app.query_one(Container).styles.scrollbar_size_horizontal
+            == 23
+        )
+        assert (
+            pilot.app.query_one(Container).styles.scrollbar_size_vertical == 42
+        )

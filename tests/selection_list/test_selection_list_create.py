@@ -66,7 +66,12 @@ async def test_add_later() -> None:
         selections.add_option(Selection("6", 6))
         assert selections.option_count == 7
         selections.add_options(
-            [Selection("7", 7), Selection("8", 8, True), ("9", 9), ("10", 10, True)]
+            [
+                Selection("7", 7),
+                Selection("8", 8, True),
+                ("9", 9),
+                ("10", 10, True),
+            ]
         )
         assert selections.option_count == 11
         selections.add_options([])

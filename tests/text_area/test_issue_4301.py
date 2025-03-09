@@ -23,7 +23,9 @@ class TextAreaApp(App[None]):
         ["A", "delete", "backspace"],
     ),
 )
-async def test_issue_4301_reproduction(selection: Selection, edit: str) -> None:
+async def test_issue_4301_reproduction(
+    selection: Selection, edit: str
+) -> None:
     """Test https://github.com/Textualize/textual/issues/4301"""
 
     async with (app := TextAreaApp()).run_test() as pilot:

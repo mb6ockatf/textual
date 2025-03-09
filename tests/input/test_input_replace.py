@@ -14,7 +14,8 @@ _FORWARD_DELETIONS = [
     ((5, 20), "01234"),  # Delete past end results in clamp
 ]
 _REVERSE_DELETIONS = [
-    ((end, start), value_after) for (start, end), value_after in _FORWARD_DELETIONS
+    ((end, start), value_after)
+    for (start, end), value_after in _FORWARD_DELETIONS
 ]
 DELETIONS = _FORWARD_DELETIONS + _REVERSE_DELETIONS
 """The same deletions performed in both forward and reverse directions."""
@@ -50,7 +51,9 @@ REPLACEMENTS = _FORWARD_REPLACEMENTS + _REVERSE_REPLACEMENTS
 
 
 @pytest.mark.parametrize("selection,replacement,result", REPLACEMENTS)
-async def test_input_replace(selection: tuple[int, int], replacement: str, result: str):
+async def test_input_replace(
+    selection: tuple[int, int], replacement: str, result: str
+):
     class InputApp(App[None]):
         TEST_TEXT = "0123456789"
 

@@ -16,7 +16,9 @@ class TwoWayDict(Generic[Key, Value]):
 
     def __init__(self, initial: dict[Key, Value]) -> None:
         self._forward: dict[Key, Value] = initial
-        self._reverse: dict[Value, Key] = {value: key for key, value in initial.items()}
+        self._reverse: dict[Value, Key] = {
+            value: key for key, value in initial.items()
+        }
 
     def __setitem__(self, key: Key, value: Value) -> None:
         # TODO: Duplicate values need to be managed to ensure consistency,

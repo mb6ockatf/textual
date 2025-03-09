@@ -16,7 +16,9 @@ from textual.widgets import Label
         ("grid_columns", "1fr 3fr"),
     ],
 )
-async def test_programmatic_style_change_updates_children(style: str, value: object):
+async def test_programmatic_style_change_updates_children(
+    style: str, value: object
+):
     """Regression test for #1607 https://github.com/Textualize/textual/issues/1607
 
     Some programmatic style changes to a widget were not updating the layout of the
@@ -44,13 +46,17 @@ async def test_programmatic_style_change_updates_children(style: str, value: obj
     app = MyApp()
 
     async with app.run_test() as pilot:
-        sizes = [(lbl.size.width, lbl.size.height) for lbl in app.screen.query(Label)]
+        sizes = [
+            (lbl.size.width, lbl.size.height)
+            for lbl in app.screen.query(Label)
+        ]
 
         setattr(app.query_one(Grid).styles, style, value)
         await pilot.pause()
 
         assert sizes != [
-            (lbl.size.width, lbl.size.height) for lbl in app.screen.query(Label)
+            (lbl.size.width, lbl.size.height)
+            for lbl in app.screen.query(Label)
         ]
 
 
@@ -84,7 +90,9 @@ async def test_programmatic_align_change_updates_children_position(
     app = MyApp()
 
     async with app.run_test() as pilot:
-        offsets = [(lbl.region.x, lbl.region.y) for lbl in app.screen.query(Label)]
+        offsets = [
+            (lbl.region.x, lbl.region.y) for lbl in app.screen.query(Label)
+        ]
 
         setattr(app.query_one(Grid).styles, style, value)
         await pilot.pause()

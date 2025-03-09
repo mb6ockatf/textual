@@ -19,13 +19,19 @@ class OptionListApp(App[None]):
         yield Footer()
 
     def key_1(self):
-        self.query_one(OptionList).replace_option_prompt_at_index(0, "1. Another single line")
+        self.query_one(OptionList).replace_option_prompt_at_index(
+            0, "1. Another single line"
+        )
 
     def key_2(self):
-        self.query_one(OptionList).replace_option_prompt_at_index(0, "1. Two\nlines")
+        self.query_one(OptionList).replace_option_prompt_at_index(
+            0, "1. Two\nlines"
+        )
 
     def key_3(self):
-        self.query_one(OptionList).replace_option_prompt_at_index(1, "1. Three\nlines\nof text")
+        self.query_one(OptionList).replace_option_prompt_at_index(
+            1, "1. Three\nlines\nof text"
+        )
 
 
 if __name__ == "__main__":

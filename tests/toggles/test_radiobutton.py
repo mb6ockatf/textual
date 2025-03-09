@@ -32,7 +32,9 @@ async def test_radio_button_initial_state() -> None:
             False,
             True,
         ]
-        assert [button.has_class("-on") for button in pilot.app.query(RadioButton)] == [
+        assert [
+            button.has_class("-on") for button in pilot.app.query(RadioButton)
+        ] == [
             False,
             False,
             True,
@@ -50,7 +52,9 @@ async def test_radio_button_toggle() -> None:
             True,
             False,
         ]
-        assert [button.has_class("-on") for button in pilot.app.query(RadioButton)] == [
+        assert [
+            button.has_class("-on") for button in pilot.app.query(RadioButton)
+        ] == [
             True,
             True,
             False,

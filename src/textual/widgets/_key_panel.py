@@ -52,7 +52,9 @@ class BindingsTable(Static):
             padding=(0, 0),
             show_header=False,
             box=box.SIMPLE if divider_transparent else box.HORIZONTALS,
-            border_style=self.get_component_rich_style("bindings-table--divider"),
+            border_style=self.get_component_rich_style(
+                "bindings-table--divider"
+            ),
         )
         table.add_column("", justify="right")
 
@@ -68,7 +70,9 @@ class BindingsTable(Static):
                 title.stylize(header_style)
                 table.add_row("", title)
 
-            action_to_bindings: defaultdict[str, list[tuple[Binding, bool, str]]]
+            action_to_bindings: defaultdict[
+                str, list[tuple[Binding, bool, str]]
+            ]
             action_to_bindings = defaultdict(list)
             for _, binding, enabled, tooltip in table_bindings:
                 if not binding.system:
@@ -96,7 +100,8 @@ class BindingsTable(Static):
                 binding, enabled, tooltip = multi_bindings[0]
                 keys_display = " ".join(
                     dict.fromkeys(  # Remove duplicates while preserving order
-                        get_key_display(binding) for binding, _, _ in multi_bindings
+                        get_key_display(binding)
+                        for binding, _, _ in multi_bindings
                     )
                 )
                 table.add_row(

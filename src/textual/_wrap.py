@@ -64,7 +64,9 @@ def compute_wrap_offsets(
 
     tab_section_index = 0
     cumulative_width = 0
-    cumulative_widths: list[int] = []  # prefix sum of tab widths for each codepoint
+    cumulative_widths: list[int] = (
+        []
+    )  # prefix sum of tab widths for each codepoint
     record_widths = cumulative_widths.extend
 
     for last, (tab_section, tab_width) in loop_last(tab_sections):
@@ -77,7 +79,9 @@ def compute_wrap_offsets(
             cumulative_widths.append(cumulative_width)
 
     for start, end, chunk in chunks(text):
-        chunk_width = _cell_len(chunk)  # this cell len excludes tabs completely
+        chunk_width = _cell_len(
+            chunk
+        )  # this cell len excludes tabs completely
         tab_width_before_start = cumulative_widths[start]
         tab_width_before_end = cumulative_widths[end]
         chunk_tab_width = tab_width_before_end - tab_width_before_start

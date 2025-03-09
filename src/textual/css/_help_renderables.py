@@ -52,9 +52,13 @@ class Bullet:
             to display below this bullet.
     """
 
-    def __init__(self, markup: str, examples: Iterable[Example] | None = None) -> None:
+    def __init__(
+        self, markup: str, examples: Iterable[Example] | None = None
+    ) -> None:
         self.markup: str = markup
-        self.examples: Iterable[Example] | None = [] if examples is None else examples
+        self.examples: Iterable[Example] | None = (
+            [] if examples is None else examples
+        )
 
     def __rich_console__(
         self, console: Console, options: ConsoleOptions
@@ -90,7 +94,9 @@ class HelpText:
     ) -> RenderResult:
         from rich.tree import Tree
 
-        tree = Tree(_markup_and_highlight(f"[b blue]{self.summary}"), guide_style="dim")
+        tree = Tree(
+            _markup_and_highlight(f"[b blue]{self.summary}"), guide_style="dim"
+        )
         if self.bullets is not None:
             for bullet in self.bullets:
                 tree.add(bullet)

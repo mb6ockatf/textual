@@ -20,10 +20,14 @@ async def test_unmount() -> None:
         def compose(self) -> ComposeResult:
             yield UnmountWidget(
                 UnmountWidget(
-                    UnmountWidget(id="bar1"), UnmountWidget(id="bar2"), id="bar"
+                    UnmountWidget(id="bar1"),
+                    UnmountWidget(id="bar2"),
+                    id="bar",
                 ),
                 UnmountWidget(
-                    UnmountWidget(id="baz1"), UnmountWidget(id="baz2"), id="baz"
+                    UnmountWidget(id="baz1"),
+                    UnmountWidget(id="baz2"),
+                    id="baz",
                 ),
                 id="top",
             )
@@ -49,6 +53,5 @@ async def test_unmount() -> None:
         "UnmountWidget#top-True-0",
         "MyScreen#main",
     ]
-
 
     assert unmount_ids == expected

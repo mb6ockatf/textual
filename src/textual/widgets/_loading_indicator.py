@@ -79,12 +79,16 @@ class LoadingIndicator(Widget):
             (1.0, color.lighten(0.1)),
         )
 
-        blends = [(elapsed * speed - dot_number / 8) % 1 for dot_number in range(5)]
+        blends = [
+            (elapsed * speed - dot_number / 8) % 1 for dot_number in range(5)
+        ]
 
         dots = [
             (
                 f"{dot} ",
-                Style.from_color(gradient.get_color((1 - blend) ** 2).rich_color),
+                Style.from_color(
+                    gradient.get_color((1 - blend) ** 2).rich_color
+                ),
             )
             for blend in blends
         ]

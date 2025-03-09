@@ -10,10 +10,14 @@ def test_dim_apply():
 
     dim_filter = DimFilter()
 
-    segments = [Segment("Hello, World!", Style.parse("dim #ffffff on #0000ff"))]
+    segments = [
+        Segment("Hello, World!", Style.parse("dim #ffffff on #0000ff"))
+    ]
 
     dimmed_segments = dim_filter.apply(segments, Color(0, 0, 0))
 
-    expected = [Segment("Hello, World!", Style.parse("not dim #7f7fff on #0000ff"))]
+    expected = [
+        Segment("Hello, World!", Style.parse("not dim #7f7fff on #0000ff"))
+    ]
 
     assert dimmed_segments == expected

@@ -204,13 +204,17 @@ class Visual(ABC):
             selection,
             selection_style,
         )
-        strips = [strip._apply_link_style(widget.link_style) for strip in strips]
+        strips = [
+            strip._apply_link_style(widget.link_style) for strip in strips
+        ]
 
         if height is None:
             height = len(strips)
         rich_style = style.rich_style
         if pad:
-            strips = [strip.extend_cell_length(width, rich_style) for strip in strips]
+            strips = [
+                strip.extend_cell_length(width, rich_style) for strip in strips
+            ]
         content_align = widget.styles.content_align
         if content_align != ("left", "top"):
             align_horizontal, align_vertical = content_align
@@ -247,7 +251,9 @@ class RichVisual(Visual):
         yield self._widget
         yield self._renderable
 
-    def _measure(self, console: Console, options: ConsoleOptions) -> Measurement:
+    def _measure(
+        self, console: Console, options: ConsoleOptions
+    ) -> Measurement:
         if self._measurement is None:
             self._measurement = Measurement.get(
                 console,
@@ -259,7 +265,10 @@ class RichVisual(Visual):
     def get_optimal_width(self, rules: RulesMap, container_width: int) -> int:
         console = active_app.get().console
         width = measure(
-            console, self._renderable, container_width, container_width=container_width
+            console,
+            self._renderable,
+            container_width,
+            container_width=container_width,
         )
 
         return width
@@ -277,7 +286,9 @@ class RichVisual(Visual):
                 )
             )
         else:
-            options = console.options.update_width(width).update(highlight=False)
+            options = console.options.update_width(width).update(
+                highlight=False
+            )
             segments = console.render(renderable, options)
             # Cheaper than counting the lines returned from render_lines!
             height = sum([text.count("\n") for text, _, _ in segments])
@@ -336,7 +347,8 @@ class Padding(Visual):
 
     def get_optimal_width(self, rules: RulesMap, container_width: int) -> int:
         return (
-            self._visual.get_optimal_width(rules, container_width) + self._spacing.width
+            self._visual.get_optimal_width(rules, container_width)
+            + self._spacing.width
         )
 
     def get_height(self, rules: RulesMap, width: int) -> int:
@@ -369,7 +381,9 @@ class Padding(Visual):
         if padding:
             rich_style = style.rich_style
             top_padding = [Strip.blank(width, rich_style)] * top if top else []
-            bottom_padding = [Strip.blank(width, rich_style)] * bottom if bottom else []
+            bottom_padding = (
+                [Strip.blank(width, rich_style)] * bottom if bottom else []
+            )
             strips = [
                 *top_padding,
                 *[

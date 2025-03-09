@@ -354,7 +354,9 @@ class Game(containers.Vertical, can_focus=True):
         self.play_timer: Timer | None = None
 
     def check_win(self) -> bool:
-        return all(tile.start_position == tile.position for tile in self.query(Tile))
+        return all(
+            tile.start_position == tile.position for tile in self.query(Tile)
+        )
 
     def watch_dimensions(self, dimensions: Size) -> None:
         self.locations.clear()
@@ -392,7 +394,9 @@ class Game(containers.Vertical, can_focus=True):
     def watch_play_time(self, play_time: float) -> None:
         minutes, seconds = divmod(play_time, 60)
         hours, minutes = divmod(minutes, 60)
-        self.query_one(Digits).update(f"{hours:02,.0f}:{minutes:02.0f}:{seconds:04.1f}")
+        self.query_one(Digits).update(
+            f"{hours:02,.0f}:{minutes:02.0f}:{seconds:04.1f}"
+        )
 
     def watch_state(self, old_state: str, new_state: str) -> None:
         if self.play_timer is not None:
@@ -404,7 +408,9 @@ class Game(containers.Vertical, can_focus=True):
 
     def get_tile(self, tile: int | None) -> Tile:
         """Get a tile (int) or the blank (None)."""
-        return self.query_one("#blank" if tile is None else f"#tile{tile}", Tile)
+        return self.query_one(
+            "#blank" if tile is None else f"#tile{tile}", Tile
+        )
 
     def get_tile_at(self, position: Offset) -> Tile:
         """Get a tile at the given position, or raise an IndexError."""
@@ -479,7 +485,9 @@ class Game(containers.Vertical, can_focus=True):
         self.visible = True
         if self.play_timer is not None:
             self.play_timer.stop()
-        self.query_one("#grid").border_title = "[reverse bold] SHUFFLING - Please Wait "
+        self.query_one("#grid").border_title = (
+            "[reverse bold] SHUFFLING - Please Wait "
+        )
         self.state = "shuffling"
         previous_move: Offset = Offset(-1, -1)
         for _ in range(shuffles):
@@ -531,7 +539,9 @@ This version is like the physical game, but rather than an image, you need to re
     def compose(self) -> ComposeResult:
         yield Markdown(self.INSTRUCTIONS)
         with containers.Center():
-            yield Button("New Game", action="screen.new_game", variant="success")
+            yield Button(
+                "New Game", action="screen.new_game", variant="success"
+            )
 
 
 class GameScreen(PageScreen):
@@ -569,7 +579,9 @@ class GameScreen(PageScreen):
         await game.recompose()
         game.focus()
 
-    def check_action(self, action: str, parameters: tuple[object, ...]) -> bool | None:
+    def check_action(
+        self, action: str, parameters: tuple[object, ...]
+    ) -> bool | None:
         if action == "shuffle" and self.query_one(Game).state == "waiting":
             return None
         return True

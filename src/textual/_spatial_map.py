@@ -32,10 +32,14 @@ class SpatialMap(Generic[ValueType]):
         """
         self._grid_size = (grid_width, grid_height)
         self.total_region = Region()
-        self._map: defaultdict[GridCoordinate, list[ValueType]] = defaultdict(list)
+        self._map: defaultdict[GridCoordinate, list[ValueType]] = defaultdict(
+            list
+        )
         self._fixed: list[ValueType] = []
 
-    def _region_to_grid_coordinates(self, region: Region) -> Iterable[GridCoordinate]:
+    def _region_to_grid_coordinates(
+        self, region: Region
+    ) -> Iterable[GridCoordinate]:
         """Get the grid squares under a region.
 
         Args:
@@ -57,7 +61,10 @@ class SpatialMap(Generic[ValueType]):
         )
 
     def insert(
-        self, regions_and_values: Iterable[tuple[Region, Offset, bool, bool, ValueType]]
+        self,
+        regions_and_values: Iterable[
+            tuple[Region, Offset, bool, bool, ValueType]
+        ],
     ) -> None:
         """Insert values into the Spatial map.
 

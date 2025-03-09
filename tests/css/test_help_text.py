@@ -25,7 +25,9 @@ def styling_context(request):
 def test_help_text_examples_are_contextualized():
     """Ensure that if the user is using CSS, they see CSS-specific examples
     and if they're using inline styles they see inline-specific examples."""
-    rendered_inline = render(spacing_invalid_value_help_text("padding", "inline"))
+    rendered_inline = render(
+        spacing_invalid_value_help_text("padding", "inline")
+    )
     assert "widget.styles.padding" in rendered_inline
 
     rendered_css = render(spacing_invalid_value_help_text("padding", "css"))
@@ -42,7 +44,9 @@ def test_spacing_wrong_number_of_values(styling_context):
 
 
 def test_spacing_invalid_value(styling_context):
-    rendered = render(spacing_invalid_value_help_text("padding", styling_context))
+    rendered = render(
+        spacing_invalid_value_help_text("padding", styling_context)
+    )
     assert "Invalid value for" in rendered
     assert "padding" in rendered
 
@@ -91,7 +95,9 @@ def test_layout_property_help_text(styling_context):
 
 
 def test_fractional_property_help_text(styling_context):
-    rendered = render(fractional_property_help_text("opacity", styling_context))
+    rendered = render(
+        fractional_property_help_text("opacity", styling_context)
+    )
     assert "Invalid value for" in rendered
     assert "opacity" in rendered
 
@@ -116,7 +122,9 @@ def test_offset_single_axis_help_text():
 
 def test_style_flags_property_help_text(styling_context):
     rendered = render(
-        style_flags_property_help_text("text-style", "notavalue b", styling_context)
+        style_flags_property_help_text(
+            "text-style", "notavalue b", styling_context
+        )
     )
     assert "Invalid value" in rendered
     assert "notavalue" in rendered

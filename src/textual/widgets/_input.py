@@ -77,7 +77,12 @@ class Input(ScrollView):
             "Move cursor left and select",
             show=False,
         ),
-        Binding("ctrl+left", "cursor_left_word", "Move cursor left a word", show=False),
+        Binding(
+            "ctrl+left",
+            "cursor_left_word",
+            "Move cursor left a word",
+            show=False,
+        ),
         Binding(
             "ctrl+shift+left",
             "cursor_left_word(True)",
@@ -97,7 +102,10 @@ class Input(ScrollView):
             show=False,
         ),
         Binding(
-            "ctrl+right", "cursor_right_word", "Move cursor right a word", show=False
+            "ctrl+right",
+            "cursor_right_word",
+            "Move cursor right a word",
+            show=False,
         ),
         Binding(
             "ctrl+shift+right",
@@ -105,24 +113,43 @@ class Input(ScrollView):
             "Move cursor right a word and select",
             show=False,
         ),
-        Binding("backspace", "delete_left", "Delete character left", show=False),
+        Binding(
+            "backspace", "delete_left", "Delete character left", show=False
+        ),
         Binding("home,ctrl+a", "home", "Go to start", show=False),
         Binding("end,ctrl+e", "end", "Go to end", show=False),
         Binding("shift+home", "home(True)", "Select line start", show=False),
         Binding("shift+end", "end(True)", "Select line end", show=False),
-        Binding("delete,ctrl+d", "delete_right", "Delete character right", show=False),
+        Binding(
+            "delete,ctrl+d",
+            "delete_right",
+            "Delete character right",
+            show=False,
+        ),
         Binding("enter", "submit", "Submit", show=False),
         Binding(
-            "ctrl+w", "delete_left_word", "Delete left to start of word", show=False
+            "ctrl+w",
+            "delete_left_word",
+            "Delete left to start of word",
+            show=False,
         ),
-        Binding("ctrl+u", "delete_left_all", "Delete all to the left", show=False),
         Binding(
-            "ctrl+f", "delete_right_word", "Delete right to start of word", show=False
+            "ctrl+u", "delete_left_all", "Delete all to the left", show=False
         ),
-        Binding("ctrl+k", "delete_right_all", "Delete all to the right", show=False),
+        Binding(
+            "ctrl+f",
+            "delete_right_word",
+            "Delete right to start of word",
+            show=False,
+        ),
+        Binding(
+            "ctrl+k", "delete_right_all", "Delete all to the right", show=False
+        ),
         Binding("ctrl+x", "cut", "Cut selected text", show=False),
         Binding("ctrl+c", "copy", "Copy selected text", show=False),
-        Binding("ctrl+v", "paste", "Paste text from the clipboard", show=False),
+        Binding(
+            "ctrl+v", "paste", "Paste text from the clipboard", show=False
+        ),
     ]
     """
     | Key(s) | Description |
@@ -473,7 +500,9 @@ class Input(ScrollView):
     def validate_selection(self, selection: Selection) -> Selection:
         start, end = selection
         value_length = len(self.value)
-        return Selection(clamp(start, 0, value_length), clamp(end, 0, value_length))
+        return Selection(
+            clamp(start, 0, value_length), clamp(end, 0, value_length)
+        )
 
     def _watch_selection(self, selection: Selection) -> None:
         self.app.cursor_position = self.cursor_screen_offset
@@ -578,7 +607,9 @@ class Input(ScrollView):
 
         if not self.value:
             placeholder = Text(self.placeholder, justify="left", end="")
-            placeholder.stylize(self.get_component_rich_style("input--placeholder"))
+            placeholder.stylize(
+                self.get_component_rich_style("input--placeholder")
+            )
             if self.has_focus:
                 cursor_style = self.get_component_rich_style("input--cursor")
                 if self._cursor_visible:
@@ -590,7 +621,8 @@ class Input(ScrollView):
 
             strip = Strip(
                 console.render(
-                    placeholder, console.options.update_width(max_content_width + 1)
+                    placeholder,
+                    console.options.update_width(max_content_width + 1),
                 )
             )
         else:
@@ -612,18 +644,24 @@ class Input(ScrollView):
                 if not self.selection.is_empty:
                     start, end = self.selection
                     start, end = sorted((start, end))
-                    selection_style = self.get_component_rich_style("input--selection")
+                    selection_style = self.get_component_rich_style(
+                        "input--selection"
+                    )
                     result.stylize_before(selection_style, start, end)
 
                 if self._cursor_visible:
-                    cursor_style = self.get_component_rich_style("input--cursor")
+                    cursor_style = self.get_component_rich_style(
+                        "input--cursor"
+                    )
                     cursor = self.cursor_position
                     if not show_suggestion and self._cursor_at_end:
                         result.pad_right(1)
                     result.stylize(cursor_style, cursor, cursor + 1)
 
             segments = list(
-                console.render(result, console.options.update_width(self.content_width))
+                console.render(
+                    result, console.options.update_width(self.content_width)
+                )
             )
 
             strip = Strip(segments)
@@ -637,7 +675,9 @@ class Input(ScrollView):
     def _value(self) -> Text:
         """Value rendered as text."""
         if self.password:
-            return Text("•" * len(self.value), no_wrap=True, overflow="ignore", end="")
+            return Text(
+                "•" * len(self.value), no_wrap=True, overflow="ignore", end=""
+            )
         else:
             text = Text(self.value, no_wrap=True, overflow="ignore", end="")
             if self.highlighter is not None:
@@ -657,7 +697,9 @@ class Input(ScrollView):
         """Get the widget of the content."""
         return self.content_width
 
-    def get_content_height(self, container: Size, viewport: Size, width: int) -> int:
+    def get_content_height(
+        self, container: Size, viewport: Size, width: int
+    ) -> int:
         return 1
 
     def _toggle_cursor(self) -> None:
@@ -889,7 +931,9 @@ class Input(ScrollView):
             # boundaries, even during movement.
             self.action_end(select)
         else:
-            hit = re.search(self._WORD_START, self.value[self.cursor_position :])
+            hit = re.search(
+                self._WORD_START, self.value[self.cursor_position :]
+            )
 
             start, end = self.selection
             if hit is None:
@@ -1038,7 +1082,9 @@ class Input(ScrollView):
         Normally triggered by the user pressing Enter. This may also run any validators.
         """
         validation_result = (
-            self.validate(self.value) if "submitted" in self.validate_on else None
+            self.validate(self.value)
+            if "submitted" in self.validate_on
+            else None
         )
         self.post_message(self.Submitted(self, self.value, validation_result))
 

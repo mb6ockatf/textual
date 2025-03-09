@@ -1,4 +1,12 @@
-from typing import TYPE_CHECKING, Any, Awaitable, Callable, List, Literal, Union
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    Awaitable,
+    Callable,
+    List,
+    Literal,
+    Union,
+)
 
 from typing_extensions import Protocol
 
@@ -29,7 +37,9 @@ class UnusedParameter:
 SegmentLines = List[List["Segment"]]
 CallbackType = Union[Callable[[], Awaitable[None]], Callable[[], None]]
 """Type used for arbitrary callables used in callbacks."""
-IgnoreReturnCallbackType = Union[Callable[[], Awaitable[Any]], Callable[[], Any]]
+IgnoreReturnCallbackType = Union[
+    Callable[[], Awaitable[Any]], Callable[[], Any]
+]
 """A callback which ignores the return type."""
 WatchCallbackBothValuesType = Union[
     Callable[[Any, Any], Awaitable[None]],

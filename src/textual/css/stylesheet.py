@@ -68,7 +68,9 @@ class StylesheetErrors:
     ) -> RenderResult:
         error_count = 0
         errors = list(
-            dict.fromkeys(chain.from_iterable(_rule.errors for _rule in self.rules))
+            dict.fromkeys(
+                chain.from_iterable(_rule.errors for _rule in self.rules)
+            )
         )
 
         for token, message in errors:
@@ -105,7 +107,11 @@ class StylesheetErrors:
             yield ""
             yield Panel(
                 self._get_snippet(
-                    token.referenced_by.code if token.referenced_by else token.code,
+                    (
+                        token.referenced_by.code
+                        if token.referenced_by
+                        else token.code
+                    ),
                     line_no,
                 ),
                 title=title,
@@ -301,7 +307,9 @@ class Stylesheet:
                 css = css_file.read()
             path = os.path.abspath(filename)
         except Exception:
-            raise StylesheetError(f"unable to read CSS file {filename!r}") from None
+            raise StylesheetError(
+                f"unable to read CSS file {filename!r}"
+            ) from None
         self.source[(str(path), "")] = CssSource(css, False, 0)
         self._require_parse = True
 
@@ -359,13 +367,17 @@ class Stylesheet:
 
         if read_from in self.source and self.source[read_from].content == css:
             # Location already in source and CSS is identical.
-            content, is_defaults, source_tie_breaker, scope = self.source[read_from]
+            content, is_defaults, source_tie_breaker, scope = self.source[
+                read_from
+            ]
             if source_tie_breaker > tie_breaker:
                 self.source[read_from] = CssSource(
                     content, is_defaults, tie_breaker, scope
                 )
             return
-        self.source[read_from] = CssSource(css, is_default_css, tie_breaker, scope)
+        self.source[read_from] = CssSource(
+            css, is_default_css, tie_breaker, scope
+        )
         self._require_parse = True
         self._rules_map = None
 
@@ -415,7 +427,12 @@ class Stylesheet:
         """
         # Do this in a fresh Stylesheet so if there are errors we don't break self.
         stylesheet = Stylesheet(variables=self._variables)
-        for read_from, (css, is_defaults, tie_breaker, scope) in self.source.items():
+        for read_from, (
+            css,
+            is_defaults,
+            tie_breaker,
+            scope,
+        ) in self.source.items():
             stylesheet.add_source(
                 css,
                 read_from=read_from,
@@ -499,7 +516,9 @@ class Stylesheet:
             for rule in rules_map[name]
         }
         rules = list(filter(limit_rules.__contains__, reversed(self.rules)))
-        all_pseudo_classes = set().union(*[rule.pseudo_classes for rule in rules])
+        all_pseudo_classes = set().union(
+            *[rule.pseudo_classes for rule in rules]
+        )
         node._has_hover_style = "hover" in all_pseudo_classes
         node._has_focus_within = "focus-within" in all_pseudo_classes
         node._has_order_style = not all_pseudo_classes.isdisjoint(
@@ -595,7 +614,9 @@ class Stylesheet:
                         # There is a default value
                         rule_value = max(default_rules, key=get_first_item)[1]
                     else:
-                        rule_value = getattr(_DEFAULT_STYLES, initial_rule_name)
+                        rule_value = getattr(
+                            _DEFAULT_STYLES, initial_rule_name
+                        )
                     node_rules[initial_rule_name] = rule_value  # type: ignore[literal-required]
 
             if cache_key is not None:
@@ -621,7 +642,8 @@ class Stylesheet:
                 self.apply(virtual_node, animate=False)
                 if (
                     not refresh_node
-                    and old_component_styles.get(component) != virtual_node.styles
+                    and old_component_styles.get(component)
+                    != virtual_node.styles
                 ):
                     # If the styles have changed we want to refresh the node
                     refresh_node = True
@@ -708,7 +730,9 @@ class Stylesheet:
 
         self.update_nodes(root.walk_children(with_self=True), animate=animate)
 
-    def update_nodes(self, nodes: Iterable[DOMNode], animate: bool = False) -> None:
+    def update_nodes(
+        self, nodes: Iterable[DOMNode], animate: bool = False
+    ) -> None:
         """Update styles for nodes.
 
         Args:
@@ -725,5 +749,8 @@ class Stylesheet:
                     apply(node.vertical_scrollbar, cache=cache)
                 if node.show_horizontal_scrollbar:
                     apply(node.horizontal_scrollbar, cache=cache)
-                if node.show_horizontal_scrollbar and node.show_vertical_scrollbar:
+                if (
+                    node.show_horizontal_scrollbar
+                    and node.show_vertical_scrollbar
+                ):
                     apply(node.scrollbar_corner, cache=cache)

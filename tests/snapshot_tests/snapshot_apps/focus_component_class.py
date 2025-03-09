@@ -25,7 +25,8 @@ class Tester(Widget, can_focus=True):
 
     def render(self) -> RenderResult:
         return Text(
-            f"test widget {self.n}", style=self.get_component_rich_style("tester--text")
+            f"test widget {self.n}",
+            style=self.get_component_rich_style("tester--text"),
         )
 
 

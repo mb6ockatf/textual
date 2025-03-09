@@ -73,7 +73,9 @@ class HorizontalLine(Primitive):
         x_range = canvas.x_range(x, x + self.length)
 
         if x in x_range:
-            box_line[x] = _combine_quads(box_line[x], (0, line_type_index, 0, 0))
+            box_line[x] = _combine_quads(
+                box_line[x], (0, line_type_index, 0, 0)
+            )
         if right in x_range:
             box_line[right] = _combine_quads(
                 box_line[right], (0, 0, 0, line_type_index)
@@ -110,7 +112,9 @@ class VerticalLine(Primitive):
         bottom = y + self.length - 1
 
         if bottom in y_range:
-            box[bottom][x] = _combine_quads(box[bottom][x], (line_type_index, 0, 0, 0))
+            box[bottom][x] = _combine_quads(
+                box[bottom][x], (line_type_index, 0, 0, 0)
+            )
         line_quad = (line_type_index, 0, line_type_index, 0)
 
         for box_y in canvas.y_range(y + 1, y + self.length - 1):
@@ -139,9 +143,13 @@ class Rectangle(Primitive):
         color = self.color
         line_type = self.line_type
         HorizontalLine(origin, width, color, line_type).render(canvas)
-        HorizontalLine(origin + (0, height - 1), width, color, line_type).render(canvas)
+        HorizontalLine(
+            origin + (0, height - 1), width, color, line_type
+        ).render(canvas)
         VerticalLine(origin, height, color, line_type).render(canvas)
-        VerticalLine(origin + (width - 1, 0), height, color, line_type).render(canvas)
+        VerticalLine(origin + (width - 1, 0), height, color, line_type).render(
+            canvas
+        )
 
 
 class Canvas:
@@ -157,7 +165,9 @@ class Canvas:
         self._width = width
         self._height = height
         blank_line = " " * width
-        self.lines: list[array[str]] = [array("u", blank_line) for _ in range(height)]
+        self.lines: list[array[str]] = [
+            array("u", blank_line) for _ in range(height)
+        ]
         self.box: list[defaultdict[int, Quad]] = [
             defaultdict(lambda: (0, 0, 0, 0)) for _ in range(height)
         ]

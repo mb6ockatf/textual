@@ -22,7 +22,16 @@ from textual.widgets import Static
 ##############################################################################
 # These are the movement keys within Textual; they kind of have a special
 # status in that they will get bound to movement-related methods.
-MOVEMENT_KEYS = ["up", "down", "left", "right", "home", "end", "pageup", "pagedown"]
+MOVEMENT_KEYS = [
+    "up",
+    "down",
+    "left",
+    "right",
+    "home",
+    "end",
+    "pageup",
+    "pagedown",
+]
 
 ##############################################################################
 # An application with no bindings anywhere.
@@ -44,7 +53,10 @@ async def test_just_app_no_bindings() -> None:
             "ctrl+c",
             "ctrl+p",
         ]
-        assert pilot.app._bindings.get_bindings_for_key("ctrl+q")[0].priority is True
+        assert (
+            pilot.app._bindings.get_bindings_for_key("ctrl+q")[0].priority
+            is True
+        )
 
 
 ##############################################################################
@@ -68,8 +80,13 @@ async def test_just_app_alpha_binding() -> None:
         assert sorted(pilot.app._bindings.key_to_bindings.keys()) == sorted(
             ["ctrl+c", "ctrl+p", "ctrl+q", "a"]
         )
-        assert pilot.app._bindings.get_bindings_for_key("ctrl+q")[0].priority is True
-        assert pilot.app._bindings.get_bindings_for_key("a")[0].priority is True
+        assert (
+            pilot.app._bindings.get_bindings_for_key("ctrl+q")[0].priority
+            is True
+        )
+        assert (
+            pilot.app._bindings.get_bindings_for_key("a")[0].priority is True
+        )
 
 
 ##############################################################################
@@ -92,8 +109,13 @@ async def test_just_app_low_priority_alpha_binding() -> None:
         assert sorted(pilot.app._bindings.key_to_bindings.keys()) == sorted(
             ["ctrl+c", "ctrl+p", "ctrl+q", "a"]
         )
-        assert pilot.app._bindings.get_bindings_for_key("ctrl+q")[0].priority is True
-        assert pilot.app._bindings.get_bindings_for_key("a")[0].priority is False
+        assert (
+            pilot.app._bindings.get_bindings_for_key("ctrl+q")[0].priority
+            is True
+        )
+        assert (
+            pilot.app._bindings.get_bindings_for_key("a")[0].priority is False
+        )
 
 
 ##############################################################################
@@ -122,7 +144,10 @@ class AppWithScreenThatHasABinding(App[None]):
 async def test_app_screen_with_bindings() -> None:
     """Test a screen with a single key binding defined."""
     async with AppWithScreenThatHasABinding().run_test() as pilot:
-        assert pilot.app.screen._bindings.get_bindings_for_key("a")[0].priority is True
+        assert (
+            pilot.app.screen._bindings.get_bindings_for_key("a")[0].priority
+            is True
+        )
 
 
 ##############################################################################
@@ -151,7 +176,10 @@ class AppWithScreenThatHasALowBinding(App[None]):
 async def test_app_screen_with_low_bindings() -> None:
     """Test a screen with a single low-priority key binding defined."""
     async with AppWithScreenThatHasALowBinding().run_test() as pilot:
-        assert pilot.app.screen._bindings.get_bindings_for_key("a")[0].priority is False
+        assert (
+            pilot.app.screen._bindings.get_bindings_for_key("a")[0].priority
+            is False
+        )
 
 
 ##############################################################################
@@ -203,7 +231,9 @@ class AppKeyRecorder(App[None]):
         Args:
             marker_prefix (str, optional): An optional prefix for the result markers.
         """
-        assert self.pressed_keys == [f"{marker_prefix}{key}" for key in self.ALL_KEYS]
+        assert self.pressed_keys == [
+            f"{marker_prefix}{key}" for key in self.ALL_KEYS
+        ]
 
 
 ##############################################################################
@@ -378,7 +408,9 @@ async def test_contained_focused_child_widget_with_movement_bindings_on_screen()
 # We should expect to see all of the test keys recorded post-press.
 
 
-class WidgetWithBindingsNoInherit(Static, can_focus=True, inherit_bindings=False):
+class WidgetWithBindingsNoInherit(
+    Static, can_focus=True, inherit_bindings=False
+):
     """A widget that has its own bindings for the movement keys, no binding inheritance."""
 
     BINDINGS = AppKeyRecorder.make_bindings("local_")
@@ -398,7 +430,9 @@ class AppWithWidgetWithBindingsNoInherit(AppKeyRecorder):
         self.query_one(WidgetWithBindingsNoInherit).focus()
 
 
-async def test_focused_child_widget_with_movement_bindings_no_inherit() -> None:
+async def test_focused_child_widget_with_movement_bindings_no_inherit() -> (
+    None
+):
     """A focused child widget with movement bindings and inherit_bindings=False should handle its own actions."""
     async with AppWithWidgetWithBindingsNoInherit().run_test() as pilot:
         await pilot.press(*AppKeyRecorder.ALL_KEYS)

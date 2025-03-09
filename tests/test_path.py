@@ -41,4 +41,6 @@ class ListPathApp(App[None]):
 )
 def test_css_paths_of_various_types(app_class, expected_css_path_attribute):
     app = app_class()
-    assert app.css_path == [path.absolute() for path in expected_css_path_attribute]
+    assert app.css_path == [
+        path.absolute() for path in expected_css_path_attribute
+    ]

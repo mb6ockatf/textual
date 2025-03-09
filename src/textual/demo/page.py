@@ -36,7 +36,10 @@ class CodeScreen(ModalScreen):
         with ScrollableContainer(id="code"):
             yield Static(
                 Syntax(
-                    self.code, lexer="python", indent_guides=True, line_numbers=True
+                    self.code,
+                    lexer="python",
+                    indent_guides=True,
+                    line_numbers=True,
                 ),
                 expand=True,
             )

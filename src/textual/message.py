@@ -39,7 +39,9 @@ class Message:
     """
     bubble: ClassVar[bool] = True  # Message will bubble to parent
     verbose: ClassVar[bool] = False  # Message is verbose
-    no_dispatch: ClassVar[bool] = False  # Message may not be handled by client code
+    no_dispatch: ClassVar[bool] = (
+        False  # Message may not be handled by client code
+    )
     namespace: ClassVar[str] = ""  # Namespace to disambiguate messages
     handler_name: ClassVar[str]
     """Name of the default message handler."""

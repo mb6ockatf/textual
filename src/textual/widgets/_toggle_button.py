@@ -201,9 +201,15 @@ class ToggleButton(Static, can_focus=True):
         )
 
     def get_content_width(self, container: Size, viewport: Size) -> int:
-        return self._button.cell_len + (1 if self._label else 0) + self._label.cell_len
+        return (
+            self._button.cell_len
+            + (1 if self._label else 0)
+            + self._label.cell_len
+        )
 
-    def get_content_height(self, container: Size, viewport: Size, width: int) -> int:
+    def get_content_height(
+        self, container: Size, viewport: Size, width: int
+    ) -> int:
         return 1
 
     def toggle(self) -> Self:

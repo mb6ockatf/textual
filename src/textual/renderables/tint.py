@@ -30,7 +30,10 @@ class Tint:
 
     @classmethod
     def process_segments(
-        cls, segments: Iterable[Segment], color: Color, ansi_theme: TerminalTheme
+        cls,
+        segments: Iterable[Segment],
+        color: Color,
+        ansi_theme: TerminalTheme,
     ) -> Iterable[Segment]:
         """Apply tint to segments.
 
@@ -54,19 +57,25 @@ class Tint:
             if control:
                 yield segment
             else:
-                style = truecolor_style(style) if style is not None else NULL_STYLE
+                style = (
+                    truecolor_style(style) if style is not None else NULL_STYLE
+                )
                 yield _Segment(
                     text,
                     (
                         style
                         + style_from_color(
                             (
-                                (from_rich_color(style.color) + color).rich_color
+                                (
+                                    from_rich_color(style.color) + color
+                                ).rich_color
                                 if style.color is not None
                                 else None
                             ),
                             (
-                                (from_rich_color(style.bgcolor) + color).rich_color
+                                (
+                                    from_rich_color(style.bgcolor) + color
+                                ).rich_color
                                 if style.bgcolor is not None
                                 else None
                             ),

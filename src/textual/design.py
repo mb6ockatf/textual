@@ -120,10 +120,14 @@ class ColorSystem:
         colors: dict[str, str] = {}
 
         if dark:
-            background = self.background or Color.parse(DEFAULT_DARK_BACKGROUND)
+            background = self.background or Color.parse(
+                DEFAULT_DARK_BACKGROUND
+            )
             surface = self.surface or Color.parse(DEFAULT_DARK_SURFACE)
         else:
-            background = self.background or Color.parse(DEFAULT_LIGHT_BACKGROUND)
+            background = self.background or Color.parse(
+                DEFAULT_LIGHT_BACKGROUND
+            )
             surface = self.surface or Color.parse(DEFAULT_LIGHT_SURFACE)
 
         foreground = self.foreground or (background.inverse)
@@ -131,11 +135,19 @@ class ColorSystem:
         boost = self.boost or contrast_text.with_alpha(0.04)
 
         # Colored text
-        colors["text-primary"] = contrast_text.tint(primary.with_alpha(0.66)).hex
-        colors["text-secondary"] = contrast_text.tint(secondary.with_alpha(0.66)).hex
-        colors["text-warning"] = contrast_text.tint(warning.with_alpha(0.66)).hex
+        colors["text-primary"] = contrast_text.tint(
+            primary.with_alpha(0.66)
+        ).hex
+        colors["text-secondary"] = contrast_text.tint(
+            secondary.with_alpha(0.66)
+        ).hex
+        colors["text-warning"] = contrast_text.tint(
+            warning.with_alpha(0.66)
+        ).hex
         colors["text-error"] = contrast_text.tint(error.with_alpha(0.66)).hex
-        colors["text-success"] = contrast_text.tint(success.with_alpha(0.66)).hex
+        colors["text-success"] = contrast_text.tint(
+            success.with_alpha(0.66)
+        ).hex
         colors["text-accent"] = contrast_text.tint(accent.with_alpha(0.66)).hex
 
         if self.panel is None:
@@ -159,7 +171,9 @@ class ColorSystem:
                     label = "-lighten"
                 else:
                     label = ""
-                yield (f"{label}{'-' + str(abs(n)) if n else ''}"), n * luminosity_step
+                yield (
+                    f"{label}{'-' + str(abs(n)) if n else ''}"
+                ), n * luminosity_step
 
         # Color names and color
         COLORS: list[tuple[str, Color]] = [
@@ -218,11 +232,15 @@ class ColorSystem:
         colors["secondary-muted"] = get(
             "secondary-muted", secondary.blend(background, 0.7).hex
         )
-        colors["accent-muted"] = get("accent-muted", accent.blend(background, 0.7).hex)
+        colors["accent-muted"] = get(
+            "accent-muted", accent.blend(background, 0.7).hex
+        )
         colors["warning-muted"] = get(
             "warning-muted", warning.blend(background, 0.7).hex
         )
-        colors["error-muted"] = get("error-muted", error.blend(background, 0.7).hex)
+        colors["error-muted"] = get(
+            "error-muted", error.blend(background, 0.7).hex
+        )
         colors["success-muted"] = get(
             "success-muted", success.blend(background, 0.7).hex
         )
@@ -239,8 +257,12 @@ class ColorSystem:
         colors["block-cursor-foreground"] = get(
             "block-cursor-foreground", colors["text"]
         )
-        colors["block-cursor-background"] = get("block-cursor-background", primary.hex)
-        colors["block-cursor-text-style"] = get("block-cursor-text-style", "bold")
+        colors["block-cursor-background"] = get(
+            "block-cursor-background", primary.hex
+        )
+        colors["block-cursor-text-style"] = get(
+            "block-cursor-text-style", "bold"
+        )
         colors["block-cursor-blurred-foreground"] = get(
             "block-cursor-blurred-foreground", foreground.hex
         )
@@ -256,7 +278,9 @@ class ColorSystem:
 
         # The border color for focused widgets which have a border.
         colors["border"] = get("border", primary.hex)
-        colors["border-blurred"] = get("border-blurred", surface.darken(0.025).hex)
+        colors["border-blurred"] = get(
+            "border-blurred", surface.darken(0.025).hex
+        )
 
         # The surface color for builtin focused widgets
         colors["surface-active"] = get(
@@ -266,11 +290,17 @@ class ColorSystem:
         # The scrollbar colors
         colors["scrollbar"] = get(
             "scrollbar",
-            (Color.parse(colors["background-darken-1"]) + primary.with_alpha(0.4)).hex,
+            (
+                Color.parse(colors["background-darken-1"])
+                + primary.with_alpha(0.4)
+            ).hex,
         )
         colors["scrollbar-hover"] = get(
             "scrollbar-hover",
-            (Color.parse(colors["background-darken-1"]) + primary.with_alpha(0.5)).hex,
+            (
+                Color.parse(colors["background-darken-1"])
+                + primary.with_alpha(0.5)
+            ).hex,
         )
         # colors["scrollbar-active"] = get("scrollbar-active", colors["panel-lighten-2"])
         colors["scrollbar-active"] = get("scrollbar-active", primary.hex)
@@ -289,17 +319,25 @@ class ColorSystem:
 
         # Links
         colors["link-background"] = get("link-background", "initial")
-        colors["link-background-hover"] = get("link-background-hover", primary.hex)
+        colors["link-background-hover"] = get(
+            "link-background-hover", primary.hex
+        )
         colors["link-color"] = get("link-color", colors["text"])
         colors["link-style"] = get("link-style", "underline")
         colors["link-color-hover"] = get("link-color-hover", colors["text"])
-        colors["link-style-hover"] = get("link-style-hover", "bold not underline")
+        colors["link-style-hover"] = get(
+            "link-style-hover", "bold not underline"
+        )
 
         colors["footer-foreground"] = get("footer-foreground", foreground.hex)
         colors["footer-background"] = get("footer-background", panel.hex)
 
-        colors["footer-key-foreground"] = get("footer-key-foreground", accent.hex)
-        colors["footer-key-background"] = get("footer-key-background", "transparent")
+        colors["footer-key-foreground"] = get(
+            "footer-key-foreground", accent.hex
+        )
+        colors["footer-key-background"] = get(
+            "footer-key-background", "transparent"
+        )
 
         colors["footer-description-foreground"] = get(
             "footer-description-foreground", foreground.hex
@@ -308,7 +346,9 @@ class ColorSystem:
             "footer-description-background", "transparent"
         )
 
-        colors["footer-item-background"] = get("footer-item-background", "transparent")
+        colors["footer-item-background"] = get(
+            "footer-item-background", "transparent"
+        )
 
         colors["input-cursor-background"] = get(
             "input-cursor-background", foreground.hex
@@ -316,7 +356,9 @@ class ColorSystem:
         colors["input-cursor-foreground"] = get(
             "input-cursor-foreground", background.hex
         )
-        colors["input-cursor-text-style"] = get("input-cursor-text-style", "none")
+        colors["input-cursor-text-style"] = get(
+            "input-cursor-text-style", "none"
+        )
         colors["input-selection-background"] = get(
             "input-selection-background",
             Color.parse(colors["primary-lighten-1"]).with_alpha(0.4).hex,
@@ -324,38 +366,62 @@ class ColorSystem:
 
         # Markdown header styles
         colors["markdown-h1-color"] = get("markdown-h1-color", primary.hex)
-        colors["markdown-h1-background"] = get("markdown-h1-background", "transparent")
-        colors["markdown-h1-text-style"] = get("markdown-h1-text-style", "bold")
+        colors["markdown-h1-background"] = get(
+            "markdown-h1-background", "transparent"
+        )
+        colors["markdown-h1-text-style"] = get(
+            "markdown-h1-text-style", "bold"
+        )
 
         colors["markdown-h2-color"] = get("markdown-h2-color", primary.hex)
-        colors["markdown-h2-background"] = get("markdown-h2-background", "transparent")
-        colors["markdown-h2-text-style"] = get("markdown-h2-text-style", "underline")
+        colors["markdown-h2-background"] = get(
+            "markdown-h2-background", "transparent"
+        )
+        colors["markdown-h2-text-style"] = get(
+            "markdown-h2-text-style", "underline"
+        )
 
         colors["markdown-h3-color"] = get("markdown-h3-color", primary.hex)
-        colors["markdown-h3-background"] = get("markdown-h3-background", "transparent")
-        colors["markdown-h3-text-style"] = get("markdown-h3-text-style", "bold")
+        colors["markdown-h3-background"] = get(
+            "markdown-h3-background", "transparent"
+        )
+        colors["markdown-h3-text-style"] = get(
+            "markdown-h3-text-style", "bold"
+        )
 
         colors["markdown-h4-color"] = get("markdown-h4-color", foreground.hex)
-        colors["markdown-h4-background"] = get("markdown-h4-background", "transparent")
+        colors["markdown-h4-background"] = get(
+            "markdown-h4-background", "transparent"
+        )
         colors["markdown-h4-text-style"] = get(
             "markdown-h4-text-style", "bold underline"
         )
 
         colors["markdown-h5-color"] = get("markdown-h5-color", foreground.hex)
-        colors["markdown-h5-background"] = get("markdown-h5-background", "transparent")
-        colors["markdown-h5-text-style"] = get("markdown-h5-text-style", "bold")
+        colors["markdown-h5-background"] = get(
+            "markdown-h5-background", "transparent"
+        )
+        colors["markdown-h5-text-style"] = get(
+            "markdown-h5-text-style", "bold"
+        )
 
         colors["markdown-h6-color"] = get(
             "markdown-h6-color", colors["foreground-muted"]
         )
-        colors["markdown-h6-background"] = get("markdown-h6-background", "transparent")
-        colors["markdown-h6-text-style"] = get("markdown-h6-text-style", "bold")
+        colors["markdown-h6-background"] = get(
+            "markdown-h6-background", "transparent"
+        )
+        colors["markdown-h6-text-style"] = get(
+            "markdown-h6-text-style", "bold"
+        )
 
         colors["button-foreground"] = get("button-foreground", foreground.hex)
         colors["button-color-foreground"] = get(
             "button-color-foreground", colors["text"]
         )
-        colors["button-focus-text-style"] = get("button-focus-text-style", "b reverse")
+        colors["button-focus-text-style"] = get(
+            "button-focus-text-style", "b reverse"
+        )
 
         return colors
 
@@ -380,7 +446,9 @@ def show_design(light: ColorSystem, dark: ColorSystem) -> Table:
 
             text = Text(f"${name}")
 
-            yield Padding(text, 1, style=f"{foreground.hex6} on {background.hex6}")
+            yield Padding(
+                text, 1, style=f"{foreground.hex6} on {background.hex6}"
+            )
 
     table = Table(box=None, expand=True)
     table.add_column("Light", justify="center")

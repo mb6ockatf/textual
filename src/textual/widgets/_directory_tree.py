@@ -13,7 +13,12 @@ from textual.await_complete import AwaitComplete
 from textual.message import Message
 from textual.reactive import var
 from textual.widgets._tree import TOGGLE_STYLE, Tree, TreeNode
-from textual.worker import Worker, WorkerCancelled, WorkerFailed, get_current_worker
+from textual.worker import (
+    Worker,
+    WorkerCancelled,
+    WorkerFailed,
+    get_current_worker,
+)
 
 if TYPE_CHECKING:
     from typing_extensions import Self
@@ -146,7 +151,9 @@ class DirectoryTree(Tree[DirEntry]):
             """The `Tree` that had a directory selected."""
             return self.node.tree
 
-    path: var[str | Path] = var["str | Path"](PATH("."), init=False, always_update=True)
+    path: var[str | Path] = var["str | Path"](
+        PATH("."), init=False, always_update=True
+    )
     """The path that is the root of the directory tree.
 
     Note:
@@ -229,7 +236,10 @@ class DirectoryTree(Tree[DirEntry]):
         return self
 
     def reset_node(
-        self, node: TreeNode[DirEntry], label: TextType, data: DirEntry | None = None
+        self,
+        node: TreeNode[DirEntry],
+        label: TextType,
+        data: DirEntry | None = None,
     ) -> Self:
         """Clear the subtree and reset the given node.
 
@@ -272,12 +282,17 @@ class DirectoryTree(Tree[DirEntry]):
             highlighted_path: None | Path = None
             if self.cursor_line > -1:
                 highlighted_node = self.get_node_at_line(self.cursor_line)
-                if highlighted_node is not None and highlighted_node.data is not None:
+                if (
+                    highlighted_node is not None
+                    and highlighted_node.data is not None
+                ):
                     highlighted_path = highlighted_node.data.path
 
             if node.data is not None:
                 self.reset_node(
-                    node, str(node.data.path.name), DirEntry(self.PATH(node.data.path))
+                    node,
+                    str(node.data.path.name),
+                    DirEntry(self.PATH(node.data.path)),
                 )
 
             # Reopen nodes that were expanded and still exist.
@@ -363,7 +378,9 @@ class DirectoryTree(Tree[DirEntry]):
         the new value as the root.
         """
         has_cursor = self.cursor_node is not None
-        self.reset_node(self.root, str(self.path), DirEntry(self.PATH(self.path)))
+        self.reset_node(
+            self.root, str(self.path), DirEntry(self.PATH(self.path))
+        )
         await self.reload()
         if has_cursor:
             self.cursor_line = 0
@@ -408,11 +425,17 @@ class DirectoryTree(Tree[DirEntry]):
 
         if node._allow_expand:
             prefix = (
-                self.ICON_NODE_EXPANDED if node.is_expanded else self.ICON_NODE,
+                (
+                    self.ICON_NODE_EXPANDED
+                    if node.is_expanded
+                    else self.ICON_NODE
+                ),
                 base_style + TOGGLE_STYLE,
             )
             node_label.stylize_before(
-                self.get_component_rich_style("directory-tree--folder", partial=True)
+                self.get_component_rich_style(
+                    "directory-tree--folder", partial=True
+                )
             )
         else:
             prefix = (
@@ -420,7 +443,9 @@ class DirectoryTree(Tree[DirEntry]):
                 base_style,
             )
             node_label.stylize_before(
-                self.get_component_rich_style("directory-tree--file", partial=True),
+                self.get_component_rich_style(
+                    "directory-tree--file", partial=True
+                ),
             )
             node_label.highlight_regex(
                 r"\..+$",
@@ -473,7 +498,9 @@ class DirectoryTree(Tree[DirEntry]):
             # tree.
             return False
 
-    def _populate_node(self, node: TreeNode[DirEntry], content: Iterable[Path]) -> None:
+    def _populate_node(
+        self, node: TreeNode[DirEntry], content: Iterable[Path]
+    ) -> None:
         """Populate the given tree node with the given directory content.
 
         Args:
@@ -489,7 +516,9 @@ class DirectoryTree(Tree[DirEntry]):
             )
         node.expand()
 
-    def _directory_content(self, location: Path, worker: Worker) -> Iterator[Path]:
+    def _directory_content(
+        self, location: Path, worker: Worker
+    ) -> Iterator[Path]:
         """Load the content of a given directory.
 
         Args:
@@ -521,7 +550,9 @@ class DirectoryTree(Tree[DirEntry]):
         path = node.data.path
         path = path.expanduser().resolve()
         return sorted(
-            self.filter_paths(self._directory_content(path, get_current_worker())),
+            self.filter_paths(
+                self._directory_content(path, get_current_worker())
+            ),
             key=lambda path: (not self._safe_is_dir(path), path.name.lower()),
         )
 
@@ -559,7 +590,9 @@ class DirectoryTree(Tree[DirEntry]):
                     # Mark this iteration as done.
                     self._load_queue.task_done()
 
-    async def _on_tree_node_expanded(self, event: Tree.NodeExpanded[DirEntry]) -> None:
+    async def _on_tree_node_expanded(
+        self, event: Tree.NodeExpanded[DirEntry]
+    ) -> None:
         event.stop()
         dir_entry = event.node.data
         if dir_entry is None:
@@ -569,12 +602,16 @@ class DirectoryTree(Tree[DirEntry]):
         else:
             self.post_message(self.FileSelected(event.node, dir_entry.path))
 
-    def _on_tree_node_selected(self, event: Tree.NodeSelected[DirEntry]) -> None:
+    def _on_tree_node_selected(
+        self, event: Tree.NodeSelected[DirEntry]
+    ) -> None:
         event.stop()
         dir_entry = event.node.data
         if dir_entry is None:
             return
         if self._safe_is_dir(dir_entry.path):
-            self.post_message(self.DirectorySelected(event.node, dir_entry.path))
+            self.post_message(
+                self.DirectorySelected(event.node, dir_entry.path)
+            )
         else:
             self.post_message(self.FileSelected(event.node, dir_entry.path))

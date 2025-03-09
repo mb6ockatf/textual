@@ -115,7 +115,11 @@ class Content(Visual):
 
     __slots__ = ["_text", "_spans", "_cell_length"]
 
-    _NORMALIZE_TEXT_ALIGN = {"start": "left", "end": "right", "justify": "full"}
+    _NORMALIZE_TEXT_ALIGN = {
+        "start": "left",
+        "end": "right",
+        "justify": "full",
+    }
 
     def __init__(
         self,
@@ -168,7 +172,9 @@ class Content(Visual):
         return markup
 
     @classmethod
-    def from_markup(cls, markup: str | Content, **variables: object) -> Content:
+    def from_markup(
+        cls, markup: str | Content, **variables: object
+    ) -> Content:
         """Create content from Textual markup, optionally combined with template variables.
 
         If `markup` is already a Content instance, it will be returned unmodified.
@@ -191,7 +197,9 @@ class Content(Visual):
         _rich_traceback_omit = True
         if isinstance(markup, Content):
             if variables:
-                raise ValueError("A literal string is require to substitute variables.")
+                raise ValueError(
+                    "A literal string is require to substitute variables."
+                )
             return markup
         markup = _strip_control_codes(markup)
         from textual.markup import to_content
@@ -439,7 +447,10 @@ class Content(Visual):
                 return None
 
         for y, line in enumerate(self.split(allow_blank=True)):
-            if selection_style is not None and (span := get_span(y)) is not None:
+            if (
+                selection_style is not None
+                and (span := get_span(y)) is not None
+            ):
                 start, end = span
                 if end == -1:
                     end = len(line.plain)
@@ -455,12 +466,18 @@ class Content(Visual):
                         for line in line.divide(cuts)
                     ]
                 else:
-                    line = line.truncate(width, ellipsis=overflow == "ellipsis")
-                    content_line = _FormattedLine(line, width, y=y, align=align)
+                    line = line.truncate(
+                        width, ellipsis=overflow == "ellipsis"
+                    )
+                    content_line = _FormattedLine(
+                        line, width, y=y, align=align
+                    )
                     new_lines = [content_line]
             else:
                 content_line = _FormattedLine(line, width, y=y, align=align)
-                offsets = divide_line(line.plain, width, fold=overflow == "fold")
+                offsets = divide_line(
+                    line.plain, width, fold=overflow == "fold"
+                )
                 divided_lines = content_line.content.divide(offsets)
                 divided_lines = [
                     line.truncate(width, ellipsis=overflow == "ellipsis")
@@ -468,7 +485,11 @@ class Content(Visual):
                 ]
                 new_lines = [
                     _FormattedLine(
-                        content.rstrip_end(width), width, offset, y, align=align
+                        content.rstrip_end(width),
+                        width,
+                        offset,
+                        y,
+                        align=align,
                     )
                     for content, offset in zip(divided_lines, [0, *offsets])
                 ]
@@ -791,7 +812,11 @@ class Content(Visual):
             content = Content(
                 text,
                 spans,
-                None if self._cell_length is None else self._cell_length + count,
+                (
+                    None
+                    if self._cell_length is None
+                    else self._cell_length + count
+                ),
             )
             return content
 
@@ -816,7 +841,11 @@ class Content(Visual):
                     (span.extend(count) if span.end == plain_len else span)
                     for span in self._spans
                 ],
-                None if self._cell_length is None else self._cell_length + count,
+                (
+                    None
+                    if self._cell_length is None
+                    else self._cell_length + count
+                ),
             )
         return self
 
@@ -832,7 +861,11 @@ class Content(Visual):
             return Content(
                 f"{self.plain}{character * count}",
                 self._spans,
-                None if self._cell_length is None else self._cell_length + count,
+                (
+                    None
+                    if self._cell_length is None
+                    else self._cell_length + count
+                ),
             )
         return self
 
@@ -888,7 +921,9 @@ class Content(Visual):
             if span.start < max_offset
         ]
         text = self.plain[:-amount]
-        length = None if self._cell_length is None else self._cell_length - amount
+        length = (
+            None if self._cell_length is None else self._cell_length - amount
+        )
         return Content(text, spans, length)
 
     def stylize(
@@ -915,7 +950,10 @@ class Content(Visual):
             return self
         return Content(
             self.plain,
-            [*self._spans, Span(start, length if length < end else end, style)],
+            [
+                *self._spans,
+                Span(start, length if length < end else end, style),
+            ],
         )
 
     def stylize_before(
@@ -947,7 +985,10 @@ class Content(Visual):
             return self
         return Content(
             self.plain,
-            [Span(start, length if length < end else end, style), *self._spans],
+            [
+                Span(start, length if length < end else end, style),
+                *self._spans,
+            ],
         )
 
     def render(
@@ -996,7 +1037,9 @@ class Content(Visual):
         enumerated_spans = list(enumerate(self._spans, 1))
         style_map = {
             index: (
-                get_style(span.style) if isinstance(span.style, str) else span.style
+                get_style(span.style)
+                if isinstance(span.style, str)
+                else span.style
             )
             for index, span in enumerated_spans
         }
@@ -1030,7 +1073,9 @@ class Content(Visual):
             style_cache[cache_key] = current_style
             return current_style
 
-        for (offset, leaving, style_id), (next_offset, _, _) in zip(spans, spans[1:]):
+        for (offset, leaving, style_id), (next_offset, _, _) in zip(
+            spans, spans[1:]
+        ):
             if leaving:
                 stack_pop(style_id)
             else:
@@ -1155,7 +1200,10 @@ class Content(Visual):
 
         if include_separator:
             lines = self.divide(
-                [match.end() for match in re.finditer(re.escape(separator), text)],
+                [
+                    match.end()
+                    for match in re.finditer(re.escape(separator), text)
+                ],
             )
         else:
 
@@ -1213,7 +1261,9 @@ class Content(Visual):
                 span.extend(spaces) if span.end >= end_offset else span
                 for span in spans
             ]
-            return Content(self._text + new_spaces, spans, self.cell_length + spaces)
+            return Content(
+                self._text + new_spaces, spans, self.cell_length + spaces
+            )
         return Content(self._text + new_spaces, self._spans, self._cell_length)
 
     def expand_tabs(self, tab_size: int = 8) -> Content:
@@ -1238,7 +1288,9 @@ class Content(Visual):
                 for part in parts:
                     if part.plain.endswith("\t"):
                         part = Content(
-                            part._text[-1][:-1] + " ", part._spans, part._cell_length
+                            part._text[-1][:-1] + " ",
+                            part._spans,
+                            part._cell_length,
                         )
                         cell_position += part.cell_length
                         tab_remainder = cell_position % tab_size
@@ -1326,7 +1378,9 @@ class _FormattedLine:
         x = self.x
         y = self.y
 
-        if align in ("start", "left") or (align == "justify" and self.line_end):
+        if align in ("start", "left") or (
+            align == "justify" and self.line_end
+        ):
             pass
 
         elif align == "center":
@@ -1339,7 +1393,9 @@ class _FormattedLine:
 
         elif align == "justify":
             words = content.split(" ", include_separator=False)
-            words_size = sum(cell_len(word.plain.rstrip(" ")) for word in words)
+            words_size = sum(
+                cell_len(word.plain.rstrip(" ")) for word in words
+            )
             num_spaces = len(words) - 1
             spaces = [1] * num_spaces
             index = 0
@@ -1356,12 +1412,15 @@ class _FormattedLine:
                 for text, text_style in word.render(style, end=""):
                     add_segment(
                         _Segment(
-                            text, (style + text_style).rich_style_with_offset(x, y)
+                            text,
+                            (style + text_style).rich_style_with_offset(x, y),
                         )
                     )
                     x += len(text) + 1
                 if index < len(spaces) and (pad := spaces[index]):
-                    add_segment(_Segment(" " * pad, (style + text_style).rich_style))
+                    add_segment(
+                        _Segment(" " * pad, (style + text_style).rich_style)
+                    )
 
             return segments, width
 
@@ -1373,7 +1432,9 @@ class _FormattedLine:
         add_segment = segments.append
         for text, text_style in content.render(style, end=""):
             add_segment(
-                _Segment(text, (style + text_style).rich_style_with_offset(x, y))
+                _Segment(
+                    text, (style + text_style).rich_style_with_offset(x, y)
+                )
             )
             x += len(text)
 
@@ -1395,7 +1456,9 @@ class _FormattedLine:
                 (
                     style
                     if style._meta is None
-                    else (style + link_style if "@click" in style.meta else style)
+                    else (
+                        style + link_style if "@click" in style.meta else style
+                    )
                 ),
                 control,
             )

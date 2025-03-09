@@ -22,25 +22,40 @@ def test_insert_empty_string():
 def test_insert_invalid_column():
     document = Document(TEXT)
     document.replace_range((0, 999), (0, 999), " really")
-    assert document.lines == ["I must not fear. really", "Fear is the mind-killer."]
+    assert document.lines == [
+        "I must not fear. really",
+        "Fear is the mind-killer.",
+    ]
 
 
 def test_insert_invalid_row_and_column():
     document = Document(TEXT)
     document.replace_range((999, 0), (999, 0), " really")
-    assert document.lines == ["I must not fear.", "Fear is the mind-killer.", " really"]
+    assert document.lines == [
+        "I must not fear.",
+        "Fear is the mind-killer.",
+        " really",
+    ]
 
 
 def test_insert_range_newline_file_start():
     document = Document(TEXT)
     document.replace_range((0, 0), (0, 0), "\n")
-    assert document.lines == ["", "I must not fear.", "Fear is the mind-killer."]
+    assert document.lines == [
+        "",
+        "I must not fear.",
+        "Fear is the mind-killer.",
+    ]
 
 
 def test_insert_newline_splits_line():
     document = Document(TEXT)
     document.replace_range((0, 1), (0, 1), "\n")
-    assert document.lines == ["I", " must not fear.", "Fear is the mind-killer."]
+    assert document.lines == [
+        "I",
+        " must not fear.",
+        "Fear is the mind-killer.",
+    ]
 
 
 def test_insert_newline_splits_line_selection():

@@ -50,7 +50,9 @@ class WindowsDriver(Driver):
         Args:
             data: Raw data.
         """
-        assert self._writer_thread is not None, "Driver must be in application mode"
+        assert (
+            self._writer_thread is not None
+        ), "Driver must be in application mode"
         self._writer_thread.write(data)
 
     def _enable_mouse_support(self) -> None:

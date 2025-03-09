@@ -14,7 +14,9 @@ class HandlerArguments(NamedTuple):
     action: Any
 
 
-def extract_handler_actions(event_name: str, meta: dict[str, Any]) -> HandlerArguments:
+def extract_handler_actions(
+    event_name: str, meta: dict[str, Any]
+) -> HandlerArguments:
     """Extract action from meta dict.
 
     Args:

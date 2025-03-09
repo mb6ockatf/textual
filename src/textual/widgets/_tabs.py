@@ -194,7 +194,9 @@ class Tab(Static):
 
     def _watch_disabled(self, disabled: bool) -> None:
         """Notify the parent `Tabs` that a tab was enabled/disabled."""
-        self.post_message(self.Disabled(self) if disabled else self.Enabled(self))
+        self.post_message(
+            self.Disabled(self) if disabled else self.Enabled(self)
+        )
 
 
 class Tabs(Widget, can_focus=True):
@@ -460,7 +462,9 @@ class Tabs(Widget, can_focus=True):
         """
 
         if before and after:
-            raise self.TabError("Unable to add a tab both before and after a tab")
+            raise self.TabError(
+                "Unable to add a tab both before and after a tab"
+            )
 
         if isinstance(before, str):
             try:
@@ -478,7 +482,9 @@ class Tabs(Widget, can_focus=True):
             try:
                 after = self.query_one(f"#tabs-list > #{after}", Tab)
             except NoMatches:
-                raise self.TabError(f"There is no tab with ID '{after}' to mount after")
+                raise self.TabError(
+                    f"There is no tab with ID '{after}' to mount after"
+                )
         elif isinstance(after, Tab) and self not in after.ancestors:
             raise self.TabError(
                 "Request to add a tab after a tab that isn't part of this tab collection"

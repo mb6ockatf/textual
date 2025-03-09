@@ -60,7 +60,12 @@ if TYPE_CHECKING:
     from textual.layout import Layout
     from textual.css.styles import StylesBase
 
-from textual.css.types import AlignHorizontal, AlignVertical, DockEdge, EdgeType
+from textual.css.types import (
+    AlignHorizontal,
+    AlignVertical,
+    DockEdge,
+    EdgeType,
+)
 
 BorderDefinition: TypeAlias = (
     "Sequence[tuple[EdgeType, str | Color] | None] | tuple[EdgeType, str | Color] | Literal['none']"
@@ -235,7 +240,9 @@ class ScalarListProperty:
         refresh_children: Whether to refresh the node children on value change.
     """
 
-    def __init__(self, percent_unit: Unit, refresh_children: bool = False) -> None:
+    def __init__(
+        self, percent_unit: Unit, refresh_children: bool = False
+    ) -> None:
         self.percent_unit = percent_unit
         self.refresh_children = refresh_children
 
@@ -456,7 +463,9 @@ class BorderProperty:
             if not self._layout:
                 obj.refresh()
             else:
-                layout = Edges(*self._get_properties(obj)).spacing != border_spacing
+                layout = (
+                    Edges(*self._get_properties(obj)).spacing != border_spacing
+                )
                 obj.refresh(layout=layout)
 
         if border is None:
@@ -516,7 +525,9 @@ class BorderProperty:
         else:
             raise StyleValueError(
                 "expected 1, 2, or 4 values",
-                help_text=border_property_help_text(self.name, context="inline"),
+                help_text=border_property_help_text(
+                    self.name, context="inline"
+                ),
             )
         check_refresh()
 
@@ -696,7 +707,9 @@ class LayoutProperty:
             except MissingLayout as error:
                 raise StyleValueError(
                     str(error),
-                    help_text=layout_property_help_text(self.name, context="inline"),
+                    help_text=layout_property_help_text(
+                        self.name, context="inline"
+                    ),
                 )
             if obj.set_rule("layout", layout_object):
                 obj.refresh(layout=True, children=True)
@@ -727,7 +740,9 @@ class OffsetProperty:
         return obj.get_rule(self.name, NULL_SCALAR)  # type: ignore[return-value]
 
     def __set__(
-        self, obj: StylesBase, offset: tuple[int | str, int | str] | ScalarOffset | None
+        self,
+        obj: StylesBase,
+        offset: tuple[int | str, int | str] | ScalarOffset | None,
     ):
         """Set the offset.
 
@@ -765,7 +780,8 @@ class OffsetProperty:
                 )
             except ScalarParseError as error:
                 raise StyleValueError(
-                    str(error), help_text=offset_property_help_text(context="inline")
+                    str(error),
+                    help_text=offset_property_help_text(context="inline"),
                 )
 
             _offset = ScalarOffset(scalar_x, scalar_y)
@@ -873,7 +889,9 @@ class NameProperty:
     def __set_name__(self, owner: StylesBase, name: str) -> None:
         self.name = name
 
-    def __get__(self, obj: StylesBase, objtype: type[StylesBase] | None) -> str:
+    def __get__(
+        self, obj: StylesBase, objtype: type[StylesBase] | None
+    ) -> str:
         """Get the name property.
 
         Args:
@@ -922,7 +940,8 @@ class NameListProperty:
                 obj.refresh(layout=True)
         elif isinstance(names, str):
             if obj.set_rule(
-                self.name, tuple(name.strip().lower() for name in names.split(" "))
+                self.name,
+                tuple(name.strip().lower() for name in names.split(" ")),
             ):
                 obj.refresh(layout=True)
         elif isinstance(names, tuple):
@@ -980,7 +999,9 @@ class ColorProperty:
                     try:
                         alpha = percentage_string_to_float(token)
                     except ValueError:
-                        raise StyleValueError(f"invalid percentage value '{token}'")
+                        raise StyleValueError(
+                            f"invalid percentage value '{token}'"
+                        )
                     continue
                 try:
                     parsed_color = Color.parse(token)
@@ -988,7 +1009,10 @@ class ColorProperty:
                     raise StyleValueError(
                         f"Invalid color value '{token}'",
                         help_text=color_property_help_text(
-                            self.name, context="inline", error=error, value=token
+                            self.name,
+                            context="inline",
+                            error=error,
+                            value=token,
                         ),
                     )
             parsed_color = parsed_color.with_alpha(alpha)
@@ -1040,7 +1064,9 @@ class StyleFlagsProperty:
         """
         return obj.get_rule(self.name, Style.null())  # type: ignore[return-value]
 
-    def __set__(self, obj: StylesBase, style_flags: Style | str | None) -> None:
+    def __set__(
+        self, obj: StylesBase, style_flags: Style | str | None
+    ) -> None:
         """Set the style using a style flag string.
 
         Args:
@@ -1165,7 +1191,9 @@ class FractionalProperty:
         else:
             raise StyleValueError(
                 f"{self.name} must be a str (e.g. '10%') or a float (e.g. 0.1)",
-                help_text=fractional_property_help_text(name, context="inline"),
+                help_text=fractional_property_help_text(
+                    name, context="inline"
+                ),
             )
         if obj.set_rule(name, clamp(float_value, 0, 1)):
             obj.refresh(children=self.children)
@@ -1202,7 +1230,9 @@ class HatchProperty:
         return obj.get_rule("hatch")  # type: ignore[return-value]
 
     def __set__(
-        self, obj: StylesBase, value: tuple[str, Color | str] | Literal["none"] | None
+        self,
+        obj: StylesBase,
+        value: tuple[str, Color | str] | Literal["none"] | None,
     ) -> None:
         _rich_traceback_omit = True
         if value is None:
@@ -1222,7 +1252,9 @@ class HatchProperty:
                         f"Expected a character or hatch value here; found {character!r}"
                     ) from None
             if cell_len(character) != 1:
-                raise ValueError("Hatch character must have a cell length of 1")
+                raise ValueError(
+                    "Hatch character must have a cell length of 1"
+                )
             if isinstance(color, str):
                 color = Color.parse(color)
             hatch = (character, color)

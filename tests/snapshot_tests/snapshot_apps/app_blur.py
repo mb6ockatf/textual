@@ -2,6 +2,7 @@ from textual.app import App, ComposeResult
 from textual.events import AppBlur
 from textual.widgets import Input
 
+
 class AppBlurApp(App[None]):
 
     CSS = """
@@ -27,6 +28,7 @@ class AppBlurApp(App[None]):
 
     def on_mount(self) -> None:
         self.post_message(AppBlur())
+
 
 if __name__ == "__main__":
     AppBlurApp().run()

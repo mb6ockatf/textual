@@ -33,7 +33,9 @@ async def test_internal_value_password():
     """The displayed value should be a password text."""
     async with InputApp().run_test() as pilot:
         pilot.app.query_one(Input).password = True
-        assert pilot.app.query_one(Input)._value == Text("•" * len(pilot.app.TEST_TEXT))
+        assert pilot.app.query_one(Input)._value == Text(
+            "•" * len(pilot.app.TEST_TEXT)
+        )
 
 
 async def test_internal_value_highlighted():
@@ -41,7 +43,9 @@ async def test_internal_value_highlighted():
         pilot.app.query_one(Input).highlighter = JSONHighlighter()
         test_text = f'{{"test": "{pilot.app.TEST_TEXT}"}}'
         pilot.app.query_one(Input).value = test_text
-        assert pilot.app.query_one(Input)._value == JSONHighlighter()(test_text)
+        assert pilot.app.query_one(Input)._value == JSONHighlighter()(
+            test_text
+        )
 
 
 async def test_cursor_toggle():
@@ -59,7 +63,8 @@ async def test_input_height():
     async with InputApp().run_test() as pilot:
         input_widget = pilot.app.query_one(Input)
         assert (
-            input_widget.styles.height.value == input_widget.parent.styles.height.value
+            input_widget.styles.height.value
+            == input_widget.parent.styles.height.value
         )
         assert input_widget.parent.styles.height.value == 1
 

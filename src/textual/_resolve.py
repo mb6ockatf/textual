@@ -46,16 +46,24 @@ def resolve(
 
     from_float = Fraction.from_float
     total_fraction = from_float(
-        sum([scalar.value for scalar, fraction in resolved if fraction is None])
+        sum(
+            [scalar.value for scalar, fraction in resolved if fraction is None]
+        )
     )
 
     if total_fraction:
         total_gutter = gutter * (len(dimensions) - 1)
-        consumed = sum([fraction for _, fraction in resolved if fraction is not None])
+        consumed = sum(
+            [fraction for _, fraction in resolved if fraction is not None]
+        )
         remaining = max(Fraction(0), Fraction(total - total_gutter) - consumed)
         fraction_unit = Fraction(remaining, total_fraction)
         resolved_fractions = [
-            from_float(scalar.value) * fraction_unit if fraction is None else fraction
+            (
+                from_float(scalar.value) * fraction_unit
+                if fraction is None
+                else fraction
+            )
             for scalar, fraction in resolved
         ]
     else:
@@ -65,7 +73,8 @@ def resolve(
 
     if min_size is not None:
         resolved_fractions = [
-            max(Fraction(min_size), fraction) for fraction in resolved_fractions
+            max(Fraction(min_size), fraction)
+            for fraction in resolved_fractions
         ]
 
     fraction_gutter = Fraction(gutter)
@@ -152,7 +161,9 @@ def resolve_fraction_unit(
         ]
 
     resolved: list[Fraction | None] = [None] * len(resolve)
-    remaining_fraction = Fraction(sum(scalar.value for scalar, _, _ in resolve))
+    remaining_fraction = Fraction(
+        sum(scalar.value for scalar, _, _ in resolve)
+    )
 
     while remaining_fraction > 0:
         remaining_space_changed = False
@@ -160,7 +171,9 @@ def resolve_fraction_unit(
         for index, (scalar, min_value, max_value) in enumerate(resolve):
             value = resolved[index]
             if value is None:
-                resolved_scalar = scalar.resolve(size, viewport_size, resolve_fraction)
+                resolved_scalar = scalar.resolve(
+                    size, viewport_size, resolve_fraction
+                )
                 if min_value is not None and resolved_scalar < min_value:
                     remaining_space -= min_value
                     remaining_fraction -= _Fraction(scalar.value)
@@ -249,12 +262,17 @@ def resolve_box_models(
                 [
                     box_model.width
                     for widget, box_model in zip(widgets, box_models)
-                    if (box_model is not None and widget.styles.overlay != "screen")
+                    if (
+                        box_model is not None
+                        and widget.styles.overlay != "screen"
+                    )
                 ]
             )
         )
 
-        remaining_space = int(max(0, size.width - total_remaining - margin_width))
+        remaining_space = int(
+            max(0, size.width - total_remaining - margin_width)
+        )
         fraction_unit = resolve_fraction_unit(
             [
                 styles
@@ -276,12 +294,17 @@ def resolve_box_models(
                 [
                     box_model.height
                     for widget, box_model in zip(widgets, box_models)
-                    if (box_model is not None and widget.styles.overlay != "screen")
+                    if (
+                        box_model is not None
+                        and widget.styles.overlay != "screen"
+                    )
                 ]
             )
         )
 
-        remaining_space = int(max(0, size.height - total_remaining - margin_height))
+        remaining_space = int(
+            max(0, size.height - total_remaining - margin_height)
+        )
         fraction_unit = resolve_fraction_unit(
             [
                 styles

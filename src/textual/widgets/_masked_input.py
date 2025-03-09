@@ -115,10 +115,14 @@ class _Template(Validator):
                     flags = new_flags
                     continue
 
-                pattern, required_flag = _TEMPLATE_CHARACTERS.get(char, (None, None))
+                pattern, required_flag = _TEMPLATE_CHARACTERS.get(
+                    char, (None, None)
+                )
                 if pattern:
                     char_flags = (
-                        _CharFlags.REQUIRED if required_flag else _CharFlags.NONE
+                        _CharFlags.REQUIRED
+                        if required_flag
+                        else _CharFlags.NONE
                     )
                     char_definition = self.CharDefinition(
                         re.compile(pattern), char_flags
@@ -178,7 +182,9 @@ class _Template(Validator):
                 return False
         return True
 
-    def insert_separators(self, value: str, cursor_position: int) -> tuple[str, int]:
+    def insert_separators(
+        self, value: str, cursor_position: int
+    ) -> tuple[str, int]:
         """Automatically inserts separators in `value` at `cursor_position` if expected, eventually advancing
         the current cursor position.
 
@@ -223,9 +229,15 @@ class _Template(Validator):
         for char in text:
             if char in separators:
                 if char == self.next_separator(cursor_position):
-                    prev_position = self.prev_separator_position(cursor_position)
-                    if (cursor_position > 0) and (prev_position != cursor_position - 1):
-                        next_position = self.next_separator_position(cursor_position)
+                    prev_position = self.prev_separator_position(
+                        cursor_position
+                    )
+                    if (cursor_position > 0) and (
+                        prev_position != cursor_position - 1
+                    ):
+                        next_position = self.next_separator_position(
+                            cursor_position
+                        )
                         while cursor_position < next_position + 1:
                             if (
                                 _CharFlags.SEPARATOR
@@ -251,9 +263,13 @@ class _Template(Validator):
                 char = char.lower()
             elif _CharFlags.UPPERCASE in char_definition.flags:
                 char = char.upper()
-            value = value[:cursor_position] + char + value[cursor_position + 1 :]
+            value = (
+                value[:cursor_position] + char + value[cursor_position + 1 :]
+            )
             cursor_position += 1
-            value, cursor_position = self.insert_separators(value, cursor_position)
+            value, cursor_position = self.insert_separators(
+                value, cursor_position
+            )
         return value, cursor_position
 
     def move_cursor(self, delta: int) -> None:
@@ -293,11 +309,18 @@ class _Template(Validator):
             position = self.input.cursor_position
         cursor_position = position
         if cursor_position < len(self.template):
-            assert _CharFlags.SEPARATOR not in self.template[cursor_position].flags
+            assert (
+                _CharFlags.SEPARATOR
+                not in self.template[cursor_position].flags
+            )
             if cursor_position == len(value) - 1:
                 value = value[:cursor_position]
             else:
-                value = value[:cursor_position] + " " + value[cursor_position + 1 :]
+                value = (
+                    value[:cursor_position]
+                    + " "
+                    + value[cursor_position + 1 :]
+                )
         pos = len(value)
         while pos > 0:
             char_definition = self.template[pos - 1]
@@ -330,7 +353,9 @@ class _Template(Validator):
         else:
             return False
 
-    def prev_separator_position(self, position: int | None = None) -> int | None:
+    def prev_separator_position(
+        self, position: int | None = None
+    ) -> int | None:
         """Obtains the position of the previous separator character starting from
         `position` within the template string.
 
@@ -350,7 +375,9 @@ class _Template(Validator):
         else:
             return None
 
-    def next_separator_position(self, position: int | None = None) -> int | None:
+    def next_separator_position(
+        self, position: int | None = None
+    ) -> int | None:
         """Obtains the position of the next separator character starting from
         `position` within the template string.
 
@@ -423,7 +450,9 @@ class _Template(Validator):
     @property
     def mask(self) -> str:
         """Property returning the template placeholder mask."""
-        return "".join([char_definition.char for char_definition in self.template])
+        return "".join(
+            [char_definition.char for char_definition in self.template]
+        )
 
     @property
     def empty_mask(self) -> str:
@@ -539,7 +568,9 @@ class MaskedInput(Input, can_focus=True):
             self.set_class(valid, "-valid")
 
         result = super().validate(value)
-        validation_results: list[ValidationResult] = [self._template.validate(value)]
+        validation_results: list[ValidationResult] = [
+            self._template.validate(value)
+        ]
         if result is not None:
             validation_results.append(result)
         combined_result = ValidationResult.merge(validation_results)
@@ -565,7 +596,9 @@ class MaskedInput(Input, can_focus=True):
             style,
             end="",
         )
-        for index, (char, char_definition) in enumerate(zip(value, template.template)):
+        for index, (char, char_definition) in enumerate(
+            zip(value, template.template)
+        ):
             if char == " ":
                 result.stylize(style, index, index + 1)
 
@@ -582,7 +615,9 @@ class MaskedInput(Input, can_focus=True):
             segments = Segment.adjust_line_length(segments, width)
             line_length = width
 
-        strip = Strip(segments).crop(self.scroll_offset.x, self.scroll_offset.x + width)
+        strip = Strip(segments).crop(
+            self.scroll_offset.x, self.scroll_offset.x + width
+        )
         return strip.apply_style(self.rich_style)
 
     @property
@@ -612,7 +647,9 @@ class MaskedInput(Input, can_focus=True):
 
     def clear(self) -> None:
         """Clear the masked input."""
-        self.value, self.cursor_position = self._template.insert_separators("", 0)
+        self.value, self.cursor_position = self._template.insert_separators(
+            "", 0
+        )
 
     def action_cursor_left(self) -> None:
         """Move the cursor one position to the left; separators are skipped."""
@@ -630,7 +667,9 @@ class MaskedInput(Input, can_focus=True):
         """Move the cursor left next to the previous separator. If no previous
         separator is found, moves the cursor to the start of the input."""
         if self._template.at_separator(self.cursor_position - 1):
-            position = self._template.prev_separator_position(self.cursor_position - 1)
+            position = self._template.prev_separator_position(
+                self.cursor_position - 1
+            )
         else:
             position = self._template.prev_separator_position()
         if position:
@@ -677,7 +716,9 @@ class MaskedInput(Input, can_focus=True):
         if self.cursor_position <= 0:
             return
         if self._template.at_separator(self.cursor_position - 1):
-            position = self._template.prev_separator_position(self.cursor_position - 1)
+            position = self._template.prev_separator_position(
+                self.cursor_position - 1
+            )
         else:
             position = self._template.prev_separator_position()
         if position:

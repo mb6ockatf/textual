@@ -26,7 +26,11 @@ class Dashboard(App):
     def on_mount(self) -> None:
         table = self.query_one(DataTable)
         table.add_columns("Id", "Description", "Status", "Result Id")
-        for row in [(1, 2, 3, 4), ("a", "b", "c", "d"), ("fee", "fy", "fo", "fum")]:
+        for row in [
+            (1, 2, 3, 4),
+            ("a", "b", "c", "d"),
+            ("fee", "fy", "fo", "fum"),
+        ]:
             table.add_row(key=row[0], *row)
 
 

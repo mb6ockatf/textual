@@ -61,7 +61,10 @@ def test_get_key_display():
     assert app.get_key_display(Binding("p", "", "")) == "p"
     assert app.get_key_display(Binding("ctrl+p", "", "")) == "^p"
     assert app.get_key_display(Binding("right_square_bracket", "", "")) == "]"
-    assert app.get_key_display(Binding("ctrl+right_square_bracket", "", "")) == "^]"
+    assert (
+        app.get_key_display(Binding("ctrl+right_square_bracket", "", ""))
+        == "^]"
+    )
     assert (
         app.get_key_display(Binding("shift+ctrl+right_square_bracket", "", ""))
         == "shift+^]"

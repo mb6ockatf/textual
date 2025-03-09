@@ -50,7 +50,9 @@ async def test_typing_from_pre_populated_causes_changed():
     input_text = "Hello, World!"
     async with InputApp(input_text).run_test() as pilot:
         await pilot.press(*input_text)
-        assert pilot.app.messages == ["Changed"] + (["Changed"] * len(input_text))
+        assert pilot.app.messages == ["Changed"] + (
+            ["Changed"] * len(input_text)
+        )
 
 
 async def test_submit_empty_input():

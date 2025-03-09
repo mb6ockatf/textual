@@ -19,7 +19,9 @@ class ToastApp(App[None]):
         self.notify("It's a trap!", severity="error", timeout=10)
 
         # Show an information notification, but without any sort of title.
-        self.notify("It's against my programming to impersonate a deity.", title="")
+        self.notify(
+            "It's against my programming to impersonate a deity.", title=""
+        )
 
 
 if __name__ == "__main__":

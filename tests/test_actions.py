@@ -8,13 +8,23 @@ from textual.actions import ActionError, parse
 
 
 @pytest.mark.parametrize(
-    ("action_string", "expected_namespace", "expected_name", "expected_arguments"),
+    (
+        "action_string",
+        "expected_namespace",
+        "expected_name",
+        "expected_arguments",
+    ),
     [
         ("spam", "", "spam", ()),
         ("hypothetical_action()", "", "hypothetical_action", ()),
         ("another_action(1)", "", "another_action", (1,)),
         ("foo(True, False)", "", "foo", (True, False)),
-        ("foo.bar.baz(3, 3.15, 'Python')", "foo.bar", "baz", (3, 3.15, "Python")),
+        (
+            "foo.bar.baz(3, 3.15, 'Python')",
+            "foo.bar",
+            "baz",
+            (3, 3.15, "Python"),
+        ),
         ("m1234.n5678(None, [1, 2])", "m1234", "n5678", (None, [1, 2])),
     ],
 )

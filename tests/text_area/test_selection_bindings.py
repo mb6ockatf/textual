@@ -110,7 +110,9 @@ async def test_cursor_selection_left_to_previous_line(app: TextAreaApp):
 
         # The cursor jumps up to the end of the line above.
         end_of_previous_line = len(TEXT.splitlines()[1])
-        assert text_area.selection == Selection((2, 2), (1, end_of_previous_line))
+        assert text_area.selection == Selection(
+            (2, 2), (1, end_of_previous_line)
+        )
 
 
 async def test_cursor_selection_up(app: TextAreaApp):
@@ -144,7 +146,9 @@ async def test_cursor_selection_down(app: TextAreaApp):
         assert text_area.selection == Selection((2, 5), (3, 5))
 
 
-async def test_cursor_selection_down_when_cursor_on_last_line(app: TextAreaApp):
+async def test_cursor_selection_down_when_cursor_on_last_line(
+    app: TextAreaApp,
+):
     async with app.run_test() as pilot:
         text_area = app.query_one(TextArea)
         text_area.load_text("ABCDEF\nGHIJK")
@@ -237,7 +241,8 @@ async def test_cursor_line_home_smart_home(
 ):
     """If the line begins with whitespace, pressing home firstly goes
     to the start of the (non-whitespace) content. Pressing it again takes you to column
-    0. If you press it again, it goes back to the first non-whitespace column."""
+    0. If you press it again, it goes back to the first non-whitespace column.
+    """
     async with app.run_test() as pilot:
         text_area = app.query_one(TextArea)
         text_area.load_text("    hello world")
@@ -272,7 +277,9 @@ async def test_cursor_page_up(app: TextAreaApp):
         )
 
 
-async def test_cursor_vertical_movement_visual_alignment_snapping(app: TextAreaApp):
+async def test_cursor_vertical_movement_visual_alignment_snapping(
+    app: TextAreaApp,
+):
     """When you move the cursor vertically, it should stay vertically
     aligned even when double-width characters are used."""
     async with app.run_test() as pilot:

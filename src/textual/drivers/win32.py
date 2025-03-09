@@ -174,13 +174,16 @@ def enable_application_mode() -> Callable[[], None]:
         set_console_mode(terminal_out, current_console_mode_out)
 
     set_console_mode(
-        terminal_out, current_console_mode_out | ENABLE_VIRTUAL_TERMINAL_PROCESSING
+        terminal_out,
+        current_console_mode_out | ENABLE_VIRTUAL_TERMINAL_PROCESSING,
     )
     set_console_mode(terminal_in, ENABLE_VIRTUAL_TERMINAL_INPUT)
     return restore
 
 
-def wait_for_handles(handles: List[HANDLE], timeout: int = -1) -> Optional[HANDLE]:
+def wait_for_handles(
+    handles: List[HANDLE], timeout: int = -1
+) -> Optional[HANDLE]:
     """
     Waits for multiple handles. (Similar to 'select') Returns the handle which is ready.
     Returns `None` on timeout.
@@ -287,7 +290,9 @@ class EventMonitor(threading.Thread):
                     # https://github.com/Textualize/textual/issues/3178 has
                     # the context for the encode/decode here.
                     for event in parser.feed(
-                        "".join(keys).encode("utf-16", "surrogatepass").decode("utf-16")
+                        "".join(keys)
+                        .encode("utf-16", "surrogatepass")
+                        .decode("utf-16")
                     ):
                         self.process_event(event)
                 if new_size is not None:

@@ -1,6 +1,7 @@
 from textual.app import App, ComposeResult
 from textual.widgets import Tree
 
+
 class TreeClearingSnapshotApp(App[None]):
 
     CSS = """
@@ -25,6 +26,7 @@ class TreeClearingSnapshotApp(App[None]):
         self.query_one("#left", Tree).root.expand()
         self.query_one("#left", Tree).clear()
         self.query_one("#right", Tree).clear()
+
 
 if __name__ == "__main__":
     TreeClearingSnapshotApp().run()

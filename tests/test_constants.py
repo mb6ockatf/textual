@@ -1,4 +1,8 @@
-from textual.constants import _get_environ_bool, _get_environ_int, _get_environ_port
+from textual.constants import (
+    _get_environ_bool,
+    _get_environ_int,
+    _get_environ_port,
+)
 
 
 def test_environ_int(monkeypatch):

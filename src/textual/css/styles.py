@@ -3,13 +3,26 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from functools import partial
 from operator import attrgetter
-from typing import TYPE_CHECKING, Any, Callable, Iterable, Iterator, Literal, cast
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    Callable,
+    Iterable,
+    Iterator,
+    Literal,
+    cast,
+)
 
 import rich.repr
 from rich.style import Style
 from typing_extensions import TypedDict
 
-from textual._animator import DEFAULT_EASING, Animatable, BoundAnimator, EasingFunction
+from textual._animator import (
+    DEFAULT_EASING,
+    Animatable,
+    BoundAnimator,
+    EasingFunction,
+)
 from textual._types import AnimationLevel, CallbackType
 from textual.color import Color
 from textual.css._style_properties import (
@@ -352,7 +365,9 @@ class StylesBase:
     keyline = KeylineProperty()
     """Keyline parameters."""
 
-    box_sizing = StringEnumProperty(VALID_BOX_SIZING, "border-box", layout=True)
+    box_sizing = StringEnumProperty(
+        VALID_BOX_SIZING, "border-box", layout=True
+    )
     """Box sizing method ("border-box" or "conetnt-box")"""
     width = ScalarProperty(percent_unit=Unit.WIDTH)
     """Set the width of the widget."""
@@ -427,15 +442,25 @@ class StylesBase:
     )
     align = AlignProperty()
 
-    content_align_horizontal = StringEnumProperty(VALID_ALIGN_HORIZONTAL, "left")
+    content_align_horizontal = StringEnumProperty(
+        VALID_ALIGN_HORIZONTAL, "left"
+    )
     content_align_vertical = StringEnumProperty(VALID_ALIGN_VERTICAL, "top")
     content_align = AlignProperty()
 
-    grid_rows = ScalarListProperty(percent_unit=Unit.HEIGHT, refresh_children=True)
-    grid_columns = ScalarListProperty(percent_unit=Unit.WIDTH, refresh_children=True)
+    grid_rows = ScalarListProperty(
+        percent_unit=Unit.HEIGHT, refresh_children=True
+    )
+    grid_columns = ScalarListProperty(
+        percent_unit=Unit.WIDTH, refresh_children=True
+    )
 
-    grid_size_columns = IntegerProperty(default=1, layout=True, refresh_children=True)
-    grid_size_rows = IntegerProperty(default=0, layout=True, refresh_children=True)
+    grid_size_columns = IntegerProperty(
+        default=1, layout=True, refresh_children=True
+    )
+    grid_size_rows = IntegerProperty(
+        default=0, layout=True, refresh_children=True
+    )
     grid_gutter_horizontal = IntegerProperty(
         default=0, layout=True, refresh_children=True
     )
@@ -589,13 +614,17 @@ class StylesBase:
         )
 
     @property
-    def is_relative_width(self, _relative_units={Unit.FRACTION, Unit.PERCENT}) -> bool:
+    def is_relative_width(
+        self, _relative_units={Unit.FRACTION, Unit.PERCENT}
+    ) -> bool:
         """Does the node have a relative width?"""
         width = self.width
         return width is not None and width.unit in _relative_units
 
     @property
-    def is_relative_height(self, _relative_units={Unit.FRACTION, Unit.PERCENT}) -> bool:
+    def is_relative_height(
+        self, _relative_units={Unit.FRACTION, Unit.PERCENT}
+    ) -> bool:
         """Does the node have a relative width?"""
         height = self.height
         return height is not None and height.unit in _relative_units
@@ -809,7 +838,9 @@ class StylesBase:
                 offset_y = parent_height - height
         return offset_y
 
-    def _align_size(self, child: tuple[int, int], parent: tuple[int, int]) -> Offset:
+    def _align_size(
+        self, child: tuple[int, int], parent: tuple[int, int]
+    ) -> Offset:
         """Align a size according to alignment rules.
 
         Args:
@@ -1107,7 +1138,9 @@ class Styles(StylesBase):
         if "scrollbar_color" in rules:
             append_declaration("scrollbar-color", self.scrollbar_color.css)
         if "scrollbar_color_hover" in rules:
-            append_declaration("scrollbar-color-hover", self.scrollbar_color_hover.css)
+            append_declaration(
+                "scrollbar-color-hover", self.scrollbar_color_hover.css
+            )
         if "scrollbar_color_active" in rules:
             append_declaration(
                 "scrollbar-color-active", self.scrollbar_color_active.css
@@ -1119,14 +1152,18 @@ class Styles(StylesBase):
             )
 
         if "scrollbar_background" in rules:
-            append_declaration("scrollbar-background", self.scrollbar_background.css)
+            append_declaration(
+                "scrollbar-background", self.scrollbar_background.css
+            )
         if "scrollbar_background_hover" in rules:
             append_declaration(
-                "scrollbar-background-hover", self.scrollbar_background_hover.css
+                "scrollbar-background-hover",
+                self.scrollbar_background_hover.css,
             )
         if "scrollbar_background_active" in rules:
             append_declaration(
-                "scrollbar-background-active", self.scrollbar_background_active.css
+                "scrollbar-background-active",
+                self.scrollbar_background_active.css,
             )
 
         if "scrollbar_gutter" in rules:
@@ -1139,11 +1176,13 @@ class Styles(StylesBase):
         else:
             if "scrollbar_size_horizontal" in rules:
                 append_declaration(
-                    "scrollbar-size-horizontal", str(self.scrollbar_size_horizontal)
+                    "scrollbar-size-horizontal",
+                    str(self.scrollbar_size_horizontal),
                 )
             if "scrollbar_size_vertical" in rules:
                 append_declaration(
-                    "scrollbar-size-vertical", str(self.scrollbar_size_vertical)
+                    "scrollbar-size-vertical",
+                    str(self.scrollbar_size_vertical),
                 )
 
         if "box_sizing" in rules:
@@ -1178,7 +1217,10 @@ class Styles(StylesBase):
         elif "align_vertical" in rules:
             append_declaration("align-vertical", self.align_vertical)
 
-        if "content_align_horizontal" in rules and "content_align_vertical" in rules:
+        if (
+            "content_align_horizontal" in rules
+            and "content_align_vertical" in rules
+        ):
             append_declaration(
                 "content-align",
                 f"{self.content_align_horizontal} {self.content_align_vertical}",
@@ -1188,7 +1230,9 @@ class Styles(StylesBase):
                 "content-align-horizontal", self.content_align_horizontal
             )
         elif "content_align_vertical" in rules:
-            append_declaration("content-align-vertical", self.content_align_vertical)
+            append_declaration(
+                "content-align-vertical", self.content_align_vertical
+            )
 
         if "text_align" in rules:
             append_declaration("text-align", self.text_align)
@@ -1196,7 +1240,9 @@ class Styles(StylesBase):
         if "border_title_align" in rules:
             append_declaration("border-title-align", self.border_title_align)
         if "border_subtitle_align" in rules:
-            append_declaration("border-subtitle-align", self.border_subtitle_align)
+            append_declaration(
+                "border-subtitle-align", self.border_subtitle_align
+            )
 
         if "opacity" in rules:
             append_declaration("opacity", str(self.opacity))
@@ -1214,7 +1260,9 @@ class Styles(StylesBase):
                 " ".join(str(scalar) for scalar in self.grid_rows or ()),
             )
         if "grid_size_columns" in rules:
-            append_declaration("grid-size-columns", str(self.grid_size_columns))
+            append_declaration(
+                "grid-size-columns", str(self.grid_size_columns)
+            )
         if "grid_size_rows" in rules:
             append_declaration("grid-size-rows", str(self.grid_size_rows))
 
@@ -1223,7 +1271,9 @@ class Styles(StylesBase):
                 "grid-gutter-horizontal", str(self.grid_gutter_horizontal)
             )
         if "grid_gutter_vertical" in rules:
-            append_declaration("grid-gutter-vertical", str(self.grid_gutter_vertical))
+            append_declaration(
+                "grid-gutter-vertical", str(self.grid_gutter_vertical)
+            )
 
         if "row_span" in rules:
             append_declaration("row-span", str(self.row_span))
@@ -1240,25 +1290,35 @@ class Styles(StylesBase):
         if "link_color_hover" in rules:
             append_declaration("link-color-hover", self.link_color_hover.css)
         if "link_background_hover" in rules:
-            append_declaration("link-background-hover", self.link_background_hover.css)
+            append_declaration(
+                "link-background-hover", self.link_background_hover.css
+            )
         if "link_style_hover" in rules:
             append_declaration("link-style-hover", str(self.link_style_hover))
 
         if "border_title_color" in rules:
             append_declaration("title-color", self.border_title_color.css)
         if "border_title_background" in rules:
-            append_declaration("title-background", self.border_title_background.css)
+            append_declaration(
+                "title-background", self.border_title_background.css
+            )
         if "border_title_style" in rules:
-            append_declaration("title-text-style", str(self.border_title_style))
+            append_declaration(
+                "title-text-style", str(self.border_title_style)
+            )
 
         if "border_subtitle_color" in rules:
-            append_declaration("subtitle-color", self.border_subtitle_color.css)
+            append_declaration(
+                "subtitle-color", self.border_subtitle_color.css
+            )
         if "border_subtitle_background" in rules:
             append_declaration(
                 "subtitle-background", self.border_subtitle_background.css
             )
         if "border_subtitle_text_style" in rules:
-            append_declaration("subtitle-text-style", str(self.border_subtitle_style))
+            append_declaration(
+                "subtitle-text-style", str(self.border_subtitle_style)
+            )
         if "overlay" in rules:
             append_declaration("overlay", str(self.overlay))
         if "constrain_x" in rules and "constrain_y" in rules:
@@ -1276,10 +1336,14 @@ class Styles(StylesBase):
         if "keyline" in rules:
             keyline_type, keyline_color = self.keyline
             if keyline_type != "none":
-                append_declaration("keyline", f"{keyline_type}, {keyline_color.css}")
+                append_declaration(
+                    "keyline", f"{keyline_type}, {keyline_color.css}"
+                )
         if "hatch" in rules:
             hatch_character, hatch_color = self.hatch
-            append_declaration("hatch", f'"{hatch_character}" {hatch_color.css}')
+            append_declaration(
+                "hatch", f'"{hatch_character}" {hatch_color.css}'
+            )
         if "text_wrap" in rules:
             append_declaration("text-wrap", self.text_wrap)
         if "text_overflow" in rules:
@@ -1296,7 +1360,9 @@ class Styles(StylesBase):
 class RenderStyles(StylesBase):
     """Presents a combined view of two Styles object: a base Styles and inline Styles."""
 
-    def __init__(self, node: DOMNode, base: Styles, inline_styles: Styles) -> None:
+    def __init__(
+        self, node: DOMNode, base: Styles, inline_styles: Styles
+    ) -> None:
         self.node = node
         self._base_styles = base
         self._inline_styles = inline_styles
@@ -1320,7 +1386,11 @@ class RenderStyles(StylesBase):
         Returns:
             An opaque integer.
         """
-        return self._updates + self._base_styles._updates + self._inline_styles._updates
+        return (
+            self._updates
+            + self._base_styles._updates
+            + self._inline_styles._updates
+        )
 
     @property
     def base(self) -> Styles:
@@ -1433,9 +1503,9 @@ class RenderStyles(StylesBase):
 
     def has_rule(self, rule_name: str) -> bool:
         """Check if a rule has been set."""
-        return self._inline_styles.has_rule(rule_name) or self._base_styles.has_rule(
+        return self._inline_styles.has_rule(
             rule_name
-        )
+        ) or self._base_styles.has_rule(rule_name)
 
     def has_any_rules(self, *rule_names: str) -> bool:
         """Check if any of the supplied rules have been set.
@@ -1448,7 +1518,9 @@ class RenderStyles(StylesBase):
         """
         inline_has_rule = self._inline_styles.has_rule
         base_has_rule = self._base_styles.has_rule
-        return any(inline_has_rule(name) or base_has_rule(name) for name in rule_names)
+        return any(
+            inline_has_rule(name) or base_has_rule(name) for name in rule_names
+        )
 
     def set_rule(self, rule_name: str, value: object | None) -> bool:
         self._updates += 1

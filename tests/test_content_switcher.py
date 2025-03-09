@@ -24,7 +24,8 @@ async def test_no_initial_display() -> None:
     async with SwitcherApp().run_test() as pilot:
         assert pilot.app.query_one(ContentSwitcher).current is None
         assert all(
-            not child.display for child in pilot.app.query_one(ContentSwitcher).children
+            not child.display
+            for child in pilot.app.query_one(ContentSwitcher).children
         )
         assert pilot.app.query_one(ContentSwitcher).visible_content is None
 
@@ -45,7 +46,8 @@ async def test_no_initial_display_then_set() -> None:
     async with SwitcherApp().run_test() as pilot:
         assert pilot.app.query_one(ContentSwitcher).current is None
         assert all(
-            not child.display for child in pilot.app.query_one(ContentSwitcher).children
+            not child.display
+            for child in pilot.app.query_one(ContentSwitcher).children
         )
         assert pilot.app.query_one(ContentSwitcher).visible_content is None
         pilot.app.query_one(ContentSwitcher).current = "w3"
@@ -84,7 +86,8 @@ async def test_initial_display_then_hide() -> None:
         pilot.app.query_one(ContentSwitcher).current = None
         assert pilot.app.query_one(ContentSwitcher).current is None
         assert all(
-            not child.display for child in pilot.app.query_one(ContentSwitcher).children
+            not child.display
+            for child in pilot.app.query_one(ContentSwitcher).children
         )
 
 
@@ -103,7 +106,8 @@ async def test_set_current_to_unknown_id() -> None:
     async with SwitcherApp().run_test() as pilot:
         assert pilot.app.query_one(ContentSwitcher).current is None
         assert all(
-            not child.display for child in pilot.app.query_one(ContentSwitcher).children
+            not child.display
+            for child in pilot.app.query_one(ContentSwitcher).children
         )
         with pytest.raises(NoMatches):
             pilot.app.query_one(ContentSwitcher).current = "does-not-exist"

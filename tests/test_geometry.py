@@ -210,12 +210,18 @@ def test_region_sub():
 
 def test_region_at_offset():
     assert Region(10, 10, 30, 40).at_offset((0, 0)) == Region(0, 0, 30, 40)
-    assert Region(10, 10, 30, 40).at_offset((-15, 30)) == Region(-15, 30, 30, 40)
+    assert Region(10, 10, 30, 40).at_offset((-15, 30)) == Region(
+        -15, 30, 30, 40
+    )
 
 
 def test_crop_size():
-    assert Region(10, 20, 100, 200).crop_size((50, 40)) == Region(10, 20, 50, 40)
-    assert Region(10, 20, 100, 200).crop_size((500, 40)) == Region(10, 20, 100, 40)
+    assert Region(10, 20, 100, 200).crop_size((50, 40)) == Region(
+        10, 20, 50, 40
+    )
+    assert Region(10, 20, 100, 200).crop_size((500, 40)) == Region(
+        10, 20, 100, 40
+    )
 
 
 def test_region_overlaps():
@@ -281,18 +287,20 @@ def test_region_grow():
 
 
 def test_region_intersection():
-    assert Region(0, 0, 100, 50).intersection(Region(10, 10, 10, 10)) == Region(
-        10, 10, 10, 10
-    )
-    assert Region(10, 10, 30, 20).intersection(Region(20, 15, 60, 40)) == Region(
-        20, 15, 20, 15
-    )
+    assert Region(0, 0, 100, 50).intersection(
+        Region(10, 10, 10, 10)
+    ) == Region(10, 10, 10, 10)
+    assert Region(10, 10, 30, 20).intersection(
+        Region(20, 15, 60, 40)
+    ) == Region(20, 15, 20, 15)
 
     assert not Region(10, 10, 20, 30).intersection(Region(50, 50, 100, 200))
 
 
 def test_region_union():
-    assert Region(5, 5, 10, 10).union(Region(20, 30, 10, 5)) == Region(5, 5, 25, 30)
+    assert Region(5, 5, 10, 10).union(Region(20, 30, 10, 5)) == Region(
+        5, 5, 25, 30
+    )
 
 
 def test_size_add():
@@ -463,24 +471,26 @@ def test_split_horizontal_negative():
 
 def test_translate_inside():
     # Needs to be moved up
-    assert Region(10, 20, 10, 20).translate_inside(Region(0, 0, 30, 25)) == Region(
-        10, 5, 10, 20
-    )
+    assert Region(10, 20, 10, 20).translate_inside(
+        Region(0, 0, 30, 25)
+    ) == Region(10, 5, 10, 20)
 
     # Already inside
-    assert Region(10, 10, 20, 5).translate_inside(Region(0, 0, 100, 100)) == Region(
-        10, 10, 20, 5
-    )
+    assert Region(10, 10, 20, 5).translate_inside(
+        Region(0, 0, 100, 100)
+    ) == Region(10, 10, 20, 5)
 
 
 def test_inflect():
     assert Region(0, 0, 1, 1).inflect() == Region(1, 1, 1, 1)
-    assert Region(0, 0, 1, 1).inflect(margin=Spacing.unpack(1)) == Region(2, 2, 1, 1)
+    assert Region(0, 0, 1, 1).inflect(margin=Spacing.unpack(1)) == Region(
+        2, 2, 1, 1
+    )
 
     # Default inflect positive
-    assert Region(10, 10, 30, 20).inflect(margin=Spacing(2, 2, 2, 2)) == Region(
-        42, 32, 30, 20
-    )
+    assert Region(10, 10, 30, 20).inflect(
+        margin=Spacing(2, 2, 2, 2)
+    ) == Region(42, 32, 30, 20)
 
     # Inflect y axis negative
     assert Region(10, 10, 30, 20).inflect(
@@ -521,10 +531,16 @@ def test_size_clamp_offset():
     ("region1", "region2", "expected"),
     [
         (Region(0, 0, 100, 80), Region(0, 0, 100, 80), Spacing(0, 0, 0, 0)),
-        (Region(0, 0, 100, 80), Region(10, 10, 10, 10), Spacing(10, 80, 60, 10)),
+        (
+            Region(0, 0, 100, 80),
+            Region(10, 10, 10, 10),
+            Spacing(10, 80, 60, 10),
+        ),
     ],
 )
-def test_get_spacing_between(region1: Region, region2: Region, expected: Spacing):
+def test_get_spacing_between(
+    region1: Region, region2: Region, expected: Spacing
+):
     spacing = region1.get_spacing_between(region2)
     assert spacing == expected
     assert region1.shrink(spacing) == region2
@@ -579,4 +595,7 @@ def test_constrain(
     container: Region,
     expected: Region,
 ) -> None:
-    assert region.constrain(constrain_x, constrain_y, margin, container) == expected
+    assert (
+        region.constrain(constrain_x, constrain_y, margin, container)
+        == expected
+    )

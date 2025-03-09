@@ -38,7 +38,11 @@ from textual._binary_encode import DecodeError, dump, load
         {},
         {"foo": "bar"},
         {"foo": "bar", b"egg": b"baz"},
-        {"foo": "bar", b"egg": b"baz", "list_of_things": [1, 2, 3, "Paul", "Jessica"]},
+        {
+            "foo": "bar",
+            b"egg": b"baz",
+            "list_of_things": [1, 2, 3, "Paul", "Jessica"],
+        },
         [{}],
         [[1]],
         [(1, 2), (3, 4)],

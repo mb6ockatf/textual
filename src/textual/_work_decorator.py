@@ -6,7 +6,15 @@ from __future__ import annotations
 
 from functools import partial, wraps
 from inspect import iscoroutinefunction
-from typing import TYPE_CHECKING, Callable, Coroutine, TypeVar, Union, cast, overload
+from typing import (
+    TYPE_CHECKING,
+    Callable,
+    Coroutine,
+    TypeVar,
+    Union,
+    cast,
+    overload,
+)
 
 from typing_extensions import ParamSpec, TypeAlias
 
@@ -128,7 +136,9 @@ def work(
                 debug_description = description
             else:
                 try:
-                    positional_arguments = ", ".join(repr(arg) for arg in args[1:])
+                    positional_arguments = ", ".join(
+                        repr(arg) for arg in args[1:]
+                    )
                     keyword_arguments = ", ".join(
                         f"{name}={value!r}" for name, value in kwargs.items()
                     )

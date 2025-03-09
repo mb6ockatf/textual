@@ -285,7 +285,9 @@ class Driver(ABC):
         """
         self._app.call_from_thread(
             self._app.post_message,
-            events.DeliveryComplete(key=delivery_key, path=save_path, name=name),
+            events.DeliveryComplete(
+                key=delivery_key, path=save_path, name=name
+            ),
         )
 
     def _delivery_failed(
@@ -297,5 +299,7 @@ class Driver(ABC):
         """
         self._app.call_from_thread(
             self._app.post_message,
-            events.DeliveryFailed(key=delivery_key, exception=exception, name=name),
+            events.DeliveryFailed(
+                key=delivery_key, exception=exception, name=name
+            ),
         )

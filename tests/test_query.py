@@ -93,7 +93,11 @@ def test_query():
         assert list(app.query("#Widget2")) == []  # Note case.
 
         assert list(app.query("Widget.float")) == [sidebar, tooltip, helpbar]
-        assert list(app.query(Widget).filter(".float")) == [sidebar, tooltip, helpbar]
+        assert list(app.query(Widget).filter(".float")) == [
+            sidebar,
+            tooltip,
+            helpbar,
+        ]
         assert list(
             app.query(Widget)
             .exclude("App")
@@ -104,7 +108,11 @@ def test_query():
             .exclude("#widget1")
             .exclude("#widget2")
         ) == [sidebar, tooltip, helpbar]
-        assert list(reversed(app.query("Widget.float"))) == [helpbar, tooltip, sidebar]
+        assert list(reversed(app.query("Widget.float"))) == [
+            helpbar,
+            tooltip,
+            sidebar,
+        ]
         assert list(app.query("Widget.float").results(Widget)) == [
             sidebar,
             tooltip,

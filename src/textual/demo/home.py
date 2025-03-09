@@ -181,7 +181,9 @@ class StarCount(Vertical):
             await asyncio.sleep(1)  # Time to admire the loading indicator
             async with httpx.AsyncClient() as client:
                 repository_json = (
-                    await client.get("https://api.github.com/repos/textualize/textual")
+                    await client.get(
+                        "https://api.github.com/repos/textualize/textual"
+                    )
                 ).json()
             self.stars = repository_json["stargazers_count"]
             self.forks = repository_json["forks"]
@@ -204,7 +206,9 @@ class StarCount(Vertical):
                 yield Digits(stars).with_tooltip(f"{self.stars} GitHub stars")
             with Vertical(id="forks"):
                 yield Label("Forks")
-                yield Digits(str(self.forks)).with_tooltip(f"{self.forks} Forks")
+                yield Digits(str(self.forks)).with_tooltip(
+                    f"{self.forks} Forks"
+                )
 
     def on_mount(self) -> None:
         self.tooltip = "Click to refresh"

@@ -22,7 +22,10 @@ class RadioSetApp(App[None]):
             (
                 event.radio_set.id,
                 event.index,
-                [button.value for button in event.radio_set.query(RadioButton)],
+                [
+                    button.value
+                    for button in event.radio_set.query(RadioButton)
+                ],
             )
         )
 
@@ -30,10 +33,20 @@ class RadioSetApp(App[None]):
 async def test_radio_sets_initial_state():
     """The initial states of the radio sets should be as we specified."""
     async with RadioSetApp().run_test() as pilot:
-        assert pilot.app.query_one("#from_buttons", RadioSet).pressed_index == 2
-        assert pilot.app.query_one("#from_buttons", RadioSet).pressed_button is not None
-        assert pilot.app.query_one("#from_strings", RadioSet).pressed_index == -1
-        assert pilot.app.query_one("#from_strings", RadioSet).pressed_button is None
+        assert (
+            pilot.app.query_one("#from_buttons", RadioSet).pressed_index == 2
+        )
+        assert (
+            pilot.app.query_one("#from_buttons", RadioSet).pressed_button
+            is not None
+        )
+        assert (
+            pilot.app.query_one("#from_strings", RadioSet).pressed_index == -1
+        )
+        assert (
+            pilot.app.query_one("#from_strings", RadioSet).pressed_button
+            is None
+        )
         assert pilot.app.events_received == []
 
 
@@ -52,10 +65,20 @@ async def test_radio_sets_toggle():
         pilot.app.query_one("#from_buttons", RadioSet)._nodes[0].toggle()
         pilot.app.query_one("#from_strings", RadioSet)._nodes[2].toggle()
         await pilot.pause()
-        assert pilot.app.query_one("#from_buttons", RadioSet).pressed_index == 0
-        assert pilot.app.query_one("#from_buttons", RadioSet).pressed_button is not None
-        assert pilot.app.query_one("#from_strings", RadioSet).pressed_index == 2
-        assert pilot.app.query_one("#from_strings", RadioSet).pressed_button is not None
+        assert (
+            pilot.app.query_one("#from_buttons", RadioSet).pressed_index == 0
+        )
+        assert (
+            pilot.app.query_one("#from_buttons", RadioSet).pressed_button
+            is not None
+        )
+        assert (
+            pilot.app.query_one("#from_strings", RadioSet).pressed_index == 2
+        )
+        assert (
+            pilot.app.query_one("#from_strings", RadioSet).pressed_button
+            is not None
+        )
         assert pilot.app.events_received == [
             ("from_buttons", 0, [True, False, False]),
             ("from_strings", 2, [False, False, True]),
@@ -65,9 +88,13 @@ async def test_radio_sets_toggle():
 async def test_radioset_same_button_mash():
     """Mashing the same button should have no effect."""
     async with RadioSetApp().run_test() as pilot:
-        assert pilot.app.query_one("#from_buttons", RadioSet).pressed_index == 2
+        assert (
+            pilot.app.query_one("#from_buttons", RadioSet).pressed_index == 2
+        )
         pilot.app.query_one("#from_buttons", RadioSet)._nodes[2].toggle()
-        assert pilot.app.query_one("#from_buttons", RadioSet).pressed_index == 2
+        assert (
+            pilot.app.query_one("#from_buttons", RadioSet).pressed_index == 2
+        )
         assert pilot.app.events_received == []
 
 
@@ -88,9 +115,13 @@ async def test_radioset_inner_navigation():
                 == pilot.app.query_one("#from_buttons").children[landing]
             )
     async with RadioSetApp().run_test() as pilot:
-        assert pilot.app.screen.focused is pilot.app.screen.query_one("#from_buttons")
+        assert pilot.app.screen.focused is pilot.app.screen.query_one(
+            "#from_buttons"
+        )
         await pilot.press("tab")
-        assert pilot.app.screen.focused is pilot.app.screen.query_one("#from_strings")
+        assert pilot.app.screen.focused is pilot.app.screen.query_one(
+            "#from_strings"
+        )
         assert pilot.app.query_one("#from_strings", RadioSet)._selected == 0
         await pilot.press("down")
         assert pilot.app.query_one("#from_strings", RadioSet)._selected == 1

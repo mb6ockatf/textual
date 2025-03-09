@@ -346,7 +346,10 @@ def _character_to_key(character: str) -> str:
     if not character.isalnum():
         try:
             key = (
-                unicodedata.name(character).lower().replace("-", "_").replace(" ", "_")
+                unicodedata.name(character)
+                .lower()
+                .replace("-", "_")
+                .replace(" ", "_")
             )
         except ValueError:
             key = ASCII_KEY_NAMES.get(character, character)

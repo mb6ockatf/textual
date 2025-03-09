@@ -6,7 +6,9 @@ from textual.screen import Screen
 from textual.widgets import Label
 
 
-SCREEN_CSS_PATH = (Path(__file__) / "../hot_reloading_app_with_screen_css.tcss").resolve()
+SCREEN_CSS_PATH = (
+    Path(__file__) / "../hot_reloading_app_with_screen_css.tcss"
+).resolve()
 
 # Write some CSS to the file before the app loads.
 # Then, the test will clear all the CSS to see if the

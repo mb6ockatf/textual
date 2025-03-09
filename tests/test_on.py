@@ -243,19 +243,27 @@ async def test_fire_inherited_on_single_handler_multi_selector() -> None:
             posted.append(f"either {event.__class__.__name__}")
 
         @on(MessageSender.Child, ".a, .x")
-        def catch_selector_list_one_miss(self, event: MessageSender.Parent) -> None:
+        def catch_selector_list_one_miss(
+            self, event: MessageSender.Parent
+        ) -> None:
             posted.append(f"selector list one miss {event.__class__.__name__}")
 
         @on(MessageSender.Child, ".a, .b")
-        def catch_selector_list_two_hits(self, event: MessageSender.Parent) -> None:
+        def catch_selector_list_two_hits(
+            self, event: MessageSender.Parent
+        ) -> None:
             posted.append(f"selector list two hits {event.__class__.__name__}")
 
         @on(MessageSender.Child, ".a.b")
-        def catch_selector_combined_hits(self, event: MessageSender.Parent) -> None:
+        def catch_selector_combined_hits(
+            self, event: MessageSender.Parent
+        ) -> None:
             posted.append(f"combined hits {event.__class__.__name__}")
 
         @on(MessageSender.Child, ".a.x")
-        def catch_selector_combined_miss(self, event: MessageSender.Parent) -> None:
+        def catch_selector_combined_miss(
+            self, event: MessageSender.Parent
+        ) -> None:
             posted.append(f"combined miss {event.__class__.__name__}")
 
         def on_mount(self) -> None:

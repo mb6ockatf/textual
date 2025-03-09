@@ -5,7 +5,9 @@ from textual.widgets import Label
 class ContentApp(App):
 
     def compose(self) -> ComposeResult:
-        yield Label("[bold]Bold[/] [italic]Italic[/] [u]Underline[/]  [s]Strike[/s]")
+        yield Label(
+            "[bold]Bold[/] [italic]Italic[/] [u]Underline[/]  [s]Strike[/s]"
+        )
         yield Label(
             "[$primary]Primary[/]  [$secondary]Secondary[/]  [$warning]Warning[/]  [$error]Error[/]"
         )

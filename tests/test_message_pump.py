@@ -53,7 +53,8 @@ class DuplicateHandlersWidget(Widget):
 
 async def test_dispatch_key_raises_when_conflicting_handler_aliases():
     """If you've got a handler for e.g. ctrl+i and a handler for tab, that's probably a mistake.
-    In the terminal, they're the same thing, so we fail fast via exception here."""
+    In the terminal, they're the same thing, so we fail fast via exception here.
+    """
     widget = DuplicateHandlersWidget()
     with pytest.raises(DuplicateKeyHandlers):
         await dispatch_key(widget, Key(key="tab", character="\t"))

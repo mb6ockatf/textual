@@ -5,6 +5,7 @@ from textual.app import App, ComposeResult
 from textual.widgets import Tree
 from textual.widgets.tree import TreeNode
 
+
 class HistoryTree(Tree):
 
     def __init__(self) -> None:
@@ -15,7 +16,9 @@ class HistoryTree(Tree):
     def on_mount(self) -> None:
         self.root.add("Child").add_leaf("Grandchild")
 
-    def render_label(self, node: TreeNode, base_style: Style, style: Style) -> Text:
+    def render_label(
+        self, node: TreeNode, base_style: Style, style: Style
+    ) -> Text:
         self.render_hits.add((node.id, self.counter))
         return super().render_label(node, base_style, style)
 
@@ -33,7 +36,11 @@ async def test_initial_state() -> None:
     """Initially all the visible nodes should have had a render call."""
     app = RefreshApp()
     async with app.run_test():
-        assert app.query_one(HistoryTree).render_hits == {(0,0), (1,0), (2,0)}
+        assert app.query_one(HistoryTree).render_hits == {
+            (0, 0),
+            (1, 0),
+            (2, 0),
+        }
 
 
 async def test_root_refresh() -> None:
@@ -45,6 +52,7 @@ async def test_root_refresh() -> None:
         await pilot.pause()
         assert (0, 1) in pilot.app.query_one(HistoryTree).render_hits
 
+
 async def test_child_refresh() -> None:
     """A refresh of the child node should cause a subsequent render call."""
     async with RefreshApp().run_test() as pilot:
@@ -53,6 +61,7 @@ async def test_child_refresh() -> None:
         pilot.app.query_one(HistoryTree).root.children[0].refresh()
         await pilot.pause()
         assert (1, 1) in pilot.app.query_one(HistoryTree).render_hits
+
 
 async def test_grandchild_refresh() -> None:
     """A refresh of the grandchild node should cause a subsequent render call."""

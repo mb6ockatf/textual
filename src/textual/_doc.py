@@ -16,7 +16,9 @@ SCREENSHOT_CACHE = ".screenshot_cache"
 
 # This module defines our "Custom Fences", powered by SuperFences
 # @link https://facelessuser.github.io/pymdown-extensions/extensions/superfences/#custom-fences
-def format_svg(source, language, css_class, options, md, attrs, **kwargs) -> str:
+def format_svg(
+    source, language, css_class, options, md, attrs, **kwargs
+) -> str:
     """A superfences formatter to insert an SVG screenshot."""
 
     try:

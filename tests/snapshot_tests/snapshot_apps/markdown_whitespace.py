@@ -25,8 +25,9 @@ _X X  X\tX\t\tX \t \tX_
 **X X  X\tX\t\tX \t \tX**
 
 ~~X X  X\tX\t\tX \t \tX~~
-"""
+""",
 )
+
 
 class MarkdownSpaceApp(App[None]):
 
@@ -47,13 +48,17 @@ class MarkdownSpaceApp(App[None]):
         with Horizontal():
             for document in MARKDOWN:
                 yield Markdown(document)
-        yield Markdown("""```python
+        yield Markdown(
+            """```python
 # Two spaces:  see?
 class  Foo:
     '''This is    a doc    string.'''
     some_code(1,  2,   3,      4)
 ```
-""", classes="code")
+""",
+            classes="code",
+        )
+
 
 if __name__ == "__main__":
     MarkdownSpaceApp().run()

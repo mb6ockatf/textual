@@ -50,7 +50,9 @@ class WorkerManager:
 
     def __reversed__(self) -> Iterator[Worker[Any]]:
         return iter(
-            sorted(self._workers, key=attrgetter("_created_time"), reverse=True)
+            sorted(
+                self._workers, key=attrgetter("_created_time"), reverse=True
+            )
         )
 
     def __bool__(self) -> bool:
@@ -169,13 +171,17 @@ class WorkerManager:
             worker.cancel()
         return workers
 
-    async def wait_for_complete(self, workers: Iterable[Worker] | None = None) -> None:
+    async def wait_for_complete(
+        self, workers: Iterable[Worker] | None = None
+    ) -> None:
         """Wait for workers to complete.
 
         Args:
             workers: An iterable of workers or None to wait for all workers in the manager.
         """
         try:
-            await asyncio.gather(*[worker.wait() for worker in (workers or self)])
+            await asyncio.gather(
+                *[worker.wait() for worker in (workers or self)]
+            )
         except asyncio.CancelledError:
             pass

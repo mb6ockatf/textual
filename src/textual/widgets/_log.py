@@ -138,7 +138,9 @@ class Log(ScrollView, can_focus=True):
         if lines:
             _process_line = self._process_line
             max_length = max(cell_len(_process_line(line)) for line in lines)
-            self.app.call_from_thread(self._update_maximum_width, updates, max_length)
+            self.app.call_from_thread(
+                self._update_maximum_width, updates, max_length
+            )
 
     def _prune_max_lines(self) -> None:
         """Prune lines if there are more than the maximum."""
@@ -150,7 +152,9 @@ class Log(ScrollView, can_focus=True):
             # We've removed some lines, which means the y values in the cache are out of sync
             # Calculated a new dict of cache values
             updated_cache = {
-                y - remove_lines: _cache[y] for y in _cache.keys() if y > remove_lines
+                y - remove_lines: _cache[y]
+                for y in _cache.keys()
+                if y > remove_lines
             }
             # Clear the cache
             _cache.clear()
@@ -329,7 +333,9 @@ class Log(ScrollView, can_focus=True):
         if self.highlight:
             line_text = self.highlighter(line_text)
         if selection is not None:
-            if (select_span := selection.get_span(y - self._clear_y)) is not None:
+            if (
+                select_span := selection.get_span(y - self._clear_y)
+            ) is not None:
                 start, end = select_span
                 if end == -1:
                     end = len(line_text)

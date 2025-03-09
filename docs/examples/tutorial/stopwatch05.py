@@ -60,7 +60,9 @@ class StopwatchApp(App):
     def action_toggle_dark(self) -> None:
         """An action to toggle dark mode."""
         self.theme = (
-            "textual-dark" if self.theme == "textual-light" else "textual-light"
+            "textual-dark"
+            if self.theme == "textual-light"
+            else "textual-light"
         )
 
 

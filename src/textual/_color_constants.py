@@ -20,7 +20,9 @@ ANSI_COLORS = [
 ]
 """The names of ANSI colors (prefixed with ansi_ in CSS)."""
 
-COLOR_NAME_TO_RGB: dict[str, tuple[int, int, int] | tuple[int, int, int, int]] = {
+COLOR_NAME_TO_RGB: dict[
+    str, tuple[int, int, int] | tuple[int, int, int, int]
+] = {
     # Let's start with a specific pseudo-color::
     "transparent": (0, 0, 0, 0),
     # Then, the 16 common ANSI colors:

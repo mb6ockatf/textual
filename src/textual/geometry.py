@@ -169,7 +169,9 @@ class Offset(NamedTuple):
         """
         x1, y1 = self
         x2, y2 = other
-        distance: float = ((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)) ** 0.5
+        distance: float = (
+            (x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)
+        ) ** 0.5
         return distance
 
     def clamp(self, width: int, height: int) -> Offset:
@@ -393,7 +395,9 @@ class Region(NamedTuple):
         return cls(x1, y1, x2 - x1, y2 - y1)
 
     @classmethod
-    def from_offset(cls, offset: tuple[int, int], size: tuple[int, int]) -> Region:
+    def from_offset(
+        cls, offset: tuple[int, int], size: tuple[int, int]
+    ) -> Region:
         """Create a region from offset and size.
 
         Args:
@@ -429,7 +433,9 @@ class Region(NamedTuple):
             # Region is already inside the window, so no need to move it.
             return NULL_OFFSET
 
-        window_left, window_top, window_right, window_bottom = window_region.corners
+        window_left, window_top, window_right, window_bottom = (
+            window_region.corners
+        )
         region = region.crop_size(window_region.size)
         left, top_, right, bottom = region.corners
         delta_x = delta_y = 0
@@ -672,9 +678,9 @@ class Region(NamedTuple):
         x, y, x2, y2 = self.corners
         ox, oy, ox2, oy2 = other.corners
 
-        return ((x2 > ox >= x) or (x2 > ox2 > x) or (ox < x and ox2 >= x2)) and (
-            (y2 > oy >= y) or (y2 > oy2 > y) or (oy < y and oy2 >= y2)
-        )
+        return (
+            (x2 > ox >= x) or (x2 > ox2 > x) or (ox < x and ox2 >= x2)
+        ) and ((y2 > oy >= y) or (y2 > oy2 > y) or (oy < y and oy2 >= y2))
 
     def contains(self, x: int, y: int) -> bool:
         """Check if a point is in the region.
@@ -687,7 +693,9 @@ class Region(NamedTuple):
             True if the point is within the region.
         """
         self_x, self_y, width, height = self
-        return (self_x + width > x >= self_x) and (self_y + height > y >= self_y)
+        return (self_x + width > x >= self_x) and (
+            self_y + height > y >= self_y
+        )
 
     def contains_point(self, point: tuple[int, int]) -> bool:
         """Check if a point is in the region.
@@ -702,7 +710,9 @@ class Region(NamedTuple):
         try:
             ox, oy = point
         except Exception:
-            raise TypeError(f"a tuple of two integers is required, not {point!r}")
+            raise TypeError(
+                f"a tuple of two integers is required, not {point!r}"
+            )
         return (x2 > ox >= x1) and (y2 > oy >= y1)
 
     @lru_cache(maxsize=1024)
@@ -857,7 +867,9 @@ class Region(NamedTuple):
         return union_region
 
     @lru_cache(maxsize=1024)
-    def split(self, cut_x: int, cut_y: int) -> tuple[Region, Region, Region, Region]:
+    def split(
+        self, cut_x: int, cut_y: int
+    ) -> tuple[Region, Region, Region, Region]:
         """Split a region into 4 from given x and y offsets (cuts).
 
         ```
@@ -1059,7 +1071,10 @@ class Region(NamedTuple):
         region = self
 
         def compare_span(
-            span_start: int, span_end: int, container_start: int, container_end: int
+            span_start: int,
+            span_end: int,
+            container_start: int,
+            container_end: int,
         ) -> int:
             """Compare a span with a container
 

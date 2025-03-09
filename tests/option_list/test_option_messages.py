@@ -30,7 +30,9 @@ class OptionListApp(App[None]):
     ) -> None:
         self._record(event)
 
-    def on_option_list_option_selected(self, event: OptionList.OptionSelected) -> None:
+    def on_option_list_option_selected(
+        self, event: OptionList.OptionSelected
+    ) -> None:
         self._record(event)
 
 

@@ -58,7 +58,9 @@ async def test_compose_nested_collapsible():
 
     async with CollapsibleApp().run_test() as pilot:
         outer: Collapsible = pilot.app.get_child_by_id("outer", Collapsible)
-        inner: Collapsible = get_contents(outer).get_child_by_id("inner", Collapsible)
+        inner: Collapsible = get_contents(outer).get_child_by_id(
+            "inner", Collapsible
+        )
         outer.collapsed = True
         assert not inner.collapsed
 

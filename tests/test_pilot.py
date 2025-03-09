@@ -304,7 +304,9 @@ async def test_pilot_target_inside_screen_is_fine_with_correct_coordinate_system
         ("mouse_up", Button),
     ],
 )
-async def test_pilot_target_on_widget_that_is_not_visible_errors(method, target):
+async def test_pilot_target_on_widget_that_is_not_visible_errors(
+    method, target
+):
     """Make sure that clicking a widget that is not scrolled into view raises an error."""
     app = ManyLabelsApp()
     async with app.run_test(size=(80, 5)) as pilot:
@@ -316,7 +318,9 @@ async def test_pilot_target_on_widget_that_is_not_visible_errors(method, target)
             await pilot_method(target)
 
 
-@pytest.mark.parametrize("method", ["click", "hover", "mouse_down", "mouse_up"])
+@pytest.mark.parametrize(
+    "method", ["click", "hover", "mouse_down", "mouse_up"]
+)
 async def test_pilot_target_widget_under_another_widget(method):
     """The targeting method should return False when the targeted widget is covered."""
 
@@ -342,7 +346,9 @@ async def test_pilot_target_widget_under_another_widget(method):
         assert (await pilot_method(Button)) is False
 
 
-@pytest.mark.parametrize("method", ["click", "hover", "mouse_down", "mouse_up"])
+@pytest.mark.parametrize(
+    "method", ["click", "hover", "mouse_down", "mouse_up"]
+)
 async def test_pilot_target_visible_widget(method):
     """The targeting method should return True when the targeted widget is hit."""
 
@@ -448,5 +454,6 @@ async def test_click_times(times: int):
     async with app.run_test() as pilot:
         await pilot.click(Label, times=times)
         assert (
-            events_received == [events.MouseDown, events.MouseUp, events.Click] * times
+            events_received
+            == [events.MouseDown, events.MouseUp, events.Click] * times
         )

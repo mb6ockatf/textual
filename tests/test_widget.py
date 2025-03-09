@@ -217,7 +217,9 @@ async def test_get_widgets_app_delegated(hierarchy_app):
         assert grandchild.id == "grandchild1"
 
 
-async def test_widget_mount_ids_must_be_unique_mounting_all_in_one_go(hierarchy_app):
+async def test_widget_mount_ids_must_be_unique_mounting_all_in_one_go(
+    hierarchy_app,
+):
     async with hierarchy_app.run_test() as pilot:
         parent = pilot.app.parent
         widget1 = Widget(id="hello")
@@ -227,7 +229,9 @@ async def test_widget_mount_ids_must_be_unique_mounting_all_in_one_go(hierarchy_
             parent.mount(widget1, widget2)
 
 
-async def test_widget_mount_ids_must_be_unique_mounting_multiple_calls(hierarchy_app):
+async def test_widget_mount_ids_must_be_unique_mounting_multiple_calls(
+    hierarchy_app,
+):
     async with hierarchy_app.run_test() as pilot:
         parent = pilot.app.parent
         widget1 = Widget(id="hello")
@@ -241,13 +245,17 @@ async def test_widget_mount_ids_must_be_unique_mounting_multiple_calls(hierarchy
 def test_get_pseudo_class_state():
     widget = Widget()
     pseudo_classes = widget.get_pseudo_class_state()
-    assert pseudo_classes == PseudoClasses(enabled=True, focus=False, hover=False)
+    assert pseudo_classes == PseudoClasses(
+        enabled=True, focus=False, hover=False
+    )
 
 
 def test_get_pseudo_class_state_disabled():
     widget = Widget(disabled=True)
     pseudo_classes = widget.get_pseudo_class_state()
-    assert pseudo_classes == PseudoClasses(enabled=False, focus=False, hover=False)
+    assert pseudo_classes == PseudoClasses(
+        enabled=False, focus=False, hover=False
+    )
 
 
 def test_get_pseudo_class_state_parent_disabled():
@@ -255,21 +263,27 @@ def test_get_pseudo_class_state_parent_disabled():
     _parent = Widget(disabled=True)
     child._attach(_parent)
     pseudo_classes = child.get_pseudo_class_state()
-    assert pseudo_classes == PseudoClasses(enabled=False, focus=False, hover=False)
+    assert pseudo_classes == PseudoClasses(
+        enabled=False, focus=False, hover=False
+    )
 
 
 def test_get_pseudo_class_state_hover():
     widget = Widget()
     widget.mouse_hover = True
     pseudo_classes = widget.get_pseudo_class_state()
-    assert pseudo_classes == PseudoClasses(enabled=True, focus=False, hover=True)
+    assert pseudo_classes == PseudoClasses(
+        enabled=True, focus=False, hover=True
+    )
 
 
 def test_get_pseudo_class_state_focus():
     widget = Widget()
     widget.has_focus = True
     pseudo_classes = widget.get_pseudo_class_state()
-    assert pseudo_classes == PseudoClasses(enabled=True, focus=True, hover=False)
+    assert pseudo_classes == PseudoClasses(
+        enabled=True, focus=True, hover=False
+    )
 
 
 # Regression test for https://github.com/Textualize/textual/issues/1634

@@ -113,7 +113,9 @@ class CalculatorApp(App):
     @on(Button.Pressed, "#percent")
     def percent_pressed(self) -> None:
         """Pressed %"""
-        self.numbers = self.value = str(Decimal(self.value or "0") / Decimal(100))
+        self.numbers = self.value = str(
+            Decimal(self.value or "0") / Decimal(100)
+        )
 
     @on(Button.Pressed, "#point")
     def pressed_point(self) -> None:

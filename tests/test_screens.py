@@ -46,9 +46,15 @@ async def test_installed_screens():
 
     app = ScreensApp()
     async with app.run_test() as pilot:
-        pilot.app.push_screen("home")  # Instantiates and pushes the "home" screen
-        pilot.app.push_screen("one")  # Pushes the pre-instantiated "one" screen
-        pilot.app.push_screen("home")  # Pushes the single instance of "home" screen
+        pilot.app.push_screen(
+            "home"
+        )  # Instantiates and pushes the "home" screen
+        pilot.app.push_screen(
+            "one"
+        )  # Pushes the pre-instantiated "one" screen
+        pilot.app.push_screen(
+            "home"
+        )  # Pushes the single instance of "home" screen
         pilot.app.push_screen(
             "two"
         )  # Calls the callable, pushes returned Screen instance
@@ -476,7 +482,9 @@ async def test_push_screen_wait_for_dismiss() -> None:
 
         @work
         async def action_exit(self) -> None:
-            result = await self.push_screen(QuitScreen(), wait_for_dismiss=True)
+            result = await self.push_screen(
+                QuitScreen(), wait_for_dismiss=True
+            )
             results.append(result)
 
     app = ScreensApp()
@@ -511,7 +519,9 @@ async def test_push_screen_wait_for_dismiss_no_worker() -> None:
         BINDINGS = [("x", "exit")]
 
         async def action_exit(self) -> None:
-            result = await self.push_screen(QuitScreen(), wait_for_dismiss=True)
+            result = await self.push_screen(
+                QuitScreen(), wait_for_dismiss=True
+            )
             results.append(result)
 
     app = ScreensApp()
@@ -596,7 +606,9 @@ async def test_worker_cancellation():
 
         @on(Button.Pressed, "#ok")
         def handle_ok(self) -> None:
-            self.dismiss(True)  # Changed the `dismiss` result to compatible type
+            self.dismiss(
+                True
+            )  # Changed the `dismiss` result to compatible type
 
     class ExampleApp(App):
         BINDINGS = [("i", "info", "Info")]

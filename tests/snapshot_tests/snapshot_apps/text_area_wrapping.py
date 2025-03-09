@@ -23,7 +23,9 @@ Space exploration has *always* captured the human imagination.
 
 class TextAreaWrapping(App):
     def compose(self) -> ComposeResult:
-        yield TextArea.code_editor(TEXT, language="markdown", theme="monokai", soft_wrap=True)
+        yield TextArea.code_editor(
+            TEXT, language="markdown", theme="monokai", soft_wrap=True
+        )
 
 
 app = TextAreaWrapping()

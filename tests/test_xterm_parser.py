@@ -46,7 +46,9 @@ def test_varying_parser_chunk_sizes_no_missing_data(parser, chunk_size):
     for chunk in chunks(data, chunk_size):
         events.append(parser.feed(chunk))
 
-    events = list(itertools.chain.from_iterable(list(event) for event in events))
+    events = list(
+        itertools.chain.from_iterable(list(event) for event in events)
+    )
 
     assert events[0].key == "end"
     assert [event.key for event in events[1:]] == list(text)
@@ -80,7 +82,9 @@ def test_bracketed_paste_content_contains_escape_codes(parser):
 
 def test_bracketed_paste_amongst_other_codes(parser):
     pasted_text = "PASTED"
-    events = list(parser.feed(f"\x1b[8~\x1b[200~{pasted_text}\x1b[201~\x1b[8~"))
+    events = list(
+        parser.feed(f"\x1b[8~\x1b[200~{pasted_text}\x1b[201~\x1b[8~")
+    )
     assert len(events) == 3  # Key.End -> Paste -> Key.End
     assert events[0].key == "end"
     assert events[1].text == pasted_text
@@ -132,7 +136,9 @@ def test_unknown_sequence_followed_by_known_sequence(parser, chunk_size):
     for chunk in chunks(sequence, chunk_size):
         events.append(parser.feed(chunk))
 
-    events = list(itertools.chain.from_iterable(list(event) for event in events))
+    events = list(
+        itertools.chain.from_iterable(list(event) for event in events)
+    )
     print(repr([event.key for event in events]))
 
     assert [event.key for event in events] == [
@@ -300,7 +306,9 @@ def test_escape_sequence_resulting_in_multiple_keypresses(parser):
 
 
 @pytest.mark.parametrize("parameter", range(1, 5))
-def test_terminal_mode_reporting_synchronized_output_supported(parser, parameter):
+def test_terminal_mode_reporting_synchronized_output_supported(
+    parser, parameter
+):
     sequence = f"\x1b[?2026;{parameter}$y"
     events = list(parser.feed(sequence))
     assert len(events) == 1

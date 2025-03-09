@@ -49,7 +49,9 @@ async def test_move_child_to_outside() -> None:
         "after",
     ],
 )
-async def test_move_child_index_in_relation_to_itself_index(reference: str) -> None:
+async def test_move_child_index_in_relation_to_itself_index(
+    reference: str,
+) -> None:
     """Regression test for https://github.com/Textualize/textual/issues/1743"""
 
     widget = Widget()
@@ -57,7 +59,9 @@ async def test_move_child_index_in_relation_to_itself_index(reference: str) -> N
     kwargs = {reference: 0}
     async with App().run_test() as pilot:
         await pilot.app.screen.mount(widget)
-        pilot.app.screen.move_child(child, **kwargs)  # Shouldn't raise an error.
+        pilot.app.screen.move_child(
+            child, **kwargs
+        )  # Shouldn't raise an error.
 
 
 @pytest.mark.parametrize(
@@ -67,7 +71,9 @@ async def test_move_child_index_in_relation_to_itself_index(reference: str) -> N
         "after",
     ],
 )
-async def test_move_child_index_in_relation_to_itself_widget(reference: str) -> None:
+async def test_move_child_index_in_relation_to_itself_widget(
+    reference: str,
+) -> None:
     """Regression test for https://github.com/Textualize/textual/issues/1743"""
 
     widget = Widget()
@@ -75,7 +81,9 @@ async def test_move_child_index_in_relation_to_itself_widget(reference: str) -> 
     kwargs = {reference: widget}
     async with App().run_test() as pilot:
         await pilot.app.screen.mount(widget)
-        pilot.app.screen.move_child(child, **kwargs)  # Shouldn't raise an error.
+        pilot.app.screen.move_child(
+            child, **kwargs
+        )  # Shouldn't raise an error.
 
 
 @pytest.mark.parametrize(
@@ -85,7 +93,9 @@ async def test_move_child_index_in_relation_to_itself_widget(reference: str) -> 
         "after",
     ],
 )
-async def test_move_child_widget_in_relation_to_itself_index(reference: str) -> None:
+async def test_move_child_widget_in_relation_to_itself_index(
+    reference: str,
+) -> None:
     """Regression test for https://github.com/Textualize/textual/issues/1743"""
 
     widget = Widget()
@@ -93,7 +103,9 @@ async def test_move_child_widget_in_relation_to_itself_index(reference: str) -> 
     kwargs = {reference: 0}
     async with App().run_test() as pilot:
         await pilot.app.screen.mount(widget)
-        pilot.app.screen.move_child(child, **kwargs)  # Shouldn't raise an error.
+        pilot.app.screen.move_child(
+            child, **kwargs
+        )  # Shouldn't raise an error.
 
 
 @pytest.mark.parametrize(
@@ -103,7 +115,9 @@ async def test_move_child_widget_in_relation_to_itself_index(reference: str) -> 
         "after",
     ],
 )
-async def test_move_child_widget_in_relation_to_itself_widget(reference: str) -> None:
+async def test_move_child_widget_in_relation_to_itself_widget(
+    reference: str,
+) -> None:
     """Regression test for https://github.com/Textualize/textual/issues/1743"""
 
     widget = Widget()
@@ -111,7 +125,9 @@ async def test_move_child_widget_in_relation_to_itself_widget(reference: str) ->
     kwargs = {reference: widget}
     async with App().run_test() as pilot:
         await pilot.app.screen.mount(widget)
-        pilot.app.screen.move_child(child, **kwargs)  # Shouldn't raise an error.
+        pilot.app.screen.move_child(
+            child, **kwargs
+        )  # Shouldn't raise an error.
 
 
 async def test_move_past_end_of_child_list() -> None:
@@ -156,7 +172,12 @@ async def test_move_before_permutations() -> None:
 async def test_move_after_permutations() -> None:
     """Test the different permutations of moving one widget after another."""
     widgets = [Widget(id=f"widget-{n}") for n in range(10)]
-    perms = ((0, 1), (widgets[0], 1), (0, widgets[1]), (widgets[0], widgets[1]))
+    perms = (
+        (0, 1),
+        (widgets[0], 1),
+        (0, widgets[1]),
+        (widgets[0], widgets[1]),
+    )
     for child, target in perms:
         async with App[None]().run_test() as pilot:
             container = Widget(*widgets)

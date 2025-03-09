@@ -13,7 +13,9 @@ def test_rich_color():
 
 
 def test_normalized():
-    assert Color(255, 128, 64).normalized == pytest.approx((1.0, 128 / 255, 64 / 255))
+    assert Color(255, 128, 64).normalized == pytest.approx(
+        (1.0, 128 / 255, 64 / 255)
+    )
 
 
 def test_clamped():
@@ -55,7 +57,9 @@ def test_hsl():
 def test_color_brightness():
     assert Color(255, 255, 255).brightness == 1
     assert Color(0, 0, 0).brightness == 0
-    assert Color(127, 127, 127).brightness == pytest.approx(0.49803921568627446)
+    assert Color(127, 127, 127).brightness == pytest.approx(
+        0.49803921568627446
+    )
     assert Color(255, 127, 64).brightness == pytest.approx(0.6199607843137255)
 
 
@@ -80,14 +84,22 @@ def test_color_with_alpha():
 
 
 def test_multiply_alpha():
-    assert Color(100, 100, 100).multiply_alpha(0.5) == Color(100, 100, 100, 0.5)
-    assert Color(100, 100, 100, 0.5).multiply_alpha(0.5) == Color(100, 100, 100, 0.25)
+    assert Color(100, 100, 100).multiply_alpha(0.5) == Color(
+        100, 100, 100, 0.5
+    )
+    assert Color(100, 100, 100, 0.5).multiply_alpha(0.5) == Color(
+        100, 100, 100, 0.25
+    )
 
 
 def test_color_blend():
     assert Color(0, 0, 0).blend(Color(255, 255, 255), 0) == Color(0, 0, 0)
-    assert Color(0, 0, 0).blend(Color(255, 255, 255), 1.0) == Color(255, 255, 255)
-    assert Color(0, 0, 0).blend(Color(255, 255, 255), 0.5) == Color(127, 127, 127)
+    assert Color(0, 0, 0).blend(Color(255, 255, 255), 1.0) == Color(
+        255, 255, 255
+    )
+    assert Color(0, 0, 0).blend(Color(255, 255, 255), 0.5) == Color(
+        127, 127, 127
+    )
 
 
 @pytest.mark.parametrize(
@@ -106,7 +118,10 @@ def test_color_blend():
         ("rgba(255,255,255,1)", Color(255, 255, 255, 1.0)),
         ("rgb(2,3,4)", Color(2, 3, 4, 1.0)),
         ("rgba(2,3,4,1.0)", Color(2, 3, 4, 1.0)),
-        ("rgba(2,3,4,0.058823529411764705)", Color(2, 3, 4, 0.058823529411764705)),
+        (
+            "rgba(2,3,4,0.058823529411764705)",
+            Color(2, 3, 4, 0.058823529411764705),
+        ),
         ("hsl(45,25%,25%)", Color(80, 72, 48)),
         ("hsla(45,25%,25%,0.35)", Color(80, 72, 48, 0.35)),
     ],
@@ -142,7 +157,9 @@ def test_color_parse_clamp(input, output):
 
 
 def test_color_parse_hsl_negative_degrees():
-    assert Color.parse("hsl(-90, 50%, 50%)") == Color.parse("hsl(270, 50%, 50%)")
+    assert Color.parse("hsl(-90, 50%, 50%)") == Color.parse(
+        "hsl(270, 50%, 50%)"
+    )
 
 
 def test_color_parse_hsla_negative_degrees():

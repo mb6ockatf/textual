@@ -70,7 +70,9 @@ async def test_tree_reset_with_label_and_data() -> None:
     async with TreeClearApp().run_test() as pilot:
         tree = pilot.app.query_one(VerseTree)
         assert len(tree.root.children) > 1
-        pilot.app.query_one(VerseTree).reset(label="Jiangyin", data=VersePlanet())
+        pilot.app.query_one(VerseTree).reset(
+            label="Jiangyin", data=VersePlanet()
+        )
         assert len(tree.root.children) == 0
         assert str(tree.root.label) == "Jiangyin"
         assert isinstance(tree.root.data, VersePlanet)

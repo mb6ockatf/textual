@@ -75,7 +75,9 @@ def test_border_subtitle_single_line():
     widget.border_subtitle = "Sorry you \r\n have to \n read this."
     assert widget.border_subtitle == "Sorry you "
 
-    widget.border_subtitle = "[red]This also \n works with markup \n involved.[/]"
+    widget.border_subtitle = (
+        "[red]This also \n works with markup \n involved.[/]"
+    )
     assert widget.border_subtitle == "[red]This also [/red]"
 
     widget.border_subtitle = Text.from_markup("[bold]Hello World")
@@ -174,7 +176,9 @@ def test_render_border_label_wide_plain(label: str):
         True,
         True,
     )
-    segments = render_border_label((Content.from_markup(label), Style()), *args)
+    segments = render_border_label(
+        (Content.from_markup(label), Style()), *args
+    )
     (segment,) = segments
 
     assert segment == Segment(f" {label} ", None)
@@ -256,7 +260,8 @@ def test_render_border_label():
         (Content.from_markup(label), Style()),
         True,
         "round",
-        5 + 4,  # 5 where "What…" fits + 2 for the blank spaces + 2 for the corners.
+        5
+        + 4,  # 5 where "What…" fits + 2 for the blank spaces + 2 for the corners.
         Style(),
         Style(),
         border_style,

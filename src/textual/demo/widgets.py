@@ -232,7 +232,9 @@ Build for intuitive and user-friendly forms.
             yield Input(placeholder="Type anything here")
             yield Label("Number")
             yield Input(
-                type="number", placeholder="Type a number here", valid_empty=True
+                type="number",
+                placeholder="Type a number here",
+                valid_empty=True,
             )
             yield Label("Credit card")
             yield MaskedInput(
@@ -372,7 +374,10 @@ def loop_first_last(values: Iterable[T]) -> Iterable[tuple[bool, bool, T]]:
         log = self.query_one(Log)
         if self.is_scrolling:
             return
-        if not self.app.screen.can_view_entire(log) and not log.is_in_maximized_view:
+        if (
+            not self.app.screen.can_view_entire(log)
+            and not log.is_in_maximized_view
+        ):
             return
         self.log_count += 1
         line_no = self.log_count % len(self.TEXT)
@@ -576,7 +581,9 @@ For detailed graphs, see [textual-plotext](https://github.com/Textualize/textual
             return
         self.count += 1
         offset = self.count * 40
-        self.data = [abs(sin(x / 3.14)) for x in range(offset, offset + 360 * 6, 20)]
+        self.data = [
+            abs(sin(x / 3.14)) for x in range(offset, offset + 360 * 6, 20)
+        ]
 
 
 class Switches(containers.VerticalGroup):
@@ -743,7 +750,9 @@ from textual import App, ComposeResult
             prompt="Highlight language",
         )
 
-        yield TextArea(self.DEFAULT_TEXT, show_line_numbers=True, language=None)
+        yield TextArea(
+            self.DEFAULT_TEXT, show_line_numbers=True, language=None
+        )
 
     def on_select_changed(self, event: Select.Changed) -> None:
         self.query_one(TextArea).language = (
@@ -787,7 +796,9 @@ class WidgetsScreen(PageScreen):
     }
     """
 
-    BINDINGS = [Binding("escape", "blur", "Unfocus any focused widget", show=False)]
+    BINDINGS = [
+        Binding("escape", "blur", "Unfocus any focused widget", show=False)
+    ]
 
     def compose(self) -> ComposeResult:
         with lazy.Reveal(containers.VerticalScroll(can_focus=True)):

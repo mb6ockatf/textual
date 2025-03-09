@@ -133,14 +133,26 @@ def test_Number_validate(value, minimum, maximum, expected_result):
     [
         (r"\d+", "123", True),  # matches regex for one or more digits
         (r"\d+", "abc", False),  # does not match regex for one or more digits
-        (r"[a-z]+", "abc", True),  # matches regex for one or more lowercase letters
+        (
+            r"[a-z]+",
+            "abc",
+            True,
+        ),  # matches regex for one or more lowercase letters
         (
             r"[a-z]+",
             "ABC",
             False,
         ),  # does not match regex for one or more lowercase letters
-        (r"\w+", "abc123", True),  # matches regex for one or more word characters
-        (r"\w+", "!@#", False),  # does not match regex for one or more word characters
+        (
+            r"\w+",
+            "abc123",
+            True,
+        ),  # matches regex for one or more word characters
+        (
+            r"\w+",
+            "!@#",
+            False,
+        ),  # does not match regex for one or more word characters
     ],
 )
 def test_Regex_validate(regex, value, expected_result):
@@ -155,15 +167,30 @@ def test_Regex_validate(regex, value, expected_result):
         ("123", None, None, True),  # valid integer, no range
         ("-123", None, None, True),  # valid negative integer, no range
         ("123.45", None, None, False),  # float, not a valid integer
-        ("1.23e-4", None, None, False),  # scientific notation, not a valid integer
+        (
+            "1.23e-4",
+            None,
+            None,
+            False,
+        ),  # scientific notation, not a valid integer
         ("abc", None, None, False),  # non-numeric string, not a valid integer
         ("123", 100, 200, True),  # valid integer within range
         ("99", 100, 200, False),  # valid integer but not in range
         ("201", 100, 200, False),  # valid integer but not in range
-        ("1.23e4", None, None, False),  # valid scientific notation, even resolving to an integer, is not valid
+        (
+            "1.23e4",
+            None,
+            None,
+            False,
+        ),  # valid scientific notation, even resolving to an integer, is not valid
         ("123.", None, None, False),  # periods not valid in integers
         ("123_456", None, None, True),  # underscores are valid python
-        ("_123_456", None, None, False),  # leading underscores are not valid python
+        (
+            "_123_456",
+            None,
+            None,
+            False,
+        ),  # leading underscores are not valid python
         ("-123", -123, -123, True),  # valid negative number in minimal range
     ],
 )

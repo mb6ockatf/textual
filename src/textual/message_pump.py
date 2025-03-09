@@ -78,7 +78,8 @@ class _MessagePumpMeta(type):
         **kwargs: Any,
     ) -> _MessagePumpMetaSub:
         handlers: dict[
-            type[Message], list[tuple[Callable, dict[str, tuple[SelectorSet, ...]]]]
+            type[Message],
+            list[tuple[Callable, dict[str, tuple[SelectorSet, ...]]]],
         ] = class_dict.get("_decorated_handlers", {})
 
         class_dict["_decorated_handlers"] = handlers
@@ -89,7 +90,9 @@ class _MessagePumpMeta(type):
                     tuple[type[Message], dict[str, tuple[SelectorSet, ...]]]
                 ] = getattr(value, "_textual_on")
                 for message_type, selectors in textual_on:
-                    handlers.setdefault(message_type, []).append((value, selectors))
+                    handlers.setdefault(message_type, []).append(
+                        (value, selectors)
+                    )
 
         # Look for reactives with public AND private compute methods.
         prefix = "compute_"
@@ -135,7 +138,9 @@ class MessagePump(metaclass=_MessagePumpMeta):
         """
         self._next_callbacks: list[events.Callback] = []
         self._thread_id: int = threading.get_ident()
-        self._prevented_messages_on_mount = self._prevent_message_types_stack[-1]
+        self._prevented_messages_on_mount = self._prevent_message_types_stack[
+            -1
+        ]
         self.message_signal: Signal[Message] = Signal(self, "messages")
         """Subscribe to this signal to be notified of all messages sent to this widget.
         
@@ -170,7 +175,9 @@ class MessagePump(metaclass=_MessagePumpMeta):
         return message_type in self._prevent_message_types_stack[-1]
 
     @contextmanager
-    def prevent(self, *message_types: type[Message]) -> Generator[None, None, None]:
+    def prevent(
+        self, *message_types: type[Message]
+    ) -> Generator[None, None, None]:
         """A context manager to *temporarily* prevent the given message types from being posted.
 
         Example:
@@ -252,7 +259,9 @@ class MessagePump(metaclass=_MessagePumpMeta):
     def is_parent_active(self) -> bool:
         """Is the parent active?"""
         parent = self._parent
-        return bool(parent is not None and not parent._closed and not parent._closing)
+        return bool(
+            parent is not None and not parent._closed and not parent._closing
+        )
 
     @property
     def is_running(self) -> bool:
@@ -375,7 +384,9 @@ class MessagePump(metaclass=_MessagePumpMeta):
             self,
             delay,
             name=name or f"set_timer#{Timer._timer_count}",
-            callback=None if callback is None else partial(self.call_next, callback),
+            callback=(
+                None if callback is None else partial(self.call_next, callback)
+            ),
             repeat=0,
             pause=pause,
         )
@@ -416,7 +427,9 @@ class MessagePump(metaclass=_MessagePumpMeta):
         self._timers.add(timer)
         return timer
 
-    def call_after_refresh(self, callback: Callback, *args: Any, **kwargs: Any) -> bool:
+    def call_after_refresh(
+        self, callback: Callback, *args: Any, **kwargs: Any
+    ) -> bool:
         """Schedule a callback to run after all messages are processed and the screen
         has been refreshed. Positional and keyword arguments are passed to the callable.
 
@@ -434,7 +447,9 @@ class MessagePump(metaclass=_MessagePumpMeta):
         message = messages.InvokeLater(partial(callback, *args, **kwargs))
         return self.post_message(message)
 
-    def call_later(self, callback: Callback, *args: Any, **kwargs: Any) -> bool:
+    def call_later(
+        self, callback: Callback, *args: Any, **kwargs: Any
+    ) -> bool:
         """Schedule a callback to run after all messages are processed in this object.
         Positional and keywords arguments are passed to the callable.
 
@@ -460,7 +475,9 @@ class MessagePump(metaclass=_MessagePumpMeta):
             **kwargs: Keyword arguments to pass to the callable.
         """
         assert callback is not None, "Callback must not be None"
-        callback_message = events.Callback(callback=partial(callback, *args, **kwargs))
+        callback_message = events.Callback(
+            callback=partial(callback, *args, **kwargs)
+        )
         callback_message._prevent.update(self._get_prevented_messages())
         self._next_callbacks.append(callback_message)
         self.check_idle()
@@ -482,7 +499,11 @@ class MessagePump(metaclass=_MessagePumpMeta):
             self._timers.clear()
         Reactive._reset_object(self)
         self._message_queue.put_nowait(None)
-        if wait and self._task is not None and asyncio.current_task() != self._task:
+        if (
+            wait
+            and self._task is not None
+            and asyncio.current_task() != self._task
+        ):
             try:
                 running_widget = active_message_pump.get()
             except LookupError:
@@ -574,7 +595,9 @@ class MessagePump(metaclass=_MessagePumpMeta):
         finally:
             active_message_pump.reset(reset_token)
 
-    async def _on_close_messages(self, message: messages.CloseMessages) -> None:
+    async def _on_close_messages(
+        self, message: messages.CloseMessages
+    ) -> None:
         await self._close_messages()
 
     async def _process_messages_loop(self) -> None:
@@ -699,7 +722,9 @@ class MessagePump(metaclass=_MessagePumpMeta):
 
         methods_dispatched: set[Callable] = set()
         message_mro = [
-            _type for _type in message.__class__.__mro__ if issubclass(_type, Message)
+            _type
+            for _type in message.__class__.__mro__
+            if issubclass(_type, Message)
         ]
         for cls in self.__class__.__mro__:
             if message._no_default_action:
@@ -774,7 +799,9 @@ class MessagePump(metaclass=_MessagePumpMeta):
             dispatched = True
             await invoke(method, message)
         if not dispatched:
-            log.event.verbosity(message.verbose)(message, ">>>", self, "method=None")
+            log.event.verbosity(message.verbose)(
+                message, ">>>", self, "method=None"
+            )
 
         # Bubble messages up the DOM (if enabled on the message)
         if message.bubble and self._parent and not message._stop_propagation:
@@ -825,7 +852,10 @@ class MessagePump(metaclass=_MessagePumpMeta):
         # Add a copy of the prevented message types to the message
         # This is so that prevented messages are honoured by the event's handler
         message._prevent.update(self._get_prevented_messages())
-        if self._thread_id != threading.get_ident() and self.app._loop is not None:
+        if (
+            self._thread_id != threading.get_ident()
+            and self.app._loop is not None
+        ):
             # If we're not calling from the same thread, make it threadsafe
             loop = self.app._loop
             loop.call_soon_threadsafe(self._message_queue.put_nowait, message)

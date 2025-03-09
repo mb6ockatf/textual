@@ -22,7 +22,11 @@ class TextAreaApp(App):
 
 
 def get_changed_messages(messages: List[Event]) -> List[TextArea.Changed]:
-    return [message for message in messages if isinstance(message, TextArea.Changed)]
+    return [
+        message
+        for message in messages
+        if isinstance(message, TextArea.Changed)
+    ]
 
 
 def get_selection_changed_messages(
@@ -44,7 +48,9 @@ async def test_changed_message_edit_via_api():
         text_area.insert("A")
         await pilot.pause()
 
-        assert get_changed_messages(app.messages) == [TextArea.Changed(text_area)]
+        assert get_changed_messages(app.messages) == [
+            TextArea.Changed(text_area)
+        ]
         assert get_selection_changed_messages(app.messages) == [
             TextArea.SelectionChanged(text_area.selection, text_area)
         ]
@@ -58,7 +64,9 @@ async def test_changed_message_via_typing():
 
         await pilot.press("a")
 
-        assert get_changed_messages(app.messages) == [TextArea.Changed(text_area)]
+        assert get_changed_messages(app.messages) == [
+            TextArea.Changed(text_area)
+        ]
         assert get_selection_changed_messages(app.messages) == [
             TextArea.SelectionChanged(text_area.selection, text_area)
         ]
@@ -73,7 +81,9 @@ async def test_changed_message_edit_via_assignment():
         text_area.text = ""
         await pilot.pause()
 
-        assert get_changed_messages(app.messages) == [TextArea.Changed(text_area)]
+        assert get_changed_messages(app.messages) == [
+            TextArea.Changed(text_area)
+        ]
         assert get_selection_changed_messages(app.messages) == []
 
 

@@ -39,7 +39,9 @@ def _css_path_type_as_list(css_path: CSSPathType) -> list[PurePath]:
     elif isinstance(css_path, list):
         paths = [Path(path) for path in css_path]
     else:
-        raise CSSPathError("Expected a str, Path or list[str | Path] for the CSS_PATH.")
+        raise CSSPathError(
+            "Expected a str, Path or list[str | Path] for the CSS_PATH."
+        )
 
     return paths
 

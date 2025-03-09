@@ -86,9 +86,9 @@ class MarkupPlayground(App):
 
             results.update(Traceback())
 
-            self.query_one("#results-container").add_class("-error").scroll_end(
-                animate=False
-            )
+            self.query_one("#results-container").add_class(
+                "-error"
+            ).scroll_end(animate=False)
         else:
             self.query_one("#results-container").remove_class("-error")
 
@@ -114,7 +114,9 @@ class MarkupPlayground(App):
             variables = json.loads(variables_text_area.text)
         except Exception as error:
             if not variables_text_area.has_class("-bad-json"):
-                self.notify(f"Bad JSON: ${error}", title="Variables", severity="error")
+                self.notify(
+                    f"Bad JSON: ${error}", title="Variables", severity="error"
+                )
                 variables_text_area.add_class("-bad-json")
         else:
             variables_text_area.remove_class("-bad-json")

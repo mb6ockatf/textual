@@ -17,10 +17,16 @@ class CheckerBoard(Widget):
         if row_index >= 8:  # Generate blank lines when we reach the end
             return Strip.blank(self.size.width)
 
-        is_odd = row_index % 2  # Used to alternate the starting square on each row
+        is_odd = (
+            row_index % 2
+        )  # Used to alternate the starting square on each row
 
-        white = Style.parse("on white")  # Get a style object for a white background
-        black = Style.parse("on black")  # Get a style object for a black background
+        white = Style.parse(
+            "on white"
+        )  # Get a style object for a white background
+        black = Style.parse(
+            "on black"
+        )  # Get a style object for a black background
 
         # Generate a list of segments with alternating black and white space characters
         segments = [

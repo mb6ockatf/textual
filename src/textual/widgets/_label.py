@@ -9,7 +9,9 @@ from rich.console import RenderableType
 from textual.visual import SupportsVisual
 from textual.widgets._static import Static
 
-LabelVariant = Literal["success", "error", "warning", "primary", "secondary", "accent"]
+LabelVariant = Literal[
+    "success", "error", "warning", "primary", "secondary", "accent"
+]
 
 
 class Label(Static):

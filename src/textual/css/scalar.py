@@ -260,7 +260,9 @@ class Scalar(NamedTuple):
             if match is None:
                 raise ScalarParseError(f"{token!r} is not a valid scalar")
             value, unit_name = match.groups()
-            scalar = cls(float(value), SYMBOL_UNIT[unit_name or ""], percent_unit)
+            scalar = cls(
+                float(value), SYMBOL_UNIT[unit_name or ""], percent_unit
+            )
         return scalar
 
     @lru_cache(maxsize=4096)
@@ -288,7 +290,9 @@ class Scalar(NamedTuple):
                 value, size, viewport, fraction_unit or _FRACTION_ONE
             )
         except KeyError:
-            raise ScalarResolveError(f"expected dimensions; found {str(self)!r}")
+            raise ScalarResolveError(
+                f"expected dimensions; found {str(self)!r}"
+            )
         return dimension
 
     def copy_with(
